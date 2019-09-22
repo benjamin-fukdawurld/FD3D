@@ -1,6 +1,9 @@
 #include <FD3D/Camera.h>
 
 #include <glm/gtc/matrix_transform.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include <glm/gtx/euler_angles.hpp>
 
 #include <glm/gtc/type_ptr.hpp>

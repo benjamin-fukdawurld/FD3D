@@ -161,6 +161,36 @@ namespace FD3D
                 *(components + 1) = t.y;
             }
     };
+
+    template<typename ParentClass, size_t offset = 6>
+    class VertexColorHelper : public ParentClass
+    {
+        public:
+            using ParentClass::ParentClass;
+
+            typedef VertexColorUtils::type ColorType;
+
+            glm::vec4 &getColor()
+            {
+                return *reinterpret_cast<glm::vec4*>(static_cast<ParentClass>(this)->data() + offset);
+            }
+
+            const glm::vec4 &getColor() const
+            {
+                return *reinterpret_cast<glm::vec4*>(static_cast<ParentClass>(this)->data() + offset);
+            }
+
+            void setColor(const glm::vec4 &t)
+            {
+                float *components = static_cast<ParentClass>(this)->data() + offset;
+                *(components) = t.x;
+                *(components + 1) = t.y;
+                *(components + 2) = t.z;
+                *(components + 3) = t.w;
+            }
+    };
+
+    typedef  VertexNormalHelper<VertexNormalHelper<VertexTextureHelper<BaseVertex<8>, 6>, 3>, 0> Vertex;
 }
 
 #endif // VERTEX_H

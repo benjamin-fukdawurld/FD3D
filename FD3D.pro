@@ -26,13 +26,14 @@ SOURCES += \
     src/Projection.cpp \
     src/Transform.cpp \
     src/Camera.cpp \
-    src/Vertex.cpp
 
 HEADERS += \
     include/FD3D/Projection.h \
     include/FD3D/Transform.h \
     include/FD3D/Camera.h \
-    include/FD3D/Vertex.h
+    include/FD3D/Vertex.h \
+    include/FD3D/Texture.h \
+    include/FD3D/Mesh.h
 
 unix {
     target.path = /usr/lib

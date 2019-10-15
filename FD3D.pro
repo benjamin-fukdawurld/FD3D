@@ -23,11 +23,15 @@ INCLUDEPATH += \
     ../thirdparty/glm \
 
 SOURCES += \
+    src/Light.cpp \
+    src/Material.cpp \
     src/Projection.cpp \
     src/Transform.cpp \
     src/Camera.cpp \
 
 HEADERS += \
+    include/FD3D/Light.h \
+    include/FD3D/Material.h \
     include/FD3D/Projection.h \
     include/FD3D/Transform.h \
     include/FD3D/Camera.h \

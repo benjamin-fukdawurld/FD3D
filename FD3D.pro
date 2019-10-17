@@ -17,10 +17,12 @@ OBJECTS_DIR = ../build/.obj/$${TARGET}
 DEPENDPATH += \
     include \
     ../thirdparty/glm \
+    ../thirdparty/assimp/include \
 
 INCLUDEPATH += \
     include \
     ../thirdparty/glm \
+    ../thirdparty/assimp/include \
 
 SOURCES += \
     src/Light.cpp \
@@ -32,6 +34,8 @@ SOURCES += \
 HEADERS += \
     include/FD3D/Light.h \
     include/FD3D/Material.h \
+    include/FD3D/Model.h \
+    include/FD3D/ModelLoader.h \
     include/FD3D/Projection.h \
     include/FD3D/Transform.h \
     include/FD3D/Camera.h \

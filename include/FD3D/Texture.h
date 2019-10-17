@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef FD3D_TEXTURE_H
+#define FD3D_TEXTURE_H
 
 #include <cstdint>
 #include <string>
@@ -38,4 +38,4 @@ namespace FD3D
     };
 }
 
-#endif // TEXTURE_H
+#endif // FD3D_TEXTURE_H

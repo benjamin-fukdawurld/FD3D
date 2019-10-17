@@ -1,5 +1,5 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef FD3D_MESH_H
+#define FD3D_MESH_H
 
 #include <FD3D/Vertex.h>
 #include <FD3D/Texture.h>
@@ -7,17 +7,21 @@
 
 namespace FD3D
 {
+    template<typename T = Vertex>
     class Mesh
     {
+        public:
+            typedef T VertexType;
+
         protected:
-            std::vector<Vertex> m_vertices;
+            std::vector<T> m_vertices;
             std::vector<uint32_t> m_indices;
             std::vector<Texture> m_textures;
 
         public:
             Mesh();
 
-            Mesh(const std::vector<Vertex> &vertices,
+            Mesh(const std::vector<T> &vertices,
                  const std::vector<uint32_t> &indices,
                  const std::vector<Texture> textures) :
                 m_vertices(vertices),
@@ -25,15 +29,15 @@ namespace FD3D
                 m_textures(textures)
             {}
 
-            std::vector<Vertex> &getVertices() { return m_vertices; }
+            std::vector<T> &getVertices() { return m_vertices; }
             std::vector<uint32_t> &getIndices() { return m_indices; }
             std::vector<Texture> &getTextures() { return m_textures; }
 
-            const std::vector<Vertex> &getVertices() const { return m_vertices; }
+            const std::vector<T> &getVertices() const { return m_vertices; }
             const std::vector<uint32_t> &getIndices() const { return m_indices; }
             const std::vector<Texture> &getTextures() const { return m_textures; }
 
-            void setVertices(const std::vector<Vertex> &vert)
+            void setVertices(const std::vector<T> &vert)
             {
                 m_vertices = vert;
             }
@@ -50,4 +54,4 @@ namespace FD3D
     };
 }
 
-#endif // MESH_H
+#endif // FD3D_MESH_H

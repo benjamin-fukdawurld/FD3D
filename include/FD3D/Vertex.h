@@ -1,5 +1,5 @@
-#ifndef VERTEX_H
-#define VERTEX_H
+#ifndef FD3D_VERTEX_H
+#define FD3D_VERTEX_H
 
 #include <cstdlib>
 
@@ -92,12 +92,14 @@ namespace FD3D
 
             glm::vec3 &getPosition()
             {
-                return *reinterpret_cast<glm::vec3*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec3*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             const glm::vec3 &getPosition() const
             {
-                return *reinterpret_cast<glm::vec3*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec3*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             void setPosition(const glm::vec3 &pos)
@@ -119,12 +121,14 @@ namespace FD3D
 
             glm::vec3 &getNormal()
             {
-                return *reinterpret_cast<glm::vec3*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec3*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             const glm::vec3 &getNormal() const
             {
-                return *reinterpret_cast<glm::vec3*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec3*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             void setNormal(const glm::vec3 &n)
@@ -146,12 +150,14 @@ namespace FD3D
 
             glm::vec2 &getTextureCoordinates()
             {
-                return *reinterpret_cast<glm::vec2*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec2*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             const glm::vec2 &getTextureCoordinates() const
             {
-                return *reinterpret_cast<glm::vec2*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec2*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             void setNormal(const glm::vec2 &t)
@@ -172,12 +178,14 @@ namespace FD3D
 
             glm::vec4 &getColor()
             {
-                return *reinterpret_cast<glm::vec4*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec4*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             const glm::vec4 &getColor() const
             {
-                return *reinterpret_cast<glm::vec4*>(static_cast<ParentClass>(this)->data() + offset);
+                return *reinterpret_cast<glm::vec4*>(
+                            static_cast<ParentClass>(this)->data() + offset);
             }
 
             void setColor(const glm::vec4 &t)
@@ -190,7 +198,13 @@ namespace FD3D
             }
     };
 
-    typedef  VertexNormalHelper<VertexNormalHelper<VertexTextureHelper<BaseVertex<8>, 6>, 3>, 0> Vertex;
+    typedef VertexNormalHelper<
+                VertexNormalHelper<
+                    VertexTextureHelper<
+                        BaseVertex<8>,
+                    6>,
+                3>,
+            0> Vertex;
 }
 
-#endif // VERTEX_H
+#endif // FD3D_VERTEX_H

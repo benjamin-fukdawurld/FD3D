@@ -1,5 +1,5 @@
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#ifndef FD3D_MATERIAL_H
+#define FD3D_MATERIAL_H
 
 #include <glm/vec3.hpp>
 
@@ -41,4 +41,4 @@ namespace FD3D
     };
 }
 
-#endif // MATERIAL_H
+#endif // FD3D_MATERIAL_H

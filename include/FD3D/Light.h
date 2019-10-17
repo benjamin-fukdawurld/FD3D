@@ -1,5 +1,5 @@
-#ifndef LIGHT_H
-#define LIGHT_H
+#ifndef FD3D_LIGHT_H
+#define FD3D_LIGHT_H
 
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
@@ -17,9 +17,9 @@ namespace FD3D
     class Light
     {
         protected:
-            glm::vec3 m_ambient;
-            glm::vec3 m_diffuse;
-            glm::vec3 m_specular;
+            glm::vec4 m_ambient;
+            glm::vec4 m_diffuse;
+            glm::vec4 m_specular;
             glm::vec3 m_position;
             glm::vec3 m_direction;
             LightType m_type;
@@ -30,11 +30,11 @@ namespace FD3D
             glm::vec4 &getAmbientColor();
             const glm::vec4 &getAmbientColor() const;
 
-            glm::vec3 &getDiffuse();
-            const glm::vec3 &getDiffuse() const;
+            glm::vec4 &getDiffuse();
+            const glm::vec4 &getDiffuse() const;
 
-            glm::vec3 &getSpecular();
-            const glm::vec3 &getSpecular() const;
+            glm::vec4 &getSpecular();
+            const glm::vec4 &getSpecular() const;
 
             glm::vec3 &getPosition();
             const glm::vec3 &getPosition() const;
@@ -43,8 +43,8 @@ namespace FD3D
             const glm::vec3 &getDirection() const;
 
             void setAmbientColor(const glm::vec4 color);
-            void setDiffuse(const glm::vec3 &diffuse);
-            void setSpecular(const glm::vec3 &specular);
+            void setDiffuse(const glm::vec4 &diffuse);
+            void setSpecular(const glm::vec4 &specular);
 
             void setPosition(const glm::vec3 position);
             void translate(const glm::vec3 v);
@@ -58,4 +58,4 @@ namespace FD3D
     };
 }
 
-#endif // LIGHT_H
+#endif // FD3D_LIGHT_H

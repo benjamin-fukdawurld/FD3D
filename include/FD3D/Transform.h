@@ -1,5 +1,5 @@
-#ifndef TRANSFORM_H
-#define TRANSFORM_H
+#ifndef FD3D_TRANSFORM_H
+#define FD3D_TRANSFORM_H
 
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -52,4 +52,4 @@ namespace FD3D
     };
 }
 
-#endif // TRANSFORM_H
+#endif // FD3D_TRANSFORM_H

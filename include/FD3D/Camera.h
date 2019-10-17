@@ -1,5 +1,5 @@
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef FD3D_CAMERA_H
+#define FD3D_CAMERA_H
 
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
@@ -47,4 +47,4 @@ namespace FD3D
     };
 }
 
-#endif // CAMERA_H
+#endif // FD3D_CAMERA_H

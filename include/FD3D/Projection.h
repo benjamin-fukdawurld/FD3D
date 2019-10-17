@@ -1,5 +1,5 @@
-#ifndef PROJECTION_H
-#define PROJECTION_H
+#ifndef FD3D_PROJECTION_H
+#define FD3D_PROJECTION_H
 
 #include <cstdint>
 #include <glm/mat4x4.hpp>
@@ -66,4 +66,4 @@ namespace FD3D
     };
 }
 
-#endif // PROJECTION_H
+#endif // FD3D_PROJECTION_H

@@ -30,6 +30,7 @@ SOURCES += \
     src/Projection.cpp \
     src/Transform.cpp \
     src/Camera.cpp \
+    src/ModelLoader.cpp
 
 HEADERS += \
     include/FD3D/Light.h \

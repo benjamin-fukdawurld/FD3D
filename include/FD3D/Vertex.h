@@ -93,18 +93,18 @@ namespace FD3D
             glm::vec3 &getPosition()
             {
                 return *reinterpret_cast<glm::vec3*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
             const glm::vec3 &getPosition() const
             {
                 return *reinterpret_cast<glm::vec3*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
             void setPosition(const glm::vec3 &pos)
             {
-                float *components = static_cast<ParentClass>(this)->data() + offset;
+                float *components = static_cast<ParentClass*>(this)->data() + offset;
                 *(components) = pos.x;
                 *(components + 1) = pos.y;
                 *(components + 2) = pos.z;
@@ -122,18 +122,18 @@ namespace FD3D
             glm::vec3 &getNormal()
             {
                 return *reinterpret_cast<glm::vec3*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
             const glm::vec3 &getNormal() const
             {
                 return *reinterpret_cast<glm::vec3*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
             void setNormal(const glm::vec3 &n)
             {
-                float *components = static_cast<ParentClass>(this)->data() + offset;
+                float *components = static_cast<ParentClass*>(this)->data() + offset;
                 *(components) = n.x;
                 *(components + 1) = n.y;
                 *(components + 2) = n.z;
@@ -151,18 +151,18 @@ namespace FD3D
             glm::vec2 &getTextureCoordinates()
             {
                 return *reinterpret_cast<glm::vec2*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
             const glm::vec2 &getTextureCoordinates() const
             {
                 return *reinterpret_cast<glm::vec2*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
-            void setNormal(const glm::vec2 &t)
+            void setTexture(const glm::vec2 &t)
             {
-                float *components = static_cast<ParentClass>(this)->data() + offset;
+                float *components = static_cast<ParentClass*>(this)->data() + offset;
                 *(components) = t.x;
                 *(components + 1) = t.y;
             }
@@ -179,18 +179,18 @@ namespace FD3D
             glm::vec4 &getColor()
             {
                 return *reinterpret_cast<glm::vec4*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
             const glm::vec4 &getColor() const
             {
                 return *reinterpret_cast<glm::vec4*>(
-                            static_cast<ParentClass>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data() + offset);
             }
 
             void setColor(const glm::vec4 &t)
             {
-                float *components = static_cast<ParentClass>(this)->data() + offset;
+                float *components = static_cast<ParentClass*>(this)->data() + offset;
                 *(components) = t.x;
                 *(components + 1) = t.y;
                 *(components + 2) = t.z;
@@ -198,7 +198,7 @@ namespace FD3D
             }
     };
 
-    typedef VertexNormalHelper<
+    typedef VertexPositionHelper<
                 VertexNormalHelper<
                     VertexTextureHelper<
                         BaseVertex<8>,

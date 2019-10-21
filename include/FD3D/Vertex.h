@@ -33,9 +33,89 @@ namespace FD3D
         static const size_t size = 4;
     };
 
-    template<size_t nb_components = 8>
-    class BaseVertex
+    template<typename Derived, size_t nb_components = 8>
+    class VertexTrait
     {
+        public:
+            static const size_t numberOfComponents = nb_components;
+
+            float &operator[](size_t pos)
+            {
+                return static_cast<Derived*>(this)->data()[pos];
+            }
+
+            float operator[](size_t pos) const
+            {
+                return static_cast<Derived*>(this)->data()[pos];
+            }
+
+            size_t size() const
+            {
+                return numberOfComponents;
+            }
+
+            void assign(float value)
+            {
+                float *components = asDerived().data();
+                for(size_t i = 0; i < nb_components; ++i)
+                    components[i] = value;
+            }
+
+            void assign(float values[], size_t size = nb_components)
+            {
+                float *components = asDerived().data();
+                for(size_t i = 0, imax = (size > nb_components ? nb_components : size);
+                    i < imax; ++i)
+                    components[i] = values[i];
+            }
+
+        private:
+            Derived &asDerived()
+            {
+                return *static_cast<Derived*>(this);
+            }
+    };
+
+    template<size_t nb_components = 8>
+    class BaseVertexWrapper : public VertexTrait<BaseVertexWrapper<nb_components>, nb_components>
+    {
+        private:
+            typedef VertexTrait<BaseVertexWrapper<nb_components>, nb_components> parent_type;
+
+        public:
+            static const size_t numberOfComponents = nb_components;
+
+        protected:
+            float *m_components;
+
+        public:
+            BaseVertexWrapper(float value = 0.0f)
+            {
+                parent_type::assign(value);
+            }
+
+            BaseVertexWrapper(float values[], size_t size = nb_components)
+            {
+                parent_type::assign(values, size);
+            }
+
+            float *data()
+            {
+                return m_components;
+            }
+
+            const float *data() const
+            {
+                return m_components;
+            }
+    };
+
+    template<size_t nb_components = 8>
+    class BaseVertex : public VertexTrait<BaseVertexWrapper<nb_components>, nb_components>
+    {
+        private:
+            typedef VertexTrait<BaseVertexWrapper<nb_components>, nb_components> parent_type;
+
         public:
             static const size_t numberOfComponents = nb_components;
 
@@ -45,30 +125,12 @@ namespace FD3D
         public:
             BaseVertex(float value = 0.0f)
             {
-                for(size_t i = 0; i < nb_components; ++i)
-                    m_components[i] = value;
+                parent_type::assign(value);
             }
 
             BaseVertex(float values[], size_t size = nb_components)
             {
-                for(size_t i = 0, imax = (size > nb_components ? nb_components : size);
-                    i < imax; ++i)
-                    m_components[i] = values[i];
-            }
-
-            float &operator[](size_t pos)
-            {
-                return m_components[pos];
-            }
-
-            float operator[](size_t pos) const
-            {
-                return m_components[pos];
-            }
-
-            size_t size() const
-            {
-                return numberOfComponents;
+                parent_type::assign(values, size);
             }
 
             float *data()
@@ -205,6 +267,14 @@ namespace FD3D
                     6>,
                 3>,
             0> Vertex;
+
+    typedef VertexPositionHelper<
+                VertexNormalHelper<
+                    VertexTextureHelper<
+                        BaseVertexWrapper<8>,
+                    6>,
+                3>,
+            0> VertexWrapper;
 }
 
 #endif // FD3D_VERTEX_H

@@ -13,7 +13,10 @@
 #include <glm/vec2.hpp>
 
 #include <FD3D/Vertex.h>
+#include <FD3D/Mesh.h>
 #include <FD3D/Model.h>
+
+#include <FD3D/ModelLoader_fwd.h>
 
 namespace FD3D
 {

@@ -6,45 +6,40 @@
 
 namespace FD3D
 {
-    template<>
-    inline Vertex generateVertex<Vertex>(const aiMesh *mesh, size_t vertexIndex)
+    template<typename VertexType>
+    VertexType DefaultVertexGenerator<VertexType>::operator()(const aiMesh *mesh,
+                                                              size_t vertexIndex)
     {
-        Vertex v;
-        v.setPosition(internal::getVertexPosition(mesh, vertexIndex));
-        v.setNormal(internal::getVertexNormal(mesh, vertexIndex));
-        v.setTexture(internal::getVertexTextureCoordinates(mesh, vertexIndex, 0));
-        return v;
+        return generateVertex<VertexType>(mesh, vertexIndex);
     }
 
-    template<>
-    inline Mesh<Vertex> generateMesh<Mesh<Vertex>>(const aiMesh *mesh)
+    template<typename MeshType>
+    template<typename VertexType>
+    MeshType DefaultMeshGenerator<MeshType>::operator()(const aiMesh *mesh,
+                        VertexGeneratorFunction<VertexType> vertexGenerator)
     {
-        std::vector<Vertex> v;
-        std::vector<Texture> t;
-        v.reserve(mesh->mNumVertices);
-        for(size_t i = 0; i < mesh->mNumVertices; ++i)
-        {
-            v.push_back(generateVertex<Vertex>(mesh, i));
-        }
-
-        return Mesh{v, internal::getMeshIndices(mesh), t};
+        return generateMesh<MeshType>(mesh, vertexGenerator());
     }
 
-    template<>
-    inline Mesh<Vertex> generateMesh<
-        Mesh<Vertex>,
-        std::function<Vertex(const aiMesh*, size_t)>
-    >(const aiMesh *mesh, std::function<Vertex(const aiMesh*, size_t)> vertexGenerator)
+    template<typename ModelType>
+    template<typename MeshType, typename VertexType>
+    ModelType DefaultModelGenerator<ModelType>::operator()(const aiScene *scene,
+                         const aiNode *node,
+                         const std::string &directory,
+                         MeshGeneratorFunction<MeshType> meshGenerator,
+                         VertexGeneratorFunction<VertexType> vertexGenerator)
     {
-        std::vector<Vertex> v;
-        std::vector<Texture> t;
-        v.reserve(mesh->mNumVertices);
-        for(size_t i = 0; i < mesh->mNumVertices; ++i)
-        {
-            v.push_back(vertexGenerator(mesh, i));
-        }
+        return generateModel(scene, node, directory, meshGenerator, vertexGenerator);
+    }
 
-        return Mesh{v, internal::getMeshIndices(mesh), t};
+    template<typename ModelType>
+    template<typename MeshType, typename VertexType>
+    ModelType DefaultModelLoader<ModelType>::operator()(const aiScene *scene,
+                         const std::string &directory,
+                         MeshGeneratorFunction<MeshType> meshGenerator,
+                         VertexGeneratorFunction<VertexType> vertexGenerator)
+    {
+        return loadModel(scene, directory, meshGenerator, vertexGenerator);
     }
 }
 

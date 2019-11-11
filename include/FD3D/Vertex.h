@@ -23,7 +23,7 @@ namespace FD3D
 
     struct VertexTextureUtils
     {
-        typedef glm::vec3 type;
+        typedef glm::vec2 type;
         static const size_t size = 2;
     };
 
@@ -202,29 +202,38 @@ namespace FD3D
             }
     };
 
-    template<typename ParentClass, size_t offset = 6>
+    template<typename ParentClass, size_t offset = 6, size_t nb_texture = 1>
     class VertexTextureHelper : public ParentClass
     {
         public:
             using ParentClass::ParentClass;
 
-            typedef VertexNormalUtils::type NormalType;
+            typedef VertexTextureUtils::type TexCoordType;
 
-            glm::vec2 &getTextureCoordinates()
+            glm::vec2 &getTextureCoordinates(size_t pos = 0)
             {
+                assert(pos < nb_texture);
                 return *reinterpret_cast<glm::vec2*>(
-                            static_cast<ParentClass*>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data()
+                                + offset
+                                + (pos * sizeof(TexCoordType)));
             }
 
-            const glm::vec2 &getTextureCoordinates() const
+            const glm::vec2 &getTextureCoordinates(size_t pos = 0) const
             {
+                assert(pos < nb_texture);
                 return *reinterpret_cast<glm::vec2*>(
-                            static_cast<ParentClass*>(this)->data() + offset);
+                            static_cast<ParentClass*>(this)->data()
+                                + offset
+                                + (pos * sizeof(TexCoordType)));
             }
 
-            void setTexture(const glm::vec2 &t)
+            void setTexture(const glm::vec2 &t, size_t pos = 0)
             {
-                float *components = static_cast<ParentClass*>(this)->data() + offset;
+                assert(pos < nb_texture);
+                float *components = static_cast<ParentClass*>(this)->data()
+                                        + offset
+                                        + (pos * sizeof(TexCoordType));
                 *(components) = t.x;
                 *(components + 1) = t.y;
             }

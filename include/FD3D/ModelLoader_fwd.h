@@ -9,6 +9,8 @@
 #include <FD3D/Mesh.h>
 #include <FD3D/Model.h>
 
+#include <FD3D/Texture.h>
+
 #include <functional>
 
 #include <glm/vec3.hpp>
@@ -29,6 +31,26 @@ namespace FD3D
 
         std::vector<uint32_t> getMeshIndices(const aiMesh *mesh);
     }
+
+    typedef std::function<Texture(TextureType, const std::string&)> TextureLoaderFunction;
+
+    class DefaultMaterialGenerator
+    {
+        private:
+            TextureLoaderFunction m_textureLoader;
+
+        public:
+            DefaultMaterialGenerator(TextureLoaderFunction textureLoader) :
+                m_textureLoader(textureLoader)
+            {}
+
+            Material operator()(const aiMaterial *mat);
+
+            Texture loadTexture(TextureType type, const std::string &path)
+            {
+                return m_textureLoader(type, path);
+            }
+    };
 
     template<typename VertexType>
     using VertexGeneratorFunction = std::function<VertexType(const aiMesh*, size_t)>;

@@ -2,21 +2,29 @@
 #define FD3D_MATERIAL_H
 
 #include <glm/vec3.hpp>
+#include <unordered_map>
+#include <vector>
+
+#include <FD3D/Texture.h>
 
 namespace FD3D
 {
     class Material
     {
         protected:
+            std::string m_name;
             glm::vec3 m_ambientColor;
             glm::vec3 m_diffuseColor;
             glm::vec3 m_specularColor;
             float m_shininess;
-            uint32_t m_diffuseMap;
-            uint32_t m_specularMap;
+
+            std::unordered_map<TextureType, std::vector<uint32_t>> m_textures;
 
         public:
             Material();
+
+            const std::string &getName() const;
+            void setName(const std::string &name);
 
             glm::vec3 &getAmbientColor();
             const glm::vec3 &getAmbientColor() const;
@@ -33,11 +41,15 @@ namespace FD3D
             float getShininess() const;
             void setShininess(float shininess);
 
-            uint32_t getDiffuseMap() const;
-            void setDiffuseMap(const uint32_t &diffuseMap);
+            std::unordered_map<TextureType, std::vector<uint32_t>> &getTextures()
+            {
+                return m_textures;
+            }
 
-            uint32_t getSpecularMap() const;
-            void setSpecularMap(const uint32_t &specularMap);
+            std::vector<uint32_t> &getTextures(TextureType type)
+            {
+                return m_textures[type];
+            }
     };
 }
 

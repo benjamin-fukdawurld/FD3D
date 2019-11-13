@@ -3,6 +3,105 @@
 #include <iostream>
 
 
+aiTextureType toAssimpType(FD3D::TextureType type)
+{
+    switch (type)
+    {
+        case FD3D::TextureType::None:
+            return aiTextureType_NONE;
+
+        case FD3D::TextureType::Height:
+            return aiTextureType_HEIGHT;
+
+        case FD3D::TextureType::Ambient:
+            return aiTextureType_AMBIENT;
+
+        case FD3D::TextureType::Diffuse:
+            return aiTextureType_DIFFUSE;
+
+        case FD3D::TextureType::Normals:
+            return aiTextureType_NORMALS;
+
+        case FD3D::TextureType::Opacity:
+            return aiTextureType_OPACITY;
+
+        case FD3D::TextureType::Emissive:
+            return aiTextureType_EMISSIVE;
+
+        case FD3D::TextureType::LightMap:
+            return aiTextureType_LIGHTMAP;
+
+        case FD3D::TextureType::Specular:
+            return aiTextureType_SPECULAR;
+
+        case FD3D::TextureType::Shininess:
+            return aiTextureType_SHININESS;
+
+        case FD3D::TextureType::Reflection:
+            return aiTextureType_REFLECTION;
+
+        case FD3D::TextureType::Displacement:
+            return aiTextureType_DISPLACEMENT;
+
+        case FD3D::TextureType::Invalid:
+            return aiTextureType_UNKNOWN;
+    }
+
+    return aiTextureType_UNKNOWN;
+}
+
+
+FD3D::Material FD3D::DefaultMaterialGenerator::operator()(const aiMaterial *mat)
+{
+    FD3D::Material result;
+    auto textureLoop = [this, mat, &result](TextureType type)
+    {
+        aiTextureType t = toAssimpType(type);
+        for(size_t i = 0, imax = mat->GetTextureCount(t); i < imax; ++i)
+        {
+            aiString path;
+            mat->GetTexture(t, static_cast<unsigned int>(i), &path);
+            Texture tex = this->loadTexture(type, path.C_Str());
+            result.getTextures(type).push_back(tex.getId());
+        }
+    };
+
+    textureLoop(FD3D::TextureType::None);
+    textureLoop(FD3D::TextureType::Height);
+    textureLoop(FD3D::TextureType::Ambient);
+    textureLoop(FD3D::TextureType::Diffuse);
+    textureLoop(FD3D::TextureType::Invalid);
+    textureLoop(FD3D::TextureType::Normals);
+    textureLoop(FD3D::TextureType::Opacity);
+    textureLoop(FD3D::TextureType::Emissive);
+    textureLoop(FD3D::TextureType::LightMap);
+    textureLoop(FD3D::TextureType::Specular);
+    textureLoop(FD3D::TextureType::Shininess);
+    textureLoop(FD3D::TextureType::Reflection);
+    textureLoop(FD3D::TextureType::Displacement);
+
+    aiColor3D color;
+    aiString name;
+    float shininess;
+
+    if(mat->Get(AI_MATKEY_NAME, name) == AI_SUCCESS)
+        result.setName(name.C_Str());
+
+    if(mat->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS)
+        result.setShininess(shininess);
+
+    if(mat->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
+        result.setDiffuseColor({color.r, color.g, color.b});
+
+    if(mat->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS)
+        result.setAmbientColor({color.r, color.g, color.b});
+
+    if(mat->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
+        result.setSpecularColor({color.r, color.g, color.b});
+
+    return result;
+}
+
 const aiScene *FD3D::internal::importScene(Assimp::Importer &importer, const std::string &path, unsigned int flags)
 {
     const aiScene *scene = importer.ReadFile(path, flags);
@@ -62,7 +161,7 @@ template<>
 FD3D::Mesh<FD3D::Vertex> FD3D::generateMesh<FD3D::Mesh<FD3D::Vertex>>(const aiMesh *mesh)
 {
     std::vector<Vertex> v;
-    std::vector<Texture> t;
+    std::vector<Material*> t;
     v.reserve(mesh->mNumVertices);
     for(size_t i = 0; i < mesh->mNumVertices; ++i)
     {
@@ -79,7 +178,7 @@ FD3D::Mesh<FD3D::Vertex> FD3D::generateMesh<
 >(const aiMesh *mesh, std::function<Vertex(const aiMesh*, size_t)> vertexGenerator)
 {
     std::vector<Vertex> v;
-    std::vector<Texture> t;
+    std::vector<Material*> t;
     v.reserve(mesh->mNumVertices);
     for(size_t i = 0; i < mesh->mNumVertices; ++i)
     {

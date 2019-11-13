@@ -2,7 +2,7 @@
 #define FD3D_MESH_H
 
 #include <FD3D/Vertex.h>
-#include <FD3D/Texture.h>
+#include <FD3D/Material.h>
 #include <vector>
 
 namespace FD3D
@@ -16,26 +16,26 @@ namespace FD3D
         protected:
             std::vector<T> m_vertices;
             std::vector<uint32_t> m_indices;
-            std::vector<Texture> m_textures;
+            std::vector<Material*> m_materials;
 
         public:
             Mesh();
 
             Mesh(const std::vector<T> &vertices,
                  const std::vector<uint32_t> &indices,
-                 const std::vector<Texture> textures) :
+                 const std::vector<Material*> materials) :
                 m_vertices(vertices),
                 m_indices(indices),
-                m_textures(textures)
+                m_materials(materials)
             {}
 
             std::vector<T> &getVertices() { return m_vertices; }
             std::vector<uint32_t> &getIndices() { return m_indices; }
-            std::vector<Texture> &getTextures() { return m_textures; }
+            std::vector<Material*> &getTextures() { return m_materials; }
 
             const std::vector<T> &getVertices() const { return m_vertices; }
             const std::vector<uint32_t> &getIndices() const { return m_indices; }
-            const std::vector<Texture> &getTextures() const { return m_textures; }
+            const std::vector<Material*> &getTextures() const { return m_materials; }
 
             void setVertices(const std::vector<T> &vert)
             {
@@ -47,9 +47,9 @@ namespace FD3D
                 m_indices = ind;
             }
 
-            void setTexture(const std::vector<Texture> &tex)
+            void setTexture(const std::vector<Material*> &materials)
             {
-                m_textures = tex;
+                m_materials = materials;
             }
     };
 }

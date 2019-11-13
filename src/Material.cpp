@@ -5,11 +5,19 @@ FD3D::Material::Material() :
     m_ambientColor(1.0f, 1.0f, 1.0f),
     m_diffuseColor(1.0f, 1.0f, 1.0f),
     m_specularColor(1.0f, 1.0f, 1.0f),
-    m_shininess(1.0f),
-    m_diffuseMap(0),
-    m_specularMap(0)
+    m_shininess(1.0f)
 {
 
+}
+
+const std::string &FD3D::Material::getName() const
+{
+    return m_name;
+}
+
+void FD3D::Material::setName(const std::string &name)
+{
+    m_name = name;
 }
 
 glm::vec3 &FD3D::Material::getAmbientColor()
@@ -65,24 +73,4 @@ float FD3D::Material::getShininess() const
 void FD3D::Material::setShininess(float shininess)
 {
     m_shininess = shininess;
-}
-
-uint32_t FD3D::Material::getDiffuseMap() const
-{
-    return m_diffuseMap;
-}
-
-void FD3D::Material::setDiffuseMap(const uint32_t &diffuseMap)
-{
-    m_diffuseMap = diffuseMap;
-}
-
-uint32_t FD3D::Material::getSpecularMap() const
-{
-    return m_specularMap;
-}
-
-void FD3D::Material::setSpecularMap(const uint32_t &specularMap)
-{
-    m_specularMap = specularMap;
 }

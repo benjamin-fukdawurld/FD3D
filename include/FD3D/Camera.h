@@ -28,6 +28,8 @@ namespace FD3D
             const glm::vec3 &getPosition() const;
             void setPosition(const glm::vec3 &position);
 
+            void translate(const glm::vec3 &v);
+
             glm::vec3 getEulerAngles() const;
 
             glm::quat &getRotation();

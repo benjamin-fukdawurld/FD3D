@@ -44,7 +44,7 @@ HEADERS += \
     include/FD3D/Texture.h \
     include/FD3D/Mesh.h \
     include/FD3D/ModelLoader_fwd.h \
-    include/FD3D/ModelLoader_impl.h
+    include/FD3D/ModelLoader_impl.h \
 
 unix {
     target.path = /usr/lib

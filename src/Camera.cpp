@@ -11,6 +11,7 @@
 FD3D::Camera::Camera() :
     m_mat(1.0f),
     m_position(0.0f, 0.0f, 0.0f),
+    m_rotation(1.0f, 0.0f, 0.0f, 0.0f),
     m_isUpToDate(false)
 {}
 
@@ -43,9 +44,14 @@ void FD3D::Camera::setPosition(const glm::vec3 &position)
     m_position = position;
 }
 
+void FD3D::Camera::translate(const glm::vec3 &v)
+{
+    m_position += v;
+}
+
 glm::vec3 FD3D::Camera::getEulerAngles() const
 {
-    return glm::eulerAngles(m_rotation) * glm::pi<float>() / 180.0f;
+    return glm::eulerAngles(m_rotation) / glm::pi<float>() * 180.0f;
 }
 
 glm::quat &FD3D::Camera::getRotation()

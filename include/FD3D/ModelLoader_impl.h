@@ -2,7 +2,6 @@
 #define MODELLOADER_IMPL_H
 
 #include <FD3D/ModelLoader_fwd.h>
-#include <FD3D/ModelLoader.h>
 
 namespace FD3D
 {
@@ -18,7 +17,7 @@ namespace FD3D
     MeshType DefaultMeshGenerator<MeshType>::operator()(const aiMesh *mesh,
                         VertexGeneratorFunction<VertexType> vertexGenerator)
     {
-        return generateMesh<MeshType>(mesh, vertexGenerator());
+        return generateMesh<MeshType, VertexGeneratorFunction<VertexType>>(mesh, vertexGenerator);
     }
 
     template<typename ModelType>
@@ -29,7 +28,10 @@ namespace FD3D
                          MeshGeneratorFunction<MeshType> meshGenerator,
                          VertexGeneratorFunction<VertexType> vertexGenerator)
     {
-        return generateModel(scene, node, directory, meshGenerator, vertexGenerator);
+        return generateModel<
+                    MeshGeneratorFunction<MeshType>,
+                    VertexGeneratorFunction<VertexType>
+                >(scene, node, directory, meshGenerator, vertexGenerator);
     }
 
     template<typename ModelType>
@@ -39,7 +41,11 @@ namespace FD3D
                          MeshGeneratorFunction<MeshType> meshGenerator,
                          VertexGeneratorFunction<VertexType> vertexGenerator)
     {
-        return loadModel(scene, directory, meshGenerator, vertexGenerator);
+        return loadModel<ModelType,
+                         MeshGeneratorFunction<MeshType>,
+                         VertexGeneratorFunction<VertexType>>(
+            scene, directory, meshGenerator, vertexGenerator
+        );
     }
 }
 

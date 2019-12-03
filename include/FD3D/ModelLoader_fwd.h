@@ -189,9 +189,9 @@ namespace FD3D
         ModelType operator()(const aiScene *scene,
                              const std::string &directory)
         {
-            return operator()(scene, directory,
-                              DefaultMeshGenerator<MeshType>(),
-                              DefaultVertexGenerator<VertexType>());
+            return operator()<MeshType, VertexType>(scene, directory,
+                                                    DefaultMeshGenerator<MeshType>(),
+                                                    DefaultVertexGenerator<VertexType>());
         }
 
         template<typename MeshType = typename ModelType::MeshType,

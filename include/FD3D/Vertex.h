@@ -56,17 +56,17 @@ namespace FD3D
 
             void assign(float value)
             {
-                float *components = asDerived().data();
+                Derived &that = asDerived();
                 for(size_t i = 0; i < nb_components; ++i)
-                    components[i] = value;
+                    that[i] = value;
             }
 
             void assign(float values[], size_t size = nb_components)
             {
-                float *components = asDerived().data();
+                Derived &that = asDerived();
                 for(size_t i = 0, imax = (size > nb_components ? nb_components : size);
                     i < imax; ++i)
-                    components[i] = values[i];
+                    that[i] = values[i];
             }
 
         private:
@@ -89,14 +89,19 @@ namespace FD3D
             float *m_components;
 
         public:
-            BaseVertexWrapper(float value = 0.0f)
+            BaseVertexWrapper() {}
+
+            BaseVertexWrapper(float value)
             {
-                parent_type::assign(value);
+                for (size_t i = 0; i < numberOfComponents; ++i)
+                    m_components[i] = value;
             }
 
             BaseVertexWrapper(float values[], size_t size = nb_components)
             {
-                parent_type::assign(values, size);
+                for(size_t i = 0, imax = (size > nb_components ? nb_components : size);
+                    i < imax; ++i)
+                    m_components[i] = values[i];
             }
 
             float *data()
@@ -125,12 +130,15 @@ namespace FD3D
         public:
             BaseVertex(float value = 0.0f)
             {
-                parent_type::assign(value);
+                for (size_t i = 0; i < numberOfComponents; ++i)
+                    m_components[i] = value;
             }
 
             BaseVertex(float values[], size_t size = nb_components)
             {
-                parent_type::assign(values, size);
+                for(size_t i = 0, imax = (size > nb_components ? nb_components : size);
+                    i < imax; ++i)
+                    m_components[i] = values[i];
             }
 
             float *data()

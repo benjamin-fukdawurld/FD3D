@@ -4,14 +4,17 @@
 #include <queue>
 #include <optional>
 
-#include <FD3D/Texture.h>
+#include <FD3D/Material/Texture.h>
 
-#include <FD3D/ModelLoader_impl.h>
+#include <FD3D/Mesh/ModelLoader_impl.h>
 
 namespace FD3D
 {
     class ModelLoader
     {
+        public:
+            typedef std::function<Texture(TextureType, const std::string&)> TextureLoaderFunction;
+
         protected:
             Assimp::Importer m_importer;
 

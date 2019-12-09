@@ -7,8 +7,21 @@
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
+#include <FDCore/EnumFlag.h>
+
 namespace FD3D
 {
+    enum class VertexComponentType : uint8_t
+    {
+        Position = 0,
+        Normal = 1,
+        Color = 2,
+        Texture = 4,
+        Tangent = 8
+    };
+
+    typedef FDCore::EnumFlag<VertexComponentType, uint8_t> VertexComponentFlag;
+
     struct VertexPositionUtils
     {
         typedef glm::vec3 type;
@@ -41,11 +54,13 @@ namespace FD3D
 
             float &operator[](size_t pos)
             {
+                assert(pos < numberOfComponents);
                 return static_cast<Derived*>(this)->data()[pos];
             }
 
             float operator[](size_t pos) const
             {
+                assert(pos < numberOfComponents);
                 return static_cast<Derived*>(this)->data()[pos];
             }
 
@@ -89,19 +104,20 @@ namespace FD3D
             float *m_components;
 
         public:
-            BaseVertexWrapper() {}
-
-            BaseVertexWrapper(float value)
+            BaseVertexWrapper(float *componentsPtr) : m_components(componentsPtr)
             {
-                for (size_t i = 0; i < numberOfComponents; ++i)
-                    m_components[i] = value;
+                assert(componentsPtr != nullptr);
             }
 
-            BaseVertexWrapper(float values[], size_t size = nb_components)
+            BaseVertexWrapper(float *componentsPtr, float value) : BaseVertexWrapper(componentsPtr)
             {
-                for(size_t i = 0, imax = (size > nb_components ? nb_components : size);
-                    i < imax; ++i)
-                    m_components[i] = values[i];
+                parent_type::assign(value);
+            }
+
+            BaseVertexWrapper(float *componentsPtr, float values[], size_t size = nb_components) :
+                BaseVertexWrapper(componentsPtr)
+            {
+                parent_type::assign(values, size);
             }
 
             float *data()
@@ -116,10 +132,10 @@ namespace FD3D
     };
 
     template<size_t nb_components = 8>
-    class BaseVertex : public VertexTrait<BaseVertexWrapper<nb_components>, nb_components>
+    class BaseVertex : public VertexTrait<BaseVertex<nb_components>, nb_components>
     {
         private:
-            typedef VertexTrait<BaseVertexWrapper<nb_components>, nb_components> parent_type;
+            typedef VertexTrait<BaseVertex<nb_components>, nb_components> parent_type;
 
         public:
             static const size_t numberOfComponents = nb_components;
@@ -130,15 +146,12 @@ namespace FD3D
         public:
             BaseVertex(float value = 0.0f)
             {
-                for (size_t i = 0; i < numberOfComponents; ++i)
-                    m_components[i] = value;
+                parent_type::assign(value);
             }
 
             BaseVertex(float values[], size_t size = nb_components)
             {
-                for(size_t i = 0, imax = (size > nb_components ? nb_components : size);
-                    i < imax; ++i)
-                    m_components[i] = values[i];
+                parent_type::assign(values, size);
             }
 
             float *data()

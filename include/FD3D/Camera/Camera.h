@@ -5,6 +5,10 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#include <FD3D/SceneNode.h>
+
+#include <FDCore/TypeInformation.h>
+
 namespace FD3D
 {
     class Camera
@@ -47,6 +51,12 @@ namespace FD3D
         protected:
             void generateMatrix() const;
     };
+
+    typedef EntityNode<Camera> CameraNode;
+
 }
+
+generateTypeCode(FD3D::Camera);
+generateTypeCode(FD3D::CameraNode);
 
 #endif // FD3D_CAMERA_H

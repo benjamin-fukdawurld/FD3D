@@ -6,8 +6,9 @@
 
 #include <glm/mat4x4.hpp>
 
-#include <FD3D/Mesh.h>
-#include <FD3D/Transform.h>
+#include <FD3D/Mesh/Mesh.h>
+#include <FD3D/Mesh/Transform.h>
+#include <FD3D/SceneGraph/SceneNode.h>
 
 namespace FD3D
 {
@@ -141,6 +142,10 @@ namespace FD3D
             std::string getDirectory() const;
             void setDirectory(const std::string &directory);
     };
+
+    template<typename MeshType>
+    using ModelNode = EntityNode<Model<MeshType>>;
+
 
     template<typename T>
     template<typename ...Args>
@@ -522,5 +527,8 @@ namespace FD3D
     }
 
 }
+
+generateTemplateTypeCode(FD3D::Model, MeshType);
+generateTemplateTypeCode(FD3D::ModelNode, MeshType);
 
 #endif // FD3D_MODEL_H

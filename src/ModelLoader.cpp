@@ -1,4 +1,4 @@
-#include <FD3D/ModelLoader.h>
+#include <FD3D/Mesh/ModelLoader.h>
 
 #include <iostream>
 
@@ -62,7 +62,7 @@ FD3D::Material FD3D::DefaultMaterialGenerator::operator()(const aiMaterial *mat)
             aiString path;
             mat->GetTexture(t, static_cast<unsigned int>(i), &path);
             Texture tex = this->loadTexture(type, path.C_Str());
-            result.getTextures(type).push_back(tex.getId());
+            result.getTextures(type).push_back(tex.getTextureId());
         }
     };
 

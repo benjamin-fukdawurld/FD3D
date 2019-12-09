@@ -28,11 +28,13 @@ LIBS += \
 
 DEPENDPATH += \
     include \
+    ../FDCore/include \
     ../thirdparty/googletest/googletest/include \
     ../thirdparty/assimp/include \
 
 INCLUDEPATH += \
     include \
+    ../FDCore/include \
     ../thirdparty/googletest/googletest/include \
     ../thirdparty/assimp/include \
 
@@ -40,4 +42,5 @@ SOURCES += \
     test/main.cpp
 
 HEADERS += \
-    test/Camera_test.h \
+    test/Camera_test.h \ \
+    test/Vertex_test.h

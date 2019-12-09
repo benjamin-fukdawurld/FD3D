@@ -5,6 +5,10 @@
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#include <FD3D/SceneNode.h>
+
+#include <FDCore/TypeInformation.h>
+
 namespace FD3D
 {
     enum class LightType : uint8_t
@@ -56,6 +60,12 @@ namespace FD3D
             LightType getType() const;
             void setType(const LightType &type);
     };
+
+    typedef EntityNode<Light> LightNode;
+
 }
+
+generateTypeCode(FD3D::Light);
+generateTypeCode(FD3D::LightNode);
 
 #endif // FD3D_LIGHT_H

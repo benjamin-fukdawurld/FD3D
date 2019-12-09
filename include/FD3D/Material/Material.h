@@ -5,11 +5,14 @@
 #include <unordered_map>
 #include <vector>
 
-#include <FD3D/Texture.h>
+#include <FD3D/Material/Texture.h>
+#include <FD3D/SceneGraph/Component.h>
+
+#include <FDCore/TypeInformation.h>
 
 namespace FD3D
 {
-    class Material
+    class Material : public Component
     {
         protected:
             std::string m_name;
@@ -52,5 +55,7 @@ namespace FD3D
             }
     };
 }
+
+generateTypeCode(FD3D::Material);
 
 #endif // FD3D_MATERIAL_H

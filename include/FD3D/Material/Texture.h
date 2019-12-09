@@ -4,6 +4,9 @@
 #include <cstdint>
 #include <string>
 
+
+#include <FD3D/SceneGraph/Component.h>
+
 #include <assimp/material.h>
 
 namespace FD3D
@@ -25,24 +28,25 @@ namespace FD3D
         Reflection = aiTextureType_REFLECTION
     };
 
-    class Texture
+    class Texture : public Component
     {
         protected:
-            uint32_t m_id;
+            uint32_t m_textureId;
             TextureType m_type;
 
         public:
-            Texture() : m_id(0), m_type() {}
-            Texture(uint32_t id, TextureType type) : m_id(id), m_type(type) {}
+            Texture() : m_textureId(0), m_type() {}
+            Texture(uint32_t id, TextureType type) : m_textureId(id), m_type(type) {}
+            virtual ~Texture();
 
-            uint32_t getId() const
+            uint32_t getTextureId() const
             {
-                return m_id;
+                return m_textureId;
             }
 
-            void setId(uint32_t id)
+            void setTextureId(uint32_t id)
             {
-                m_id = id;
+                m_textureId = id;
             }
 
             TextureType getType() const

@@ -16,35 +16,55 @@ OBJECTS_DIR = ../build/.obj/$${TARGET}
 
 DEPENDPATH += \
     include \
+    ../FDCore/include \
     ../thirdparty/glm \
     ../thirdparty/assimp/include \
 
 INCLUDEPATH += \
     include \
+    ../FDCore/include \
     ../thirdparty/glm \
     ../thirdparty/assimp/include \
 
 SOURCES += \
+    src/AbstractMesh.cpp \
+    src/Component.cpp \
     src/Light.cpp \
     src/Material.cpp \
+    src/Mesh.cpp \
     src/Projection.cpp \
+    src/Scene.cpp \
+    src/SceneLoader.cpp \
+    src/SceneNode.cpp \
+    src/Texture.cpp \
     src/Transform.cpp \
     src/Camera.cpp \
-    src/ModelLoader.cpp
+    src/ModelLoader.cpp \
+    src/VertexProxy.cpp
 
 HEADERS += \
-    include/FD3D/Light.h \
-    include/FD3D/Material.h \
-    include/FD3D/Model.h \
-    include/FD3D/ModelLoader.h \
-    include/FD3D/Projection.h \
-    include/FD3D/Transform.h \
-    include/FD3D/Camera.h \
-    include/FD3D/Vertex.h \
-    include/FD3D/Texture.h \
-    include/FD3D/Mesh.h \
-    include/FD3D/ModelLoader_fwd.h \
-    include/FD3D/ModelLoader_impl.h \
+    include/FD3D/Mesh/AbstractMesh.h \
+    include/FD3D/Mesh/VertexProxy.h \
+    include/FD3D/SceneGraph/Component.h \
+    include/FD3D/SceneGraph/SceneLoader.h \
+    include/FD3D/SceneGraph/Scene.h \
+    include/FD3D/SceneGraph/SceneNode.h \
+    \
+    include/FD3D/Light/Light.h \
+    \
+    include/FD3D/Camera/Camera.h \
+    include/FD3D/Camera/Projection.h \
+    \
+    include/FD3D/Material/Material.h \
+    include/FD3D/Material/Texture.h \
+    \
+    include/FD3D/Mesh/Vertex.h \
+    include/FD3D/Mesh/Model.h \
+    include/FD3D/Mesh/ModelLoader.h \
+    include/FD3D/Mesh/Transform.h \
+    include/FD3D/Mesh/Mesh.h \
+    include/FD3D/Mesh/ModelLoader_fwd.h \
+    include/FD3D/Mesh/ModelLoader_impl.h \
 
 unix {
     target.path = /usr/lib

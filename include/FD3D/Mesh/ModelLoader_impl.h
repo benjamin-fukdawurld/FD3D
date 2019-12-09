@@ -1,7 +1,7 @@
 #ifndef MODELLOADER_IMPL_H
 #define MODELLOADER_IMPL_H
 
-#include <FD3D/ModelLoader_fwd.h>
+#include <FD3D/Mesh/ModelLoader_fwd.h>
 
 namespace FD3D
 {

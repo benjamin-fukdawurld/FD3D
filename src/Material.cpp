@@ -1,4 +1,4 @@
-#include "include/FD3D/Material.h"
+#include <FD3D/Material/Material.h>
 
 
 FD3D::Material::Material() :

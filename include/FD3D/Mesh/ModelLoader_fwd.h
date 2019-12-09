@@ -5,11 +5,11 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <FD3D/Vertex.h>
-#include <FD3D/Mesh.h>
-#include <FD3D/Model.h>
+#include <FD3D/Mesh/Vertex.h>
+#include <FD3D/Mesh/Mesh.h>
+#include <FD3D/Mesh/Model.h>
 
-#include <FD3D/Texture.h>
+#include <FD3D/Material/Texture.h>
 
 #include <functional>
 

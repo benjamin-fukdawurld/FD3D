@@ -1,4 +1,4 @@
-#include <FD3D/Scene.h>
+#include <FD3D/SceneGraph/Scene.h>
 
 #include <algorithm>
 #include <cassert>

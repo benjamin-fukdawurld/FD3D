@@ -1,4 +1,4 @@
-#include <FD3D/Camera.h>
+#include <FD3D/Camera/Camera.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -107,5 +107,3 @@ void FD3D::Camera::generateMatrix() const
     m_mat = glm::lookAt(m_position, getTarget(), getUpVector());
     m_isUpToDate = true;
 }
-
-

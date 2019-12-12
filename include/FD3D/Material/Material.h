@@ -2,6 +2,7 @@
 #define FD3D_MATERIAL_H
 
 #include <glm/vec3.hpp>
+#include <functional>
 #include <unordered_map>
 #include <vector>
 
@@ -54,6 +55,9 @@ namespace FD3D
                 return m_textures[type];
             }
     };
+
+    bool load(const aiMaterial *in, Material &out, const std::string &directory,
+              std::function<uint32_t(std::string)> textureLoader);
 }
 
 generateTypeCode(FD3D::Material);

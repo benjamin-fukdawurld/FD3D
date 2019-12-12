@@ -7,7 +7,7 @@
 #include <glm/mat4x4.hpp>
 
 #include <FD3D/Mesh/Mesh.h>
-#include <FD3D/Mesh/Transform.h>
+#include <FD3D/Utils/Transform.h>
 #include <FD3D/SceneGraph/SceneNode.h>
 
 namespace FD3D

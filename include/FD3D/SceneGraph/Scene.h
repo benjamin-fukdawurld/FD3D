@@ -1,7 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <FD3D/SceneNode.h>
+#include <FD3D/SceneGraph/SceneNode.h>
 
 namespace FD3D
 {

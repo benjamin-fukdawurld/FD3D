@@ -1,4 +1,4 @@
-#include <FD3D/Mesh/VertexProxy.h>
+#include <FD3D/Utils/VertexProxy.h>
 #include <FD3D/Mesh/AbstractMesh.h>
 
 FD3D::ConstVertexProxy::ConstVertexProxy(const FD3D::AbstractMesh *mesh, size_t index) :

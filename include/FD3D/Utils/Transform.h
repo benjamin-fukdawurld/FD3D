@@ -47,6 +47,13 @@ namespace FD3D
             void rotate(const glm::vec3 &eulerAngles);
             void rotate(const glm::quat &q);
 
+            glm::vec3 getForward() const;
+            glm::vec3 getBackward() const;
+            glm::vec3 getLeft() const;
+            glm::vec3 getRight() const;
+            glm::vec3 getUp() const;
+            glm::vec3 getDown() const;
+
         protected:
             void generateMatrix() const;
     };

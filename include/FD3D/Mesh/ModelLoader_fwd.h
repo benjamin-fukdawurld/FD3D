@@ -5,7 +5,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <FD3D/Mesh/Vertex.h>
+#include <FD3D/Utils/Vertex.h>
 #include <FD3D/Mesh/Mesh.h>
 #include <FD3D/Mesh/Model.h>
 

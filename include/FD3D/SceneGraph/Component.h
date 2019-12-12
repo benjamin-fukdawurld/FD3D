@@ -1,9 +1,11 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include <FDCore/Identifiable.h>
+
 namespace FD3D
 {
-    class Component
+    class Component : FDCore::Identifiable<>
     {
         public:
             Component();

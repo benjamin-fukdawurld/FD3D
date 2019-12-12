@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include <FD3D/Mesh/Vertex.h>
+#include <FD3D/Utils/Vertex.h>
 #include <FD3D/Material/Material.h>
 #include <FD3D/SceneGraph/Component.h>
 

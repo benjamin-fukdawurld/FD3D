@@ -1,4 +1,4 @@
-#include <FD3D/Transform.h>
+#include <FD3D/Utils/Transform.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -129,4 +129,34 @@ void FD3D::Transform::rotate(const glm::quat &q)
 {
     m_isUpToDate = false;
     m_rotation *= q;
+}
+
+glm::vec3 FD3D::Transform::getForward() const
+{
+    return glm::normalize(m_rotation * glm::vec3(0.0f, 0.0f, -1.0f));
+}
+
+glm::vec3 FD3D::Transform::getBackward() const
+{
+    return -getForward();
+}
+
+glm::vec3 FD3D::Transform::getRight() const
+{
+    return glm::normalize(m_rotation * glm::vec3(1.0f, 0.0f, 0.0f));
+}
+
+glm::vec3 FD3D::Transform::getLeft() const
+{
+    return -getRight();
+}
+
+glm::vec3 FD3D::Transform::getUp() const
+{
+    return glm::normalize(m_rotation * glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
+glm::vec3 FD3D::Transform::getDown() const
+{
+    return -getUp();
 }

@@ -2,7 +2,8 @@
 #define ABSTRACTMESH_H
 
 #include <FD3D/SceneGraph/Component.h>
-#include <FD3D/Mesh/VertexProxy.h>
+#include <FD3D/SceneGraph/Scene.h>
+#include <FD3D/Utils/VertexProxy.h>
 
 #include <FDCore/EnumFlag.h>
 
@@ -31,10 +32,14 @@ namespace FD3D
             uint8_t m_nbTexChannels;
             MeshOptionFlag m_options;
             VertexComponentFlag m_componentsFlags;
+            std::string m_name;
 
         public:
             AbstractMesh();
             virtual ~AbstractMesh();
+
+            const std::string &getName() { return m_name; }
+            void setName(const std::string &name) { m_name = name; }
 
             virtual float *vertices() = 0;
             virtual const float *vertices() const = 0;
@@ -137,7 +142,7 @@ namespace FD3D
         std::vector<uint32_t> getIndices(const aiMesh *mesh);
     }
 
-    bool load(const aiMesh *in, AbstractMesh &out);
+    bool load(const aiMesh *in, Scene &scene, AbstractMesh &out);
 }
 
 #endif // ABSTRACTMESH_H

@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-aiTextureType toAssimpType(FD3D::TextureType type)
+static aiTextureType toAssimpType(FD3D::TextureType type)
 {
     switch (type)
     {
@@ -244,6 +244,77 @@ FD3D::Model<FD3D::Mesh<FD3D::Vertex>> FD3D::loadModel<
 
         ModelType *parent = p.first;
         const aiNode *current = p.second;
+        std::cout << current->mName.C_Str() << std::endl;
+        if(current->mMetaData) {
+            for (int i = 0; i < current->mMetaData->mNumProperties; ++i) {
+                std::cout << "\t" << current->mMetaData->mKeys[i].C_Str() << ": ";
+                auto v = current->mMetaData->mValues[i];
+                switch(v.mType)
+                {
+                    case AI_BOOL:
+                    {
+                        bool b;
+                        current->mMetaData->Get(current->mMetaData->mKeys[i], b);
+                        std::cout << std::boolalpha << b << std::endl;
+                    }
+                    break;
+
+                    case AI_INT32:
+                    {
+                        int32_t j;
+                        current->mMetaData->Get(current->mMetaData->mKeys[i], j);
+                        std::cout<< j << std::endl;
+                    }
+                    break;
+
+                    case AI_UINT64:
+                    {
+                        uint64_t j;
+                        current->mMetaData->Get(current->mMetaData->mKeys[i], j);
+                        std::cout<< j << std::endl;
+                    }
+                    break;
+
+                    case AI_FLOAT:
+                    {
+                        float j;
+                        current->mMetaData->Get(current->mMetaData->mKeys[i], j);
+                        std::cout<< j << std::endl;
+                    }
+                    break;
+
+                    case AI_DOUBLE:
+                    {
+                        double j;
+                        current->mMetaData->Get(current->mMetaData->mKeys[i], j);
+                        std::cout<< j << std::endl;
+                    }
+                    break;
+
+                    case AI_AISTRING:
+                    {
+                        aiString j;
+                        current->mMetaData->Get(current->mMetaData->mKeys[i], j);
+                        std::cout<< j.C_Str() << std::endl;
+                    }
+                    break;
+
+                    case AI_AIVECTOR3D:
+                    {
+                        aiVector3D j;
+                        current->mMetaData->Get(current->mMetaData->mKeys[i], j);
+                        std::cout << "{ " << j.x << ", " << j.y << ", " << j.z << " }" << std::endl;
+                    }
+                    break;
+
+                    default:
+                        std::cout << "unsupported type" << std::endl;
+                    break;
+                }
+            }
+        }
+        std::cout << "\n\n\n\n\n\n";
+
         ModelType *model = nullptr;
 
         if(!parent)

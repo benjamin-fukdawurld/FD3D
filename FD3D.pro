@@ -43,8 +43,6 @@ SOURCES += \
     src/VertexProxy.cpp
 
 HEADERS += \
-    include/FD3D/Mesh/AbstractMesh.h \
-    include/FD3D/Mesh/VertexProxy.h \
     include/FD3D/SceneGraph/Component.h \
     include/FD3D/SceneGraph/SceneLoader.h \
     include/FD3D/SceneGraph/Scene.h \
@@ -58,10 +56,13 @@ HEADERS += \
     include/FD3D/Material/Material.h \
     include/FD3D/Material/Texture.h \
     \
-    include/FD3D/Mesh/Vertex.h \
+    include/FD3D/Utils/Vertex.h \
+    include/FD3D/Utils/Transform.h \
+    include/FD3D/Utils/VertexProxy.h \
+    \
+    include/FD3D/Mesh/AbstractMesh.h \
     include/FD3D/Mesh/Model.h \
     include/FD3D/Mesh/ModelLoader.h \
-    include/FD3D/Mesh/Transform.h \
     include/FD3D/Mesh/Mesh.h \
     include/FD3D/Mesh/ModelLoader_fwd.h \
     include/FD3D/Mesh/ModelLoader_impl.h \

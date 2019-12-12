@@ -1,6 +1,6 @@
 #include <FD3D/Mesh/AbstractMesh.h>
 
-#include <FD3D/Mesh/VertexProxy.h>
+#include <FD3D/Utils/VertexProxy.h>
 
 FD3D::AbstractMesh::AbstractMesh() :
     m_nbVertices(0),
@@ -98,60 +98,6 @@ size_t FD3D::internal::getMeshSize(const aiMesh *mesh, size_t vertexSize)
     return vertexSize * mesh->mNumVertices;
 }
 
-bool FD3D::load(const aiMesh *in, FD3D::AbstractMesh &out)
-{
-    VertexComponentFlag f = internal::getVertexComponents(in);
-    size_t vertexSize = internal::getVertexSize(in);
-
-    out.setComponentsFlags(f);
-    out.setNumberOfVertices(vertexSize);
-    out.setNumberOfIndices(in->mNumFaces * 3);
-    out.setNumberOfUvChannel(static_cast<uint8_t>(in->GetNumUVChannels()));
-    out.setNumberOfUvChannel(static_cast<uint8_t>(in->GetNumColorChannels()));
-    for(size_t i = 0; i < in->mNumVertices; ++i)
-    {
-        VertexProxy v = out[i];
-        {
-            glm::vec3 *pos = v.getPosition();
-            *pos = internal::getVertexPosition(in, i);
-        }
-
-        if(f[VertexComponentType::Normal])
-        {
-            glm::vec3 *norm = v.getNormal();
-            *norm = internal::getVertexNormal(in, i);
-        }
-
-        if(f[VertexComponentType::Tangent])
-        {
-            glm::vec3 *t = v.getTangent();
-            *t = internal::getVertexTangent(in, i);
-            t = v.getBitangent();
-            *t = internal::getVertexBitangent(in, i);
-        }
-
-        if(f[VertexComponentType::Texture])
-        {
-            for(uint8_t j = 0; j < out.getNumberOfUvChannel(); ++j)
-            {
-                glm::vec2 *tex = v.getUv(j);
-                *tex = internal::getVertexUv(in, i, j);
-            }
-        }
-
-        if(f[VertexComponentType::Color])
-        {
-            for(uint8_t j = 0; j < out.getNumberOfColorChannel(); ++j)
-            {
-                glm::vec4 *col = v.getColor(j);
-                *col = internal::getVertexColor(in, i, j);
-            }
-        }
-    }
-
-    return true;
-}
-
 glm::vec3 FD3D::internal::getVertexPosition(const aiMesh *mesh, size_t vertexIndex)
 {
     auto &v = mesh->mVertices[vertexIndex];
@@ -201,4 +147,60 @@ std::vector<uint32_t> FD3D::internal::getIndices(const aiMesh *mesh)
     }
 
     return indices;
+}
+
+bool FD3D::load(const aiMesh *in, FD3D::Scene &scene, AbstractMesh &out)
+{
+    VertexComponentFlag f = internal::getVertexComponents(in);
+    size_t vertexSize = internal::getVertexSize(in);
+
+    out.setComponentsFlags(f);
+    out.setNumberOfVertices(vertexSize);
+    out.setNumberOfIndices(in->mNumFaces * 3);
+    out.setNumberOfUvChannel(static_cast<uint8_t>(in->GetNumUVChannels()));
+    out.setNumberOfUvChannel(static_cast<uint8_t>(in->GetNumColorChannels()));
+    out.setName(in->mName.C_Str());
+
+    for(size_t i = 0; i < in->mNumVertices; ++i)
+    {
+        VertexProxy v = out[i];
+        {
+            glm::vec3 *pos = v.getPosition();
+            *pos = internal::getVertexPosition(in, i);
+        }
+
+        if(f[VertexComponentType::Normal])
+        {
+            glm::vec3 *norm = v.getNormal();
+            *norm = internal::getVertexNormal(in, i);
+        }
+
+        if(f[VertexComponentType::Tangent])
+        {
+            glm::vec3 *t = v.getTangent();
+            *t = internal::getVertexTangent(in, i);
+            t = v.getBitangent();
+            *t = internal::getVertexBitangent(in, i);
+        }
+
+        if(f[VertexComponentType::Texture])
+        {
+            for(uint8_t j = 0; j < out.getNumberOfUvChannel(); ++j)
+            {
+                glm::vec2 *tex = v.getUv(j);
+                *tex = internal::getVertexUv(in, i, j);
+            }
+        }
+
+        if(f[VertexComponentType::Color])
+        {
+            for(uint8_t j = 0; j < out.getNumberOfColorChannel(); ++j)
+            {
+                glm::vec4 *col = v.getColor(j);
+                *col = internal::getVertexColor(in, i, j);
+            }
+        }
+    }
+
+    return true;
 }

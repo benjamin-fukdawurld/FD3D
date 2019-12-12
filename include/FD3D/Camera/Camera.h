@@ -5,9 +5,11 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-#include <FD3D/SceneNode.h>
+#include <FD3D/SceneGraph/SceneNode.h>
 
 #include <FDCore/TypeInformation.h>
+
+#include <assimp/camera.h>
 
 namespace FD3D
 {
@@ -53,7 +55,6 @@ namespace FD3D
     };
 
     typedef EntityNode<Camera> CameraNode;
-
 }
 
 generateTypeCode(FD3D::Camera);

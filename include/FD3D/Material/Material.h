@@ -16,7 +16,6 @@ namespace FD3D
     class Material : public Component
     {
         protected:
-            std::string m_name;
             glm::vec3 m_ambientColor;
             glm::vec3 m_diffuseColor;
             glm::vec3 m_specularColor;
@@ -26,9 +25,6 @@ namespace FD3D
 
         public:
             Material();
-
-            const std::string &getName() const;
-            void setName(const std::string &name);
 
             glm::vec3 &getAmbientColor();
             const glm::vec3 &getAmbientColor() const;

@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include <FD3D/Camera.h>
+#include <FD3D/Camera/Camera.h>
 
 TEST(Camera_test, setPostionTest)
 {

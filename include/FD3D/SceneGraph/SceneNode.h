@@ -25,7 +25,7 @@ namespace FD3D
             id_type m_parent;
 
         public:
-            SceneNode();
+            SceneNode(id_type parent = 0);
 
             SceneNode(SceneNode &&node);
             SceneNode(const SceneNode &node);
@@ -39,6 +39,15 @@ namespace FD3D
             bool is() const
             {
                 return FDCore::TypeCodeHelper<T>::hash == getTypeCodeHash();
+            }
+
+            template<typename T>
+            T *as()
+            {
+                if(!is<T>())
+                    return nullptr;
+
+                return static_cast<T*>(this);
             }
 
             template<typename T>
@@ -118,7 +127,10 @@ namespace FD3D
             EntityType m_entity;
 
         public:
-            EntityNode() {}
+            EntityNode(id_type parent = 0) :
+                SceneNode(parent)
+            {}
+
             EntityNode(EntityNode &&node) :
                 SceneNode(std::move(node)),
                 m_entity(std::move(node.m_entity))
@@ -157,14 +169,14 @@ namespace FD3D
     template<typename T>
     const char *EntityNode<T>::getTypeCode() const
     {
-        return FDCore::TypeCodeHelper<T>::code;
+        return FDCore::TypeCodeHelper<EntityNode<T>>::code;
     }
 
 
     template<typename T>
     size_t FD3D::EntityNode<T>::getTypeCodeHash() const
     {
-        return FDCore::TypeCodeHelper<T>::hash;
+        return FDCore::TypeCodeHelper<EntityNode<T>>::hash();
     }
 }
 

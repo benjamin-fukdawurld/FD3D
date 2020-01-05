@@ -58,16 +58,6 @@ FD3D::Material::Material() :
 
 }
 
-const std::string &FD3D::Material::getName() const
-{
-    return m_name;
-}
-
-void FD3D::Material::setName(const std::string &name)
-{
-    m_name = name;
-}
-
 glm::vec3 &FD3D::Material::getAmbientColor()
 {
     return m_ambientColor;

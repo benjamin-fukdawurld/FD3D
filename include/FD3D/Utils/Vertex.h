@@ -11,17 +11,6 @@
 
 namespace FD3D
 {
-    enum class VertexComponentType : uint8_t
-    {
-        Position = 0,
-        Normal = 1,
-        Color = 2,
-        Texture = 4,
-        Tangent = 8
-    };
-
-    typedef FDCore::EnumFlag<VertexComponentType, uint8_t> VertexComponentFlag;
-
     struct VertexPositionUtils
     {
         typedef glm::vec3 type;

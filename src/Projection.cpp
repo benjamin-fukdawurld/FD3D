@@ -56,7 +56,7 @@ void FD3D::Projection::generateMatrix() const
         break;
 
         case FD3D::ProjectionType::Perspective:
-        m_mat = glm::perspective(m_fov, (m_right - m_left) / (m_top - m_bottom), m_near, m_far);
+        m_mat = glm::perspective(m_fov, getAspectRatio(), m_near, m_far);
         break;
 
         case FD3D::ProjectionType::Frustum:

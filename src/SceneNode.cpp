@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cassert>
 
-FD3D::SceneNode::SceneNode() {}
+FD3D::SceneNode::SceneNode(id_type parent) : m_parent(parent) {}
 
 FD3D::SceneNode::SceneNode(FD3D::SceneNode &&node) :
     m_name(std::move(node.m_name)),

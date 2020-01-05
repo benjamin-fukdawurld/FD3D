@@ -6,6 +6,8 @@ FD3D::ConstVertexProxy::ConstVertexProxy(const FD3D::AbstractMesh *mesh, size_t 
     m_mesh(mesh)
 {}
 
+FD3D::ConstVertexProxy::~ConstVertexProxy() {}
+
 FD3D::VertexProxy::VertexProxy(FD3D::AbstractMesh *mesh, size_t index) :
     internal::ConstVertexProxyTrait<VertexProxy>(index),
     m_mesh(mesh)
@@ -45,20 +47,30 @@ glm::vec4 *FD3D::VertexProxy::getColor(size_t index)
 
 FD3D::VertexProxy FD3D::AbstractMesh::operator[](size_t index)
 {
-    return {this, index};
+    return { this, index };
 }
 
 FD3D::ConstVertexProxy FD3D::AbstractMesh::operator[](size_t index) const
 {
-    return {this, index};
+    return { this, index };
 }
 
 FD3D::VertexProxy FD3D::AbstractMesh::operator()(size_t index)
 {
-    return {this, *(indices() + index)};
+    return { this, *(getIndices() + index) };
 }
 
 FD3D::ConstVertexProxy FD3D::AbstractMesh::operator()(size_t index) const
 {
-    return {this, *(indices() + index)};
+    return { this, *(getIndices() + index) };
+}
+
+FD3D::IndexProxy FD3D::AbstractMesh::getIndex(size_t pos)
+{
+    return { this, pos };
+}
+
+FD3D::ConstIndexProxy FD3D::AbstractMesh::getIndex(size_t pos) const
+{
+    return { this, pos };
 }

@@ -3,26 +3,13 @@
 #include <FD3D/Utils/VertexProxy.h>
 
 FD3D::AbstractMesh::AbstractMesh() :
-    m_nbVertices(0),
-    m_nbIndices(0),
+    m_materialId(0),
     m_nbColorChannels(0),
     m_nbTexChannels(0),
     m_options(MeshOption::Interlaced)
 {}
 
 FD3D::AbstractMesh::~AbstractMesh() {}
-
-void FD3D::AbstractMesh::setNumberOfVertices(size_t val)
-{
-    m_nbVertices = val;
-    allocateVertices();
-}
-
-void FD3D::AbstractMesh::setNumberOfIndices(size_t val)
-{
-    m_nbVertices = val;
-    allocateIndices();
-}
 
 int FD3D::AbstractMesh::getComponentOffset(FD3D::VertexComponentType comp) const
 {
@@ -35,23 +22,23 @@ int FD3D::AbstractMesh::getComponentOffset(FD3D::VertexComponentType comp) const
         return 0;
 
         case VertexComponentType::Normal:
-        return 3 * (isInterlaced() ? 1 : static_cast<int>(m_nbVertices));
+        return 3 * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
 
         case VertexComponentType::Tangent:
         return (hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
-                * (isInterlaced() ? 1 : static_cast<int>(m_nbVertices));
+                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
 
         case VertexComponentType::Texture:
         return ((hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
                 + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0))
-                * (isInterlaced() ? 1 : static_cast<int>(m_nbVertices));
+                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
 
         case VertexComponentType::Color:
         return ((hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
                 + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0)
                 + (hasVertexComponent(VertexComponentType::Texture)
                    ? 2 * m_nbTexChannels : 0))
-                * (isInterlaced() ? 1 : static_cast<int>(m_nbVertices));
+                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
     }
 }
 
@@ -149,7 +136,7 @@ std::vector<uint32_t> FD3D::internal::getIndices(const aiMesh *mesh)
     return indices;
 }
 
-bool FD3D::load(const aiMesh *in, FD3D::Scene &scene, AbstractMesh &out)
+bool FD3D::load(const aiMesh *in, FD3D::Scene & /*scene*/, AbstractMesh &out)
 {
     VertexComponentFlag f = internal::getVertexComponents(in);
     size_t vertexSize = internal::getVertexSize(in);

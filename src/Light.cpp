@@ -8,19 +8,10 @@
 
 FD3D::Light::Light() :
     m_position(0.0f, 1.0f, 0.0f),
-    m_direction(0.0f, -1.0f, 0.0f)
+    m_direction(0.0f, -1.0f, 0.0f),
+    m_type(LightType::Undefined)
 {
 
-}
-
-const std::string &FD3D::Light::getName() const
-{
-    return m_name;
-}
-
-void FD3D::Light::setName(const std::string &name)
-{
-    m_name = name;
 }
 
 glm::vec3 &FD3D::Light::getPosition()

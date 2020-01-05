@@ -35,11 +35,12 @@ namespace FD3D
             private:
                 size_t m_index;
 
-            public:
+            protected:
                 ConstVertexProxyTrait(size_t index) :
                     m_index(index)
                 {}
 
+            public:
                 virtual ~ConstVertexProxyTrait();
 
                 const AbstractMesh *getMesh() const
@@ -51,7 +52,7 @@ namespace FD3D
 
                 void setIndex(size_t index)
                 {
-                    if(index < getMesh().getNumberOfVertices)
+                    assert(index < getMesh()->getNumberOfVertices);
                     m_index = index;
                 }
 
@@ -142,34 +143,44 @@ namespace FD3D
                 template<typename T>
                 T *getComponentPtr(VertexComponentType comp) const
                 {
+                    assert(m_index < getMesh()->getNumberOfVertices());
                     int offset = getComponentPosition(comp);
                     if(offset == -1)
                         return nullptr;
 
-                    return reinterpret_cast<T*>(getMesh()->vertices() + offset);
+                    return reinterpret_cast<T*>(getMesh()->getVertices() + offset);
                 }
         };
+
+        template<typename DerivedType>
+        ConstVertexProxyTrait<DerivedType>::~ConstVertexProxyTrait() {}
     }
 
     class ConstVertexProxy : internal::ConstVertexProxyTrait<ConstVertexProxy>
     {
+        friend class AbstractMesh;
         friend class internal::ConstVertexProxyTrait<ConstVertexProxy>;
         protected:
             const AbstractMesh *m_mesh;
 
-        public:
+        protected:
             ConstVertexProxy(const AbstractMesh *mesh, size_t index);
+
+        public:
             virtual ~ConstVertexProxy();
     };
 
     class VertexProxy : public internal::ConstVertexProxyTrait<VertexProxy>
     {
+        friend class AbstractMesh;
         friend class internal::ConstVertexProxyTrait<VertexProxy>;
         protected:
             AbstractMesh *m_mesh;
 
-        public:
+        protected:
             VertexProxy(AbstractMesh *mesh, size_t index);
+
+        public:
             virtual ~VertexProxy();
 
             glm::vec3 *getPosition();

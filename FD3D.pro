@@ -29,6 +29,7 @@ INCLUDEPATH += \
 SOURCES += \
     src/AbstractMesh.cpp \
     src/Component.cpp \
+    src/IndexProxy.cpp \
     src/Light.cpp \
     src/Material.cpp \
     src/Mesh.cpp \
@@ -56,16 +57,14 @@ HEADERS += \
     include/FD3D/Material/Material.h \
     include/FD3D/Material/Texture.h \
     \
+    include/FD3D/Utils/IndexProxy.h \
     include/FD3D/Utils/Vertex.h \
     include/FD3D/Utils/Transform.h \
     include/FD3D/Utils/VertexProxy.h \
     \
     include/FD3D/Mesh/AbstractMesh.h \
     include/FD3D/Mesh/Model.h \
-    include/FD3D/Mesh/ModelLoader.h \
     include/FD3D/Mesh/Mesh.h \
-    include/FD3D/Mesh/ModelLoader_fwd.h \
-    include/FD3D/Mesh/ModelLoader_impl.h \
 
 unix {
     target.path = /usr/lib

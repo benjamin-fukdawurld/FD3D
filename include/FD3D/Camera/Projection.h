@@ -42,6 +42,7 @@ namespace FD3D
             void setRight(float right);
             float getWidth() const;
             void setWidth(float w);
+            float getAspectRatio() const { return getWidth() / getHeight(); }
 
             float getBottom() const;
             void setBottom(float bottom);

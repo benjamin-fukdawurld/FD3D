@@ -3,86 +3,44 @@
 
 #include <vector>
 
-#include <FD3D/Utils/Vertex.h>
-#include <FD3D/Material/Material.h>
-#include <FD3D/SceneGraph/Component.h>
-
-#include <FDCore/CRTPTrait.h>
-
+#include <FD3D/Mesh/AbstractMesh.h>
 #include <assimp/mesh.h>
 
 namespace FD3D
 {
-    template<typename T = Vertex>
-    class Mesh : public Component
+    class Mesh : public AbstractMesh
     {
-        public:
-            typedef T VertexType;
-
         protected:
-            std::vector<T> m_vertices;
+            std::vector<float> m_vertices;
             std::vector<uint32_t> m_indices;
-            std::vector<Material*> m_materials;
 
         public:
             Mesh();
 
-            Mesh(std::vector<T> &&vertices,
-                 std::vector<uint32_t> &&indices,
-                 std::vector<Material*> &&materials) :
-                m_vertices(std::move(vertices)),
-                m_indices(std::move(indices)),
-                m_materials(std::move(materials))
-            {}
+            Mesh(std::vector<float> &&vertices,
+                 std::vector<uint32_t> &&indices);
 
-            Mesh(const std::vector<T> &vertices,
-                 const std::vector<uint32_t> &indices,
-                 const std::vector<Material*> &materials) :
-                m_vertices(vertices),
-                m_indices(indices),
-                m_materials(materials)
-            {}
+            Mesh(const std::vector<float> &vertices,
+                 const std::vector<uint32_t> &indices);
 
-            std::vector<T> &getVertices() { return m_vertices; }
-            std::vector<uint32_t> &getIndices() { return m_indices; }
-            std::vector<Material*> &getTextures() { return m_materials; }
+            ~Mesh() override;
 
-            const std::vector<T> &getVertices() const { return m_vertices; }
-            const std::vector<uint32_t> &getIndices() const { return m_indices; }
-            const std::vector<Material*> &getTextures() const { return m_materials; }
+            float *getVertices() override { return m_vertices.data(); }
+            const float *getVertices() const override { return m_vertices.data(); }
+            uint32_t *getIndices() override { return m_indices.data(); }
+            const uint32_t *getIndices() const override { return m_indices.data(); }
 
-            void setVertices(std::vector<T> &&vert)
+            size_t getNumberOfVertices() const override { return m_vertices.size(); }
+            void setNumberOfVertices(size_t val) override
             {
-                m_vertices = std::move(vert);
+                m_vertices.resize(val * getVertexSize(), 0.0f);
             }
 
-            void setVertices(const std::vector<T> &vert)
-            {
-                m_vertices = vert;
-            }
-
-            void setIndices(std::vector<uint32_t> &&ind)
-            {
-                m_indices = std::move(ind);
-            }
-
-            void setIndices(const std::vector<uint32_t> &ind)
-            {
-                m_indices = ind;
-            }
-
-            void setTexture(std::vector<Material*> &&materials)
-            {
-                m_materials = std::move(materials);
-            }
-
-            void setTexture(const std::vector<Material*> &materials)
-            {
-                m_materials = materials;
-            }
+            virtual size_t getNumberOfIndices() const override { return m_indices.size(); }
+            virtual void setNumberOfIndices(size_t val) override { m_indices.resize(val, 0); }
     };
 }
 
-generateTemplateTypeCode(FD3D::Mesh, VertexType);
+generateTypeCode(FD3D::Mesh);
 
 #endif // FD3D_MESH_H

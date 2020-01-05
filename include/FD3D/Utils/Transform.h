@@ -5,6 +5,8 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/mat4x4.hpp>
 
+#include <FD3D/SceneGraph/SceneNode.h>
+
 namespace FD3D
 {
     class Transform
@@ -18,6 +20,7 @@ namespace FD3D
 
         public:
             Transform();
+            virtual ~Transform();
 
             const float *getPtr() const;
 
@@ -55,8 +58,15 @@ namespace FD3D
             glm::vec3 getDown() const;
 
         protected:
-            void generateMatrix() const;
+            void invalidate() const;
+
+            virtual void generateMatrix() const;
     };
+
+    typedef EntityNode<Transform> ObjectNode;
 }
+
+generateTypeCode(FD3D::Transform);
+generateTypeCode(FD3D::ObjectNode);
 
 #endif // FD3D_TRANSFORM_H

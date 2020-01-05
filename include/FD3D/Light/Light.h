@@ -13,9 +13,12 @@ namespace FD3D
 {
     enum class LightType : uint8_t
     {
+        Undefined,
         SpotLight,
         PointLight,
-        DirectionalLight
+        DirectionalLight,
+        AmbientLight,
+        AreaLight
     };
 
     struct LightColor
@@ -83,26 +86,10 @@ namespace FD3D
             glm::vec3 m_position;
             glm::vec3 m_direction;
             glm::vec3 m_up;
-            std::string m_name;
             LightType m_type;
 
         public:
             Light();
-
-            const std::string &getName() const;
-            void setName(const std::string &name);
-            void setAmbientColor(const glm::vec4 color);
-
-            glm::vec4 &getAmbientColor();
-            const glm::vec4 &getAmbientColor() const;
-            void setDiffuseColor(const glm::vec4 &diffuse);
-
-            glm::vec4 &getDiffuse();
-            const glm::vec4 &getDiffuse() const;
-
-            glm::vec4 &getSpecular();
-            const glm::vec4 &getSpecular() const;
-            void setSpecularColor(const glm::vec4 &specular);
 
             glm::vec3 &getPosition();
             const glm::vec3 &getPosition() const;
@@ -116,22 +103,6 @@ namespace FD3D
             const glm::vec3 &getUp() const;
             void setUp(const glm::vec3 up);
 
-            float getInnerConeAngle() const;
-            void setInnerConeAngle(float val);
-
-            float getOuterConeAngle() const;
-            void setOuterConeAngle(float val);
-
-            float getConstantAttenuation() const;
-            void setConstantAttenuation(float val);
-
-            float getLinearAttenuation() const;
-            void setLinearAttenuation(float val);
-
-            float getQuadraticAttenuation() const;
-            void setQuadraticAttenuation(float val);
-
-
             void translate(const glm::vec3 v);
             void rotate(const glm::vec3 angles);
             void rotate(const glm::quat quaternion);
@@ -141,7 +112,6 @@ namespace FD3D
     };
 
     typedef EntityNode<Light> LightNode;
-
 }
 
 generateTypeCode(FD3D::Light);

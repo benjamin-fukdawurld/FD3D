@@ -2,6 +2,11 @@
 #define SCENE_H
 
 #include <FD3D/SceneGraph/SceneNode.h>
+#include <FD3D/SceneGraph/Component.h>
+
+#include <FDCore/AssociativeContainer.h>
+
+#include <memory>
 
 namespace FD3D
 {
@@ -14,7 +19,9 @@ namespace FD3D
             typedef SceneNode::id_type id_type;
 
         protected:
-            std::vector<SceneNode> m_nodes;
+            FDCore::AssociativeContainer<Component::id_type, std::unique_ptr<Component>> m_components;
+            FDCore::AssociativeContainer<Component::id_type, std::unique_ptr<SceneNode>> m_nodes;
+            FDCore::AssociativeContainer<id_type, Component::id_type> m_componentBindings;
             id_type m_rootId;
 
         public:
@@ -25,8 +32,7 @@ namespace FD3D
             SceneNodeProxy getNode(id_type id);
             ConstSceneNodeProxy getNode(id_type id) const;
 
-            void addNode(SceneNode &&node);
-            void addNode(const SceneNode &node);
+            void addNode(SceneNode *node);
             void removeNode(id_type id);
             void removeNodeAt(size_t pos);
 
@@ -37,13 +43,101 @@ namespace FD3D
             template<typename T, typename ...Args>
             void emplaceNode(Args... args)
             {
-                addNode(std::move(T{args...}));
+                addNode(std::make_unique<T>(args...));
             }
 
             std::vector<SceneNodeProxy> findByName(const std::string &name,
                                                    id_type from = 0);
             std::vector<ConstSceneNodeProxy> findByName(const std::string &name,
                                                         id_type from = 0) const;
+
+            Component *getComponent(Component::id_type id);
+            const Component *getComponent(Component::id_type id) const;
+
+            template<typename T>
+            std::vector<T*> getComponentsAs()
+            {
+                typedef FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<Component>
+                        >::cell_type cell_type;
+
+                typedef std::vector<FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<Component>
+                        >::iterator> component_vector;
+
+                component_vector components = m_components.find_all_if([](const cell_type &c){
+                    return c.value->as<T>();
+                });
+
+                std::vector<T*> result;
+                result.reserve(components.size());
+                for(size_t i = 0, imax = components.size(); i < imax; ++i)
+                    result.push_back(components[i]->value->as<T>());
+
+                return result;
+            }
+
+            void addComponent(Component *node);
+            void removeComponent(Component::id_type id);
+            void removeComponentAt(size_t pos);
+
+            bool hasComponents() const;
+            void clearComponents();
+            size_t getComponentCount() const;
+
+            template<typename T, typename ...Args>
+            void emplaceComponent(Args... args)
+            {
+                auto p = std::make_unique<T>(args...);
+                m_components.insert(p->getId(), std::move(p));
+            }
+
+            std::vector<Component*> findComponentsByName(const std::string &name);
+            std::vector<const Component*> findComponentsByName(const std::string &name) const;
+
+            void bindComponent(id_type node, Component::id_type comp);
+            void unbindComponent(id_type node, Component::id_type comp);
+
+            std::vector<Component::id_type> getNodeComponentIds(id_type node) const;
+
+            std::vector<Component::id_type>
+                getNodeComponentIds(id_type node, std::function<bool(const Component*)> pred) const;
+
+            std::vector<Component*> getNodeComponents(id_type node);
+            std::vector<const Component*> getNodeComponents(id_type node) const;
+
+            std::vector<Component *> getNodeComponents(id_type node,
+                                                      std::function<bool(const Component*)> pred);
+            std::vector<const Component*>
+                getNodeComponents(id_type node, std::function<bool(const Component*)> pred) const;
+
+            template<typename T>
+            std::vector<T*> getNodeComponentsAs(id_type node)
+            {
+                std::vector<T*> result;
+                for(auto it = m_componentBindings.find(node), end = m_componentBindings.end(); it != end; ++it)
+                {
+                    T *c = getComponent(it->value)->as<T>();
+                    result.push_back();
+                }
+
+                return result;
+            }
+
+            template<typename T>
+            std::vector<const T*> getNodeComponentsAs(id_type node) const
+            {
+                std::vector<const T*> result;
+                for(auto it = m_componentBindings.find(node), end = m_componentBindings.end(); it != end; ++it)
+                {
+                    const T *c = getComponent(it->value)->as<T>();
+                    result.push_back();
+                }
+
+                return result;
+            }
 
         private:
             void removeHierarchy(id_type id);

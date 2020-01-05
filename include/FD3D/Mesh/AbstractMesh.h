@@ -4,6 +4,7 @@
 #include <FD3D/SceneGraph/Component.h>
 #include <FD3D/SceneGraph/Scene.h>
 #include <FD3D/Utils/VertexProxy.h>
+#include <FD3D/Utils/IndexProxy.h>
 
 #include <FDCore/EnumFlag.h>
 
@@ -26,37 +27,39 @@ namespace FD3D
     class AbstractMesh : public Component
     {
         protected:
-            size_t m_nbVertices;
-            size_t m_nbIndices;
+            id_type m_materialId;
             uint8_t m_nbColorChannels;
             uint8_t m_nbTexChannels;
             MeshOptionFlag m_options;
             VertexComponentFlag m_componentsFlags;
-            std::string m_name;
 
         public:
             AbstractMesh();
             virtual ~AbstractMesh();
 
-            const std::string &getName() { return m_name; }
-            void setName(const std::string &name) { m_name = name; }
+            bool hasMaterial() const { return m_materialId != 0; }
+            id_type getMaterialId() const { return m_materialId; }
+            void setMaterialId(id_type id) { m_materialId = id; }
 
-            virtual float *vertices() = 0;
-            virtual const float *vertices() const = 0;
-            virtual uint32_t *indices() = 0;
-            virtual const uint32_t *indices() const = 0;
+            virtual float *getVertices() = 0;
+            virtual const float *getVertices() const = 0;
+            virtual uint32_t *getIndices() = 0;
+            virtual const uint32_t *getIndices() const = 0;
 
-            VertexProxy operator[](size_t index);
-            ConstVertexProxy operator[](size_t index) const;
+            virtual size_t getNumberOfVertices() const = 0;
+            virtual void setNumberOfVertices(size_t val) = 0;
+
+            virtual size_t getNumberOfIndices() const = 0;
+            virtual void setNumberOfIndices(size_t val) = 0;
+
+            VertexProxy operator[](size_t pos);
+            ConstVertexProxy operator[](size_t pos) const;
 
             VertexProxy operator()(size_t index);
             ConstVertexProxy operator()(size_t index) const;
 
-            size_t getNumberOfVertices() const { return m_nbVertices; }
-            void setNumberOfVertices(size_t val);
-
-            size_t getNumberOfIndices() const { return m_nbIndices; }
-            void setNumberOfIndices(size_t val);
+            IndexProxy getIndex(size_t pos);
+            ConstIndexProxy getIndex(size_t pos) const;
 
             VertexComponentFlag getFlags() const { return m_componentsFlags; }
             void setComponentsFlags(VertexComponentFlag flags) { m_componentsFlags = flags; }
@@ -93,10 +96,6 @@ namespace FD3D
             {
                 return (isInterlaced() ? getVertexSize() : 0);
             }
-
-        protected:
-            virtual void allocateVertices() = 0;
-            virtual void allocateIndices() = 0;
     };
 
     namespace internal
@@ -113,9 +112,6 @@ namespace FD3D
                                        ? m_index * m->getVertexSize()
                                        : m_index * 3);
         }
-
-        template<typename DerivedType>
-        ConstVertexProxyTrait<DerivedType>::~ConstVertexProxyTrait() {}
 
         VertexComponentFlag getVertexComponents(const aiMesh *mesh);
 

@@ -15,6 +15,9 @@ FD3D::Transform::Transform() :
     m_isUpToDate(false)
 {}
 
+FD3D::Transform::~Transform()
+{}
+
 const float *FD3D::Transform::getPtr() const
 {
     return glm::value_ptr(getMatrix());
@@ -30,7 +33,7 @@ const glm::mat4x4 &FD3D::Transform::getMatrix() const
 
 glm::vec3 &FD3D::Transform::getPosition()
 {
-    m_isUpToDate = false;
+    invalidate();
     return m_position;
 }
 
@@ -43,53 +46,55 @@ void FD3D::Transform::generateMatrix() const
 
 const glm::vec3 &FD3D::Transform::getPosition() const
 {
+    invalidate();
     return m_position;
 }
 
 void FD3D::Transform::setPosition(const glm::vec3 &translation)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_position = translation;
 }
 
 void FD3D::Transform::translate(const glm::vec3 &translation)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_position += translation;
 }
 
 glm::vec3 &FD3D::Transform::getScale()
 {
-    m_isUpToDate = false;
+    invalidate();
     return m_scale;
 }
 
 const glm::vec3 &FD3D::Transform::getScale() const
 {
+    invalidate();
     return m_scale;
 }
 
 void FD3D::Transform::setScale(const glm::vec3 &scale)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_scale = scale;
 }
 
 void FD3D::Transform::setScaleFactor(float scaleFactor)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_scale = glm::vec3(scaleFactor, scaleFactor, scaleFactor);
 }
 
 void FD3D::Transform::scale(float factor)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_scale *= factor;
 }
 
 void FD3D::Transform::scale(const glm::vec3 &scale)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_scale *= scale;
 }
 
@@ -100,7 +105,7 @@ glm::vec3 FD3D::Transform::getEulerAngles() const
 
 glm::quat &FD3D::Transform::getRotation()
 {
-    m_isUpToDate = false;
+    invalidate();
     return m_rotation;
 }
 
@@ -116,7 +121,7 @@ void FD3D::Transform::setRotation(const glm::vec3 &eulerAngles)
 
 void FD3D::Transform::setRotation(const glm::quat &q)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_rotation = q;
 }
 
@@ -127,13 +132,13 @@ void FD3D::Transform::rotate(const glm::vec3 &eulerAngles)
 
 void FD3D::Transform::rotate(const glm::quat &q)
 {
-    m_isUpToDate = false;
+    invalidate();
     m_rotation *= q;
 }
 
 glm::vec3 FD3D::Transform::getForward() const
 {
-    return glm::normalize(m_rotation * glm::vec3(0.0f, 0.0f, -1.0f));
+    return glm::normalize(m_rotation * glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 glm::vec3 FD3D::Transform::getBackward() const
@@ -159,4 +164,9 @@ glm::vec3 FD3D::Transform::getUp() const
 glm::vec3 FD3D::Transform::getDown() const
 {
     return -getUp();
+}
+
+void FD3D::Transform::invalidate() const
+{
+    m_isUpToDate = false;
 }

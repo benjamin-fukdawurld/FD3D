@@ -13,19 +13,19 @@ namespace FD3D
 {
     enum class TextureType : uint8_t
     {
-        Invalid = aiTextureType_UNKNOWN,
-        None = aiTextureType_NONE,
-        Diffuse = aiTextureType_DIFFUSE,
-        Specular = aiTextureType_SPECULAR,
-        Ambient = aiTextureType_AMBIENT,
-        Emissive = aiTextureType_EMISSIVE,
-        Height = aiTextureType_HEIGHT,
-        Normals = aiTextureType_NORMALS,
-        Shininess = aiTextureType_SHININESS,
-        Opacity = aiTextureType_OPACITY,
-        Displacement = aiTextureType_DISPLACEMENT,
-        LightMap = aiTextureType_LIGHTMAP,
-        Reflection = aiTextureType_REFLECTION
+        Invalid,
+        None,
+        Diffuse,
+        Specular,
+        Ambient,
+        Emissive,
+        Height,
+        Normals,
+        Shininess,
+        Opacity,
+        Displacement,
+        LightMap,
+        Reflection
     };
 
     class Texture : public Component

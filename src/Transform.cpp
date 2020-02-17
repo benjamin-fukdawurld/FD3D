@@ -18,7 +18,7 @@ FD3D::Transform::Transform() :
 FD3D::Transform::~Transform()
 {}
 
-const float *FD3D::Transform::getPtr() const
+const float *FD3D::Transform::getMatrixPtr() const
 {
     return glm::value_ptr(getMatrix());
 }

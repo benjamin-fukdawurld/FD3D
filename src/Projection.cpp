@@ -18,7 +18,7 @@ FD3D::Projection::Projection() :
 
 }
 
-const float *FD3D::Projection::getPtr() const
+const float *FD3D::Projection::getMatrixPtr() const
 {
     return glm::value_ptr(getMatrix());
 }

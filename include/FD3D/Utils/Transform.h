@@ -22,7 +22,7 @@ namespace FD3D
             Transform();
             virtual ~Transform();
 
-            const float *getPtr() const;
+            const float *getMatrixPtr() const;
 
             operator const glm::mat4x4 &() const { return getMatrix(); }
 

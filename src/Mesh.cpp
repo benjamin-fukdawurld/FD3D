@@ -22,3 +22,13 @@ FD3D::Mesh::~Mesh()
 {
 
 }
+
+const char *FD3D::Mesh::getTypeCode() const
+{
+    return FDCore::TypeCodeHelper<Mesh>::code;
+}
+
+size_t FD3D::Mesh::getTypeCodeHash() const
+{
+    return FDCore::TypeCodeHelper<Mesh>::hash();
+}

@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include <FD3D/Vertex.h>
+#include <FD3D/Utils/Vertex.h>
 
 TEST(Vertex_test, constructorTest)
 {

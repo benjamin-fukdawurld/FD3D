@@ -10,8 +10,8 @@ FD3D::Projection::Projection() :
     m_bottom(0.0f),
     m_top(0.0f),
     m_fov(0.0f),
-    m_near(0.0f),
-    m_far(0.0f),
+    m_near(0.1f),
+    m_far(100.0f),
     m_type(FD3D::ProjectionType::Perspective),
     m_isUpToDate(false)
 {

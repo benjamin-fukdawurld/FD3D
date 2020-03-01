@@ -131,14 +131,16 @@ namespace FD3D
         public:
             virtual ~IndexProxy();
 
-            uint32_t &getValue() const;
+            uint32_t getValue() const;
 
-            uint32_t &operator*() const
+            uint32_t operator*() const
             {
                 return getValue();
             }
 
-            void setValue();
+            uint32_t &operator*();
+
+            void setValue(uint32_t val);
     };
 }
 #endif // INDEXPROXY_H

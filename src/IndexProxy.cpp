@@ -26,8 +26,19 @@ FD3D::IndexProxy::~IndexProxy()
 
 }
 
-uint32_t &FD3D::IndexProxy::getValue() const
+uint32_t &FD3D::IndexProxy::operator*()
 {
     assert(m_position < getMesh()->getNumberOfIndices());
     return *(m_mesh->getIndices() + m_position);
+}
+
+uint32_t FD3D::IndexProxy::getValue() const
+{
+    assert(m_position < getMesh()->getNumberOfIndices());
+    return *(m_mesh->getIndices() + m_position);
+}
+
+void FD3D::IndexProxy::setValue(uint32_t val)
+{
+    *(m_mesh->getIndices() + m_position) = val;
 }

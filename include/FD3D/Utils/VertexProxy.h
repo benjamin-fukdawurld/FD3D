@@ -15,6 +15,8 @@ namespace FD3D
 {
     class AbstractMesh;
 
+    class VertexProxy;
+
     enum class VertexComponentType : uint8_t
     {
         Position = 0,
@@ -48,7 +50,10 @@ namespace FD3D
                     return this->asDerived().m_mesh;
                 }
 
-                size_t getIndex();
+                size_t getIndex() const
+                {
+                    return m_index;
+                }
 
                 void setIndex(size_t index)
                 {
@@ -116,24 +121,24 @@ namespace FD3D
 
                 const glm::vec3 *getTangent() const
                 {
-                    return getComponentPtr<const glm::vec3>(VertexComponentType::Position);
+                    return getComponentPtr<const glm::vec3>(VertexComponentType::Tangent);
                 }
 
                 const glm::vec3 *getBitangent() const
                 {
-                    auto result = getComponentPtr<const glm::vec3>(VertexComponentType::Position);
+                    auto result = getComponentPtr<const glm::vec3>(VertexComponentType::Tangent);
                     return (result ? result + 1 : result);
                 }
 
                 const glm::vec2 *getUv(size_t index) const
                 {
-                    auto result = getComponentPtr<const glm::vec2>(VertexComponentType::Position);
+                    auto result = getComponentPtr<const glm::vec2>(VertexComponentType::Texture);
                     return (result ? result + index : result);
                 }
 
                 const glm::vec4 *getColor(size_t index) const
                 {
-                    auto result = getComponentPtr<const glm::vec4>(VertexComponentType::Position);
+                    auto result = getComponentPtr<const glm::vec4>(VertexComponentType::Color);
                     return (result ? result + index : result);
                 }
 
@@ -156,7 +161,7 @@ namespace FD3D
         ConstVertexProxyTrait<DerivedType>::~ConstVertexProxyTrait() {}
     }
 
-    class ConstVertexProxy : internal::ConstVertexProxyTrait<ConstVertexProxy>
+    class ConstVertexProxy : public internal::ConstVertexProxyTrait<ConstVertexProxy>
     {
         friend class AbstractMesh;
         friend class internal::ConstVertexProxyTrait<ConstVertexProxy>;
@@ -167,6 +172,7 @@ namespace FD3D
             ConstVertexProxy(const AbstractMesh *mesh, size_t index);
 
         public:
+            ConstVertexProxy(const VertexProxy &v);
             virtual ~ConstVertexProxy();
     };
 

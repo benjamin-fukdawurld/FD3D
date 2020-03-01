@@ -70,7 +70,8 @@ bool FD3D::AbstractSceneLoader::loadScene(Scene &result, const std::string &path
     m_cameras.clear();
     m_materials.clear();
 
-    m_directory = path.substr(0, path.find_last_of('/'));
+    if(path.find('/') != std::string::npos)
+        m_directory = path.substr(0, path.find_last_of('/') + 1);
 
     if(!loadMaterials(result) || !loadMeshes(result) || !loadLights(result) || !loadCameras(result))
         return false;
@@ -431,8 +432,18 @@ bool FD3D::AbstractSceneLoader::loadMesh(const aiMesh *in, Scene &out)
         }
     }
 
+    for(unsigned int i = 0; i < in->mNumFaces; i++)
+    {
+        size_t pos = i * 3;
+        aiFace face = in->mFaces[i];
+        for(unsigned int j = 0; j < face.mNumIndices; j++)
+            result->getIndex(pos + j).setValue(face.mIndices[j]);
+    }
+
     m_meshes.push_back(result->getId());
     out.addComponent(result.release());
+
+
 
     return true;
 }

@@ -25,6 +25,7 @@ namespace FD3D
 
         public:
             Material();
+            ~Material() override;
 
             glm::vec3 &getAmbientColor();
             const glm::vec3 &getAmbientColor() const;
@@ -50,6 +51,10 @@ namespace FD3D
             {
                 return m_textures[type];
             }
+
+            const char *getTypeCode() const override;
+
+            size_t getTypeCodeHash() const override;
     };
 
     bool load(const aiMaterial *in, Material &out, const std::string &directory,

@@ -58,6 +58,8 @@ FD3D::Material::Material() :
 
 }
 
+FD3D::Material::~Material() {}
+
 glm::vec3 &FD3D::Material::getAmbientColor()
 {
     return m_ambientColor;
@@ -111,6 +113,16 @@ float FD3D::Material::getShininess() const
 void FD3D::Material::setShininess(float shininess)
 {
     m_shininess = shininess;
+}
+
+const char *FD3D::Material::getTypeCode() const
+{
+    return FDCore::TypeCodeHelper<FD3D::Material>::code;
+}
+
+size_t FD3D::Material::getTypeCodeHash() const
+{
+    return FDCore::TypeCodeHelper<FD3D::Material>::hash();
 }
 
 bool FD3D::load(const aiMaterial *in, FD3D::Material &out, const std::string &directory,

@@ -23,7 +23,7 @@ namespace FD3D
             template<typename T>
             bool is() const
             {
-                return FDCore::TypeCodeHelper<T>::hash == getTypeCodeHash();
+                return FDCore::TypeCodeHelper<T>::hash() == getTypeCodeHash();
             }
 
             template<typename T>

@@ -37,7 +37,7 @@ namespace FD3D
         public:
             Texture() : m_textureId(0), m_type() {}
             Texture(uint32_t id, TextureType type) : m_textureId(id), m_type(type) {}
-            virtual ~Texture();
+            ~Texture() override;
 
             uint32_t getTextureId() const
             {
@@ -58,7 +58,13 @@ namespace FD3D
             {
                 m_type = type;
             }
+
+            const char *getTypeCode() const override;
+
+            size_t getTypeCodeHash() const override;
     };
 }
+
+generateTypeCode(FD3D::Texture);
 
 #endif // FD3D_TEXTURE_H

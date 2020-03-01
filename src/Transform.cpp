@@ -5,6 +5,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -12,6 +13,7 @@ FD3D::Transform::Transform() :
     m_mat(1.0f),
     m_position(0.0f),
     m_scale(1.0f),
+    m_rotation(0.0f, 0.0f, 0.0f, 1.0f),
     m_isUpToDate(false)
 {}
 
@@ -40,7 +42,7 @@ glm::vec3 &FD3D::Transform::getPosition()
 
 void FD3D::Transform::generateMatrix() const
 {
-    m_mat = glm::translate(glm::scale(glm::mat4(1.0f), m_scale), m_position) * glm::mat4_cast(m_rotation);
+    m_mat = glm::translate(glm::scale(glm::mat4(1.0f), m_scale) * glm::toMat4(m_rotation), m_position);
     m_isUpToDate = true;
 }
 
@@ -100,7 +102,7 @@ void FD3D::Transform::scale(const glm::vec3 &scale)
 
 glm::vec3 FD3D::Transform::getEulerAngles() const
 {
-    return glm::eulerAngles(m_rotation) * glm::pi<float>() / 180.0f;
+    return glm::eulerAngles(m_rotation);
 }
 
 glm::quat &FD3D::Transform::getRotation()

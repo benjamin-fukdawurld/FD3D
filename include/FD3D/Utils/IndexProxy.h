@@ -64,7 +64,7 @@ namespace FD3D
 
                 DerivedType &operator-=(size_t i)
                 {
-                    setIndex(m_position - i);
+                    setPosition(m_position - i);
                     return this->asDerived();
                 }
 
@@ -75,27 +75,27 @@ namespace FD3D
 
                 DerivedType &operator++()
                 {
-                    setIndex(++m_position);
+                    setPosition(++m_position);
                     return this->asDerived();
                 }
 
                 DerivedType operator++(int)
                 {
                     DerivedType result(getMesh(), m_position);
-                    setIndex(++m_position);
+                    setPosition(++m_position);
                     return result;
                 }
 
                 DerivedType &operator--()
                 {
-                    setIndex(--m_position);
+                    setPosition(--m_position);
                     return this->asDerived();
                 }
 
                 DerivedType operator--(int)
                 {
                     DerivedType result(getMesh(), m_position);
-                    setIndex(--m_position);
+                    setPosition(--m_position);
                     return result;
                 }
         };
@@ -104,7 +104,7 @@ namespace FD3D
         ConstIndexProxyTrait<Derived>::~ConstIndexProxyTrait() {}
     }
 
-    class ConstIndexProxy : internal::ConstIndexProxyTrait<ConstIndexProxy>
+    class ConstIndexProxy : public internal::ConstIndexProxyTrait<ConstIndexProxy>
     {
         friend class AbstractMesh;
         friend class internal::ConstIndexProxyTrait<ConstIndexProxy>;
@@ -118,7 +118,7 @@ namespace FD3D
             virtual ~ConstIndexProxy();
     };
 
-    class IndexProxy : internal::ConstIndexProxyTrait<IndexProxy>
+    class IndexProxy : public internal::ConstIndexProxyTrait<IndexProxy>
     {
         friend class AbstractMesh;
         friend class internal::ConstIndexProxyTrait<IndexProxy>;

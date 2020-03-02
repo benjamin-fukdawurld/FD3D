@@ -38,6 +38,8 @@ int FD3D::AbstractMesh::getComponentOffset(FD3D::VertexComponentType comp) const
                    ? 2 * m_nbTexChannels : 0))
                 * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
     }
+
+    return -1;
 }
 
 size_t FD3D::AbstractMesh::getVertexSize() const

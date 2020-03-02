@@ -6,6 +6,7 @@
 FD3D::SceneNode::SceneNode(id_type parent) : m_parent(parent) {}
 
 FD3D::SceneNode::SceneNode(FD3D::SceneNode &&node) :
+    Identifiable<>(),
     m_name(std::move(node.m_name)),
     m_children(std::move(node.m_children)),
     m_parent(node.m_parent)
@@ -14,6 +15,7 @@ FD3D::SceneNode::SceneNode(FD3D::SceneNode &&node) :
 }
 
 FD3D::SceneNode::SceneNode(const FD3D::SceneNode &node) :
+    Identifiable<>(),
     m_name(node.m_name),
     m_children(node.m_children),
     m_parent(node.m_parent)

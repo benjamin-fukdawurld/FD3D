@@ -202,7 +202,7 @@ namespace FD3D
         template<typename DerivedType>
         int ConstVertexProxyTrait<DerivedType>::getComponentPosition(VertexComponentType comp) const
         {
-            const AbstractMesh *m = getMesh();
+            const FD3D::AbstractMesh *m = getMesh();
             if(!m->hasVertexComponent(comp))
                 return -1;
 

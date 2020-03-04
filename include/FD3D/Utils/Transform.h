@@ -57,9 +57,10 @@ namespace FD3D
             glm::vec3 getUp() const;
             glm::vec3 getDown() const;
 
-        protected:
             void invalidate() const;
+            bool isUptoDate() const;
 
+        protected:
             virtual void generateMatrix() const;
     };
 

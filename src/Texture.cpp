@@ -6,3 +6,8 @@ const char *FD3D::Texture::getTypeCode() const
 {
     return FDCore::TypeCodeHelper<FD3D::Texture>::code;
 }
+
+size_t FD3D::Texture::getTypeCodeHash() const
+{
+    return FDCore::TypeCodeHelper<FD3D::Texture>::hash();
+}

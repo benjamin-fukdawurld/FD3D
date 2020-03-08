@@ -13,7 +13,7 @@ FD3D::Transform::Transform() :
     m_mat(1.0f),
     m_position(0.0f),
     m_scale(1.0f),
-    m_rotation(0.0f, 0.0f, 0.0f, 1.0f),
+    m_rotation(1.0f, 0.0f, 0.0f, 0.0f),
     m_isUpToDate(false)
 {}
 
@@ -176,4 +176,9 @@ void FD3D::Transform::invalidate() const
 bool FD3D::Transform::isUptoDate() const
 {
     return m_isUpToDate;
+}
+
+void FD3D::Transform::update() const
+{
+    generateMatrix();
 }

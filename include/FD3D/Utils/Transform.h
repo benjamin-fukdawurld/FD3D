@@ -59,6 +59,7 @@ namespace FD3D
 
             void invalidate() const;
             bool isUptoDate() const;
+            void update() const;
 
         protected:
             virtual void generateMatrix() const;

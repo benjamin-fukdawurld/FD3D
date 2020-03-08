@@ -6,7 +6,7 @@
 TARGET = FD3D
 TEMPLATE = lib
 CONFIG += console c++17
-CONFIG += staticlib
+#CONFIG += staticlib
 CONFIG -= app_bundle
 CONFIG -= qt
 

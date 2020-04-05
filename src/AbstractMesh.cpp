@@ -2,6 +2,8 @@
 
 #include <FD3D/Utils/VertexProxy.h>
 
+#include <assimp/mesh.h>
+
 FD3D::AbstractMesh::AbstractMesh() :
     m_materialId(0),
     m_nbColorChannels(0),
@@ -37,6 +39,9 @@ int FD3D::AbstractMesh::getComponentOffset(FD3D::VertexComponentType comp) const
                 + (hasVertexComponent(VertexComponentType::Texture)
                    ? 2 * m_nbTexChannels : 0))
                 * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
+
+        case VertexComponentType::Invalid:
+        return -1;
     }
 
     return -1;
@@ -50,6 +55,23 @@ size_t FD3D::AbstractMesh::getVertexSize() const
                ? 2 * m_nbTexChannels : 0)
             + (hasVertexComponent(VertexComponentType::Texture)
                ? 4 * m_nbColorChannels : 0);
+}
+
+
+
+const char *FD3D::AbstractMesh::getTypeCode() const
+{
+    return FDCore::TypeCodeHelper<AbstractMesh>::code;
+}
+
+size_t FD3D::AbstractMesh::getTypeCodeHash() const
+{
+    return FDCore::TypeCodeHelper<AbstractMesh>::hash();
+}
+
+bool FD3D::AbstractMesh::matchTypeCodeHash(size_t hash) const
+{
+    return hash == FD3D::AbstractMesh::getTypeCodeHash() || Component::matchTypeCodeHash(hash);
 }
 
 FD3D::VertexComponentFlag FD3D::internal::getVertexComponents(const aiMesh *mesh)

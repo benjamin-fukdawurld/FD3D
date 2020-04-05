@@ -27,8 +27,12 @@ namespace FD3D
 
             float *getVertices() override { return m_vertices.data(); }
             const float *getVertices() const override { return m_vertices.data(); }
+            void setVertices(const float *data) override;
+
             uint32_t *getIndices() override { return m_indices.data(); }
             const uint32_t *getIndices() const override { return m_indices.data(); }
+            void setIndices(const uint32_t *data) override;
+
 
             size_t getNumberOfVertices() const override { return m_vertices.size()/getVertexSize(); }
             void setNumberOfVertices(size_t val) override
@@ -42,6 +46,8 @@ namespace FD3D
             const char *getTypeCode() const override;
 
             size_t getTypeCodeHash() const override;
+
+            bool matchTypeCodeHash(size_t hash) const override;
     };
 }
 

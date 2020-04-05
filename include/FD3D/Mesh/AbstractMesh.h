@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <vector>
 
-#include <assimp/mesh.h>
+class aiMesh;
 
 namespace FD3D
 {
@@ -35,7 +35,7 @@ namespace FD3D
 
         public:
             AbstractMesh();
-            virtual ~AbstractMesh() = default;
+            ~AbstractMesh() override = default;
 
             bool hasMaterial() const { return m_materialId != 0; }
             id_type getMaterialId() const { return m_materialId; }
@@ -43,8 +43,11 @@ namespace FD3D
 
             virtual float *getVertices() = 0;
             virtual const float *getVertices() const = 0;
+            virtual void setVertices(const float *data) = 0;
+
             virtual uint32_t *getIndices() = 0;
             virtual const uint32_t *getIndices() const = 0;
+            virtual void setIndices(const uint32_t *data) = 0;
 
             virtual size_t getNumberOfVertices() const = 0;
             virtual void setNumberOfVertices(size_t val) = 0;
@@ -52,20 +55,20 @@ namespace FD3D
             virtual size_t getNumberOfIndices() const = 0;
             virtual void setNumberOfIndices(size_t val) = 0;
 
-            VertexProxy getVertex(size_t pos);
-            ConstVertexProxy getVertex(size_t pos) const;
+            virtual VertexProxy getVertex(size_t pos);
+            virtual ConstVertexProxy getVertex(size_t pos) const;
 
-            VertexProxy getVertexFromIndex(size_t index);
-            ConstVertexProxy getVertexFromIndex(size_t index) const;
+            virtual VertexProxy getVertexFromIndex(size_t index);
+            virtual ConstVertexProxy getVertexFromIndex(size_t index) const;
+
+            virtual IndexProxy getIndex(size_t pos);
+            virtual ConstIndexProxy getIndex(size_t pos) const;
 
             VertexProxy operator[](size_t pos) { return getVertex(pos); }
             ConstVertexProxy operator[](size_t pos) const { return getVertex(pos); }
 
             VertexProxy operator()(size_t index) { return getVertexFromIndex(index); }
             ConstVertexProxy operator()(size_t index) const { return getVertexFromIndex(index); }
-
-            IndexProxy getIndex(size_t pos);
-            ConstIndexProxy getIndex(size_t pos) const;
 
             VertexComponentFlag getFlags() const { return m_componentsFlags; }
             void setComponentsFlags(VertexComponentFlag flags) { m_componentsFlags = flags; }
@@ -102,6 +105,22 @@ namespace FD3D
             {
                 return (isInterlaced() ? getVertexSize() : 0);
             }
+
+            size_t getVerticesDataSize() const
+            {
+                return sizeof(float) * getNumberOfVertices() * getVertexSize();
+            }
+
+            size_t getIndicesDataSize() const
+            {
+                return sizeof(uint32_t) * getNumberOfIndices();
+            }
+
+            const char *getTypeCode() const override;
+
+            size_t getTypeCodeHash() const override;
+
+            bool matchTypeCodeHash(size_t hash) const override;
     };
 
     class AbstractMeshStrategy : public Component
@@ -211,6 +230,7 @@ namespace FD3D
                                        ? m_index * m->getVertexSize()
                                        : m_index * 3);
         }
+
         VertexComponentFlag getVertexComponents(const aiMesh *mesh);
 
         size_t getVertexSize(const aiMesh *mesh);
@@ -238,5 +258,7 @@ namespace FD3D
 
     bool load(const aiMesh *in, Scene &scene, AbstractMesh &out);
 }
+
+generateTypeCode(FD3D::AbstractMesh);
 
 #endif // ABSTRACTMESH_H

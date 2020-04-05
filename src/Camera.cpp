@@ -11,8 +11,13 @@
 FD3D::Camera::Camera()
 {}
 
-void FD3D::Camera::generateMatrix() const
+void FD3D::Camera::update() const
 {
-    m_mat = glm::lookAt(m_position, getTarget(), getUp());
+    m_mat = generateLookAtMatrix(getPosition(), getTarget(), getUp());
     m_isUpToDate = true;
+}
+
+glm::mat4 FD3D::Camera::generateLookAtMatrix(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
+{
+    return glm::lookAt(position, target, up);
 }

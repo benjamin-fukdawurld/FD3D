@@ -20,7 +20,12 @@ namespace FD3D
 
         public:
             Transform();
-            virtual ~Transform();
+
+            Transform(const glm::vec3 &position,
+                      const glm::vec3 &scale,
+                      const glm::quat &rotation);
+
+            virtual ~Transform() = default;
 
             const float *getMatrixPtr() const;
 
@@ -59,10 +64,11 @@ namespace FD3D
 
             void invalidate() const;
             bool isUptoDate() const;
-            void update() const;
+            virtual void update() const;
 
-        protected:
-            virtual void generateMatrix() const;
+            static glm::mat4 generateMatrix(const glm::vec3 &position,
+                                            const glm::vec3 &scale,
+                                            const glm::quat &rotation);
     };
 
     typedef EntityNode<Transform> ObjectNode;

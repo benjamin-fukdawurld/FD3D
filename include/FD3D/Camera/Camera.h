@@ -19,8 +19,11 @@ namespace FD3D
 
             glm::vec3 getTarget() const { return getBackward(); }
 
-        protected:
-            void generateMatrix() const override;
+            void update() const override;
+
+            static glm::mat4 generateLookAtMatrix(const glm::vec3 &position,
+                                                  const glm::vec3 &target,
+                                                  const glm::vec3 &up);
     };
 
     typedef EntityNode<Camera> CameraNode;

@@ -17,7 +17,14 @@ FD3D::Transform::Transform() :
     m_isUpToDate(false)
 {}
 
-FD3D::Transform::~Transform()
+FD3D::Transform::Transform(const glm::vec3 &position,
+                           const glm::vec3 &scale,
+                           const glm::quat &rotation) :
+    m_mat(1.0f),
+    m_position(position),
+    m_scale(scale),
+    m_rotation(rotation),
+    m_isUpToDate(false)
 {}
 
 const float *FD3D::Transform::getMatrixPtr() const
@@ -28,7 +35,7 @@ const float *FD3D::Transform::getMatrixPtr() const
 const glm::mat4x4 &FD3D::Transform::getMatrix() const
 {
     if(!m_isUpToDate)
-        generateMatrix();
+        update();
 
     return m_mat;
 }
@@ -37,13 +44,6 @@ glm::vec3 &FD3D::Transform::getPosition()
 {
     invalidate();
     return m_position;
-}
-
-
-void FD3D::Transform::generateMatrix() const
-{
-    m_mat = glm::translate(glm::scale(glm::mat4(1.0f), m_scale) * glm::toMat4(m_rotation), m_position);
-    m_isUpToDate = true;
 }
 
 const glm::vec3 &FD3D::Transform::getPosition() const
@@ -180,5 +180,13 @@ bool FD3D::Transform::isUptoDate() const
 
 void FD3D::Transform::update() const
 {
-    generateMatrix();
+    m_mat = generateMatrix(m_position, m_scale, m_rotation);
+    m_isUpToDate = true;
+}
+
+glm::mat4 FD3D::Transform::generateMatrix(const glm::vec3 &position,
+                                          const glm::vec3 &scale,
+                                          const glm::quat &rotation)
+{
+    return glm::translate(glm::scale(glm::mat4(1.0f), scale) * glm::toMat4(rotation), position);
 }

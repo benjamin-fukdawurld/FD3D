@@ -6,7 +6,6 @@
 TARGET = FD3D
 TEMPLATE = lib
 CONFIG += console c++17
-#CONFIG += staticlib
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -39,7 +38,11 @@ SOURCES += \
     src/Transform.cpp \
     src/Camera.cpp \
     src/ModelLoader.cpp \
-    src/VertexProxy.cpp
+    src/VertexProxy.cpp \
+    src/LightColor.cpp \
+    src/LightAttenuation.cpp \
+    src/LightCone.cpp \
+    src/TrasformStack.cpp
 
 HEADERS += \
     include/FD3D/SceneGraph/Component.h \
@@ -63,6 +66,12 @@ HEADERS += \
     include/FD3D/Mesh/AbstractMesh.h \
     include/FD3D/Mesh/Model.h \
     include/FD3D/Mesh/Mesh.h \
+    include/FD3D/Light/LightColor.h \
+    include/FD3D/Light/LightAttenuation.h \
+    include/FD3D/Light/LightCone.h \
+    include/FD3D/Light/LightType.h \
+    include/FD3D/Camera/ProjectionType.h \
+    include/FD3D/Utils/TrasformStack.h
 
 unix {
     target.path = /usr/lib

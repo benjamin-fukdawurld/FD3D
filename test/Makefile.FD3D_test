@@ -887,6 +887,7 @@ compiler_clean:
 		../../thirdparty/glm/glm/gtc/epsilon.inl \
 		../../thirdparty/glm/glm/gtc/quaternion_simd.inl \
 		../include/FD3D/Camera/Projection.h \
+		../include/FD3D/Camera/ProjectionType.h \
 		Vertex_test.h \
 		../include/FD3D/Utils/Vertex.h \
 		../../FDCore/include/FDCore/EnumFlag.h

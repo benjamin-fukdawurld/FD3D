@@ -1,80 +1,19 @@
 #ifndef FD3D_LIGHT_H
 #define FD3D_LIGHT_H
 
-#include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include <FD3D/SceneGraph/SceneNode.h>
+#include <FD3D/Light/LightColor.h>
+#include <FD3D/Light/LightAttenuation.h>
+#include <FD3D/Light/LightCone.h>
+#include <FD3D/Light/LightType.h>
 
 #include <FDCore/TypeInformation.h>
 
 namespace FD3D
 {
-    enum class LightType : uint8_t
-    {
-        Undefined,
-        SpotLight,
-        PointLight,
-        DirectionalLight,
-        AmbientLight,
-        AreaLight
-    };
-
-    struct LightColor
-    {
-        glm::vec4 ambient;
-        glm::vec4 diffuse;
-        glm::vec4 specular;
-
-        LightColor();
-
-        LightColor(const glm::vec4 &ambient,
-                   const glm::vec4 &diffuse,
-                   const glm::vec4 &specular);
-    };
-
-    class LightAttenuation
-    {
-        protected:
-            float m_constantAttenuation;
-            float m_linearAttenuation;
-            float m_quadraticAttenuation;
-
-        public:
-            LightAttenuation();
-
-            LightAttenuation(float constant, float linear, float quadratic);
-
-            float getConstantAttenuation() const;
-            void setConstantAttenuation(float val);
-
-            float getLinearAttenuation() const;
-            void setLinearAttenuation(float val);
-
-            float getQuadraticAttenuation() const;
-            void setQuadraticAttenuation(float val);
-
-            float getAttenuation(float distance) const;
-    };
-
-    class LightCone
-    {
-        protected:
-            float m_innerAngle;
-            float m_outerAngle;
-
-        public:
-            LightCone();
-            LightCone(float innerAngle, float outerAngle);
-
-            float getInnerAngle() const;
-            void setInnerAngle(float val);
-
-            float getOuterAngle() const;
-            void setOuterAngle(float val);
-    };
-
     class Light
     {
         public:

@@ -68,23 +68,69 @@ namespace FD3D
             virtual AbstractMesh *createMesh() = 0;
     };
 
-    class SceneLoader : public AbstractSceneLoader
+    class SceneLoader final : public AbstractSceneLoader
     {
-        protected:
+        private:
             std::function<uint32_t(const std::string &)> m_textureLoader;
             std::function<uint32_t(const aiTexture*)> m_embeddedTextureLoader;
+            std::function<AbstractMesh*()> m_meshAllocator;
 
         public:
-            std::function<uint32_t(const std::string &)> getTextureLoader();
-            void setTextureLoader(std::function<uint32_t(const std::string &)> loader);
+            std::function<uint32_t(const std::string &)> getTextureLoader()
+            {
+                return m_textureLoader;
+            }
 
-            std::function<uint32_t(const aiTexture*)> getEmbeddedTextureLoader();
-            void setEmbeddedTextureLoader(std::function<uint32_t(const aiTexture*)> loader);
+            template<typename TextureLoader>
+            void setTextureLoader(TextureLoader loader)
+            {
+                m_textureLoader = loader;
+            }
+
+            template<typename TextureLoader, typename ...Args>
+            void setTextureLoader(TextureLoader loader, Args ...args)
+            {
+                m_textureLoader = std::bind(loader, args..., std::placeholders::_1);
+            }
+
+            std::function<uint32_t(const aiTexture*)> getEmbeddedTextureLoader()
+            {
+                return m_embeddedTextureLoader;
+            }
+
+            template<typename TextureLoader>
+            void setEmbeddedTextureLoader(TextureLoader loader)
+            {
+                m_embeddedTextureLoader = loader;
+            }
+
+            template<typename TextureLoader, typename ...Args>
+            void setEmbeddedTextureLoader(TextureLoader loader, Args ...args)
+            {
+                m_embeddedTextureLoader = std::bind(loader, args..., std::placeholders::_1);
+            }
+
+
+
+            template<typename MeshAllocator>
+            void setMeshAllocator(MeshAllocator allocator)
+            {
+                m_meshAllocator = allocator;
+            }
+
+            template<typename MeshAllocator, typename ...Args>
+            void setMeshAllocator(MeshAllocator allocator, Args ...args)
+            {
+                m_meshAllocator = std::bind(allocator, args...);
+            }
 
         private:
-            uint32_t loadTexture(const std::string &path) override;
-            uint32_t loadEmbeddedTexture(const aiTexture *tex) override;
-            AbstractMesh *createMesh() override;
+            uint32_t loadTexture(const std::string &path) override final;
+            uint32_t loadEmbeddedTexture(const aiTexture *tex) override final;
+            AbstractMesh *createMesh() override final;
+
+        public:
+            static AbstractMesh *defaultMeshAllocator();
     };
 }
 

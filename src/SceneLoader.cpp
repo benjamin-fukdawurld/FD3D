@@ -489,28 +489,25 @@ const aiScene *FD3D::internal2::importScene(Assimp::Importer &importer,
     return scene;
 }
 
-std::function<uint32_t (const std::string &)> FD3D::SceneLoader::getTextureLoader() { return m_textureLoader; }
-
-void FD3D::SceneLoader::setTextureLoader(std::function<uint32_t (const std::string &)> loader)
+uint32_t FD3D::SceneLoader::loadTexture(const std::string &path)
 {
-    m_textureLoader = loader;
+    return m_textureLoader(path);
 }
-
-std::function<uint32_t (const aiTexture *)> FD3D::SceneLoader::getEmbeddedTextureLoader()
-{
-    return m_embeddedTextureLoader;
-}
-
-void FD3D::SceneLoader::setEmbeddedTextureLoader(std::function<uint32_t (const aiTexture *)> loader)
-{
-    m_embeddedTextureLoader = loader;
-}
-
-uint32_t FD3D::SceneLoader::loadTexture(const std::string &path) { return m_textureLoader(path); }
 
 uint32_t FD3D::SceneLoader::loadEmbeddedTexture(const aiTexture *tex)
 {
     return m_embeddedTextureLoader(tex);
 }
 
-FD3D::AbstractMesh *FD3D::SceneLoader::createMesh() { return new Mesh(); }
+FD3D::AbstractMesh *FD3D::SceneLoader::createMesh()
+{
+    if(m_meshAllocator)
+        return m_meshAllocator();
+
+    return nullptr;
+}
+
+FD3D::AbstractMesh *FD3D::SceneLoader::defaultMeshAllocator()
+{
+    return new Mesh();
+}

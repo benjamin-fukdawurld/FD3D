@@ -19,6 +19,7 @@ namespace FD3D
 
     enum class VertexComponentType : uint8_t
     {
+        Invalid = 128,
         Position = 0,
         Normal = 1,
         Color = 2,
@@ -153,7 +154,11 @@ namespace FD3D
                     if(offset == -1)
                         return nullptr;
 
-                    return reinterpret_cast<T*>(getMesh()->getVertices() + offset);
+                    const float *ptr = getMesh()->getVertices();
+                    if(ptr == nullptr)
+                        return nullptr;
+
+                    return reinterpret_cast<T*>(ptr + offset);
                 }
         };
 

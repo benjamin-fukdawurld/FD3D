@@ -43,7 +43,11 @@ namespace FD3D
                 uint32_t getValue() const
                 {
                     assert(m_position < getMesh()->getNumberOfIndices());
-                    return *(getMesh()->getIndices() + m_position);
+                    const uint32_t *ind = getMesh()->getIndices();
+                    if(ind == nullptr)
+                        return 0;
+
+                    return *(ind + m_position);
                 }
 
                 uint32_t operator*() const

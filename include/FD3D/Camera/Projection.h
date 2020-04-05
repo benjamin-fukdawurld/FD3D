@@ -4,15 +4,10 @@
 #include <cstdint>
 #include <glm/mat4x4.hpp>
 
+#include <FD3D/Camera/ProjectionType.h>
+
 namespace FD3D
 {
-    enum class ProjectionType : uint8_t
-    {
-        Orthographic,
-        Perspective,
-        Frustum
-    };
-
     class Projection
     {
         protected:

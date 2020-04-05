@@ -201,3 +201,8 @@ size_t FD3D::SceneNode::getTypeCodeHash() const
 {
     return 0;
 }
+
+bool FD3D::SceneNode::matchTypeCodeHash(size_t hash) const
+{
+    return hash == getTypeCodeHash();
+}

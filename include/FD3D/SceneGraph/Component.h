@@ -23,7 +23,7 @@ namespace FD3D
             template<typename T>
             bool is() const
             {
-                return FDCore::TypeCodeHelper<T>::hash() == getTypeCodeHash();
+                return matchTypeCodeHash(FDCore::TypeCodeHelper<T>::hash());
             }
 
             template<typename T>
@@ -46,6 +46,7 @@ namespace FD3D
 
             virtual const char *getTypeCode() const;
             virtual size_t getTypeCodeHash() const;
+            virtual bool matchTypeCodeHash(size_t hash) const;
     };
 }
 

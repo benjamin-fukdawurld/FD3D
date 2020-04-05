@@ -29,3 +29,8 @@ size_t FD3D::Component::getTypeCodeHash() const
 {
     return 0;
 }
+
+bool FD3D::Component::matchTypeCodeHash(size_t hash) const
+{
+    return hash == getTypeCodeHash();
+}

@@ -55,7 +55,82 @@ namespace FD3D
             const Component *getComponent(Component::id_type id) const;
 
             template<typename T>
+            std::vector<T*> getNodesAs()
+            {
+                typedef FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<SceneNode>
+                        >::cell_type cell_type;
+
+                typedef std::vector<FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<SceneNode>
+                        >::iterator> node_vector;
+
+                node_vector nodes = m_nodes.find_all_if([](const cell_type &c){
+                    return c.value->as<T>();
+                });
+
+                std::vector<T*> result;
+                result.reserve(nodes.size());
+                for(size_t i = 0, imax = nodes.size(); i < imax; ++i)
+                    result.push_back(nodes[i]->value->as<T>());
+
+                return result;
+            }
+
+            template<typename T>
+            std::vector<const T*> getNodesAs() const
+            {
+                typedef FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<SceneNode>
+                        >::cell_type cell_type;
+
+                typedef std::vector<FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<SceneNode>
+                        >::iterator> node_vector;
+
+                node_vector nodes = m_nodes.find_all_if([](const cell_type &c){
+                    return c.value->as<T>();
+                });
+
+                std::vector<const T*> result;
+                result.reserve(nodes.size());
+                for(size_t i = 0, imax = nodes.size(); i < imax; ++i)
+                    result.push_back(nodes[i]->value->as<T>());
+
+                return result;
+            }
+
+            template<typename T>
             std::vector<T*> getComponentsAs()
+            {
+                typedef FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<Component>
+                        >::cell_type cell_type;
+
+                typedef std::vector<FDCore::AssociativeContainer<
+                            Component::id_type,
+                            std::unique_ptr<Component>
+                        >::iterator> component_vector;
+
+                component_vector components = m_components.find_all_if([](const cell_type &c){
+                    return c.value->as<T>();
+                });
+
+                std::vector<T*> result;
+                result.reserve(components.size());
+                for(size_t i = 0, imax = components.size(); i < imax; ++i)
+                    result.push_back(components[i]->value->as<T>());
+
+                return result;
+            }
+
+            template<typename T>
+            std::vector<const T*> getComponentsAs() const
             {
                 typedef FDCore::AssociativeContainer<
                             Component::id_type,
@@ -120,7 +195,7 @@ namespace FD3D
                 for(auto it = m_componentBindings.find(node), end = m_componentBindings.end(); it != end; ++it)
                 {
                     T *c = getComponent(it->value)->as<T>();
-                    result.push_back();
+                    result.push_back(c);
                 }
 
                 return result;
@@ -133,7 +208,7 @@ namespace FD3D
                 for(auto it = m_componentBindings.find(node), end = m_componentBindings.end(); it != end; ++it)
                 {
                     const T *c = getComponent(it->value)->as<T>();
-                    result.push_back();
+                    result.push_back(c);
                 }
 
                 return result;
@@ -198,6 +273,26 @@ namespace FD3D
                     return d.m_scene->findByName(name, d.m_node->getId());
                 }
 
+                std::vector<const Component*> getComponents() const
+                {
+                    auto &d = asDerived();
+                    return d.m_scene->getNodeComponents(d.m_node->getId());
+                }
+
+                std::vector<const Component*>
+                    getNodeComponents(id_type node, std::function<bool(const Component*)> pred) const
+                {
+                    auto &d = asDerived();
+                    return d.m_scene->getNodeComponents(d.m_node->getId(), pred);
+                }
+
+                template<typename T>
+                std::vector<const T*> getComponentsAs(id_type node) const
+                {
+                    auto &d = asDerived();
+                    return const_cast<const Scene*>(d.m_scene)->getNodeComponentsAs<T>(d.m_node->getId());
+                }
+
             private:
                 const Derived &asDerived() const { return *static_cast<const Derived*>(this); }
         };
@@ -234,6 +329,22 @@ namespace FD3D
             std::vector<SceneNodeProxy> findByName(const std::string &name)
             {
                 return m_scene->findByName(name, m_node->getId());
+            }
+
+            std::vector<Component*> getNodeComponents()
+            {
+                return m_scene->getNodeComponents(m_node->getId());
+            }
+
+            std::vector<Component *> getNodeComponents(std::function<bool(const Component*)> pred)
+            {
+                return m_scene->getNodeComponents(m_node->getId(), pred);
+            }
+
+            template<typename T>
+            std::vector<T*> getComponentsAs()
+            {
+                return m_scene->getNodeComponentsAs<T>(m_node->getId());
             }
     };
 

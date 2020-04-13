@@ -6,6 +6,7 @@
 
 FD3D::AbstractMesh::AbstractMesh() :
     m_materialId(0),
+    m_shaderId(0),
     m_nbColorChannels(0),
     m_nbTexChannels(0),
     m_options(MeshOption::Interlaced)

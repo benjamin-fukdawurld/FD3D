@@ -125,20 +125,20 @@ bool FD3D::AbstractSceneLoader::loadCameras(Scene &out)
 
 bool FD3D::AbstractSceneLoader::loadNodes(FD3D::Scene &out)
 {
-    std::queue<std::pair<Scene::id_type, const aiNode *>> todo;
+    std::queue<std::pair<Scene::node_id_type, const aiNode *>> todo;
     todo.push(std::make_pair(out.getRootId(), m_scene->mRootNode));
     while(!todo.empty())
     {
-        Scene::id_type parent = 0;
+        Scene::node_id_type parent = 0;
         const aiNode *node = nullptr;
         {
-            std::pair<Scene::id_type, const aiNode *> current = todo.front();
+            std::pair<Scene::node_id_type, const aiNode *> current = todo.front();
             parent = current.first;
             node = current.second;
             todo.pop();
         }
 
-        Scene::id_type id = loadNode(node, out, parent);
+        Scene::node_id_type id = loadNode(node, out, parent);
         for(size_t i = 0; i < node->mNumChildren; ++i)
             todo.push(std::make_pair(id, node->mChildren[i]));
     }
@@ -448,7 +448,7 @@ bool FD3D::AbstractSceneLoader::loadMesh(const aiMesh *in, Scene &out)
     return true;
 }
 
-FD3D::Scene::id_type FD3D::AbstractSceneLoader::loadNode(const aiNode *in, Scene &out, Scene::id_type parent)
+FD3D::Scene::node_id_type FD3D::AbstractSceneLoader::loadNode(const aiNode *in, Scene &out, Scene::node_id_type parent)
 {
     std::unique_ptr<ObjectNode> result(new ObjectNode());
     Transform &t = result->getEntity();
@@ -464,12 +464,16 @@ FD3D::Scene::id_type FD3D::AbstractSceneLoader::loadNode(const aiNode *in, Scene
 
     result->setName(in->mName.C_Str());
     result->setParentId(parent);
+    FD3D::SceneNodeProxy parentNode = out.getNode(parent);
+    if(parentNode)
+        parentNode->addChildId(result->getId());
+
     out.addNode(result.get());
     for(size_t i = 0; i < in->mNumMeshes; ++i)
         out.bindComponent(result->getId(), m_meshes[in->mMeshes[i]]);
 
 
-    Scene::id_type id = result->getId();
+    Scene::node_id_type id = result->getId();
     result.release();
 
     return id;

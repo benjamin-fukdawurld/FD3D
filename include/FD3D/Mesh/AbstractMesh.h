@@ -28,6 +28,7 @@ namespace FD3D
     {
         protected:
             id_type m_materialId;
+            id_type m_shaderId;
             uint8_t m_nbColorChannels;
             uint8_t m_nbTexChannels;
             VertexComponentFlag m_componentsFlags;
@@ -40,6 +41,10 @@ namespace FD3D
             bool hasMaterial() const { return m_materialId != 0; }
             id_type getMaterialId() const { return m_materialId; }
             void setMaterialId(id_type id) { m_materialId = id; }
+
+            bool hasShader() const { return m_shaderId != 0; }
+            id_type getShaderId() const { return m_shaderId; }
+            void setShaderId(id_type id) { m_shaderId = id; }
 
             virtual float *getVertices() = 0;
             virtual const float *getVertices() const = 0;

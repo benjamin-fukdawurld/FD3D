@@ -162,7 +162,6 @@ bool FD3D::load(const aiMaterial *in, FD3D::Material &out, const std::string &di
     aiColor3D color;
     aiString name;
     float shininess;
-
     if(in->Get(AI_MATKEY_NAME, name) == AI_SUCCESS)
         out.setName(name.C_Str());
 

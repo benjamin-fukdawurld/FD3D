@@ -62,7 +62,7 @@ namespace FD3D
             virtual bool loadLight(const aiLight *in, Scene &out);
             virtual bool loadCamera(const aiCamera *in, Scene &out);
             virtual bool loadMesh(const aiMesh *in, Scene &out);
-            virtual Scene::id_type loadNode(const aiNode *in, Scene &out, Scene::id_type parent);
+            virtual Scene::node_id_type loadNode(const aiNode *in, Scene &out, Scene::node_id_type parent);
 
         private:
             virtual AbstractMesh *createMesh() = 0;

@@ -112,6 +112,27 @@ void FD3D::SceneNode::reserveChildIds(size_t size)
     m_children.reserve(size);
 }
 
+bool FD3D::SceneNode::isEnabled() const
+{
+    return m_isEnabled;
+}
+
+void FD3D::SceneNode::enable()
+{
+    if(m_isEnabled)
+        return;
+
+    m_isEnabled = true;
+}
+
+void FD3D::SceneNode::disable()
+{
+    if(!m_isEnabled)
+        return;
+
+    m_isEnabled = false;
+}
+
 void FD3D::SceneNode::clearChildIds()
 {
     m_children.clear();
@@ -194,15 +215,30 @@ void FD3D::SceneNode::setParentId(FD3D::SceneNode::id_type parent)
 
 const char *FD3D::SceneNode::getTypeCode() const
 {
-    return "";
+    return FDCore::TypeCodeHelper<FD3D::SceneNode>::code;
 }
 
 size_t FD3D::SceneNode::getTypeCodeHash() const
 {
-    return 0;
+    return FDCore::TypeCodeHelper<FD3D::SceneNode>::hash();
 }
 
 bool FD3D::SceneNode::matchTypeCodeHash(size_t hash) const
 {
     return hash == getTypeCodeHash();
+}
+
+const char *FD3D::RootNode::getTypeCode() const
+{
+    return FDCore::TypeCodeHelper<FD3D::SceneNode>::code;
+}
+
+size_t FD3D::RootNode::getTypeCodeHash() const
+{
+    return FDCore::TypeCodeHelper<FD3D::RootNode>::hash();
+}
+
+bool FD3D::RootNode::matchTypeCodeHash(size_t hash) const
+{
+    return hash == RootNode::getTypeCodeHash() || FD3D::SceneNode::matchTypeCodeHash(hash);
 }

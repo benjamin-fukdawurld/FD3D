@@ -70,7 +70,9 @@ SOURCES       = src/AbstractMesh.cpp \
 		src/LightColor.cpp \
 		src/LightAttenuation.cpp \
 		src/LightCone.cpp \
-		src/TrasformStack.cpp 
+		src/TransformStack.cpp \
+		src/Behavior.cpp \
+		src/StrategyBehavior.cpp 
 OBJECTS       = ../build/.obj/FD3D/AbstractMesh.o \
 		../build/.obj/FD3D/Component.o \
 		../build/.obj/FD3D/IndexProxy.o \
@@ -89,7 +91,9 @@ OBJECTS       = ../build/.obj/FD3D/AbstractMesh.o \
 		../build/.obj/FD3D/LightColor.o \
 		../build/.obj/FD3D/LightAttenuation.o \
 		../build/.obj/FD3D/LightCone.o \
-		../build/.obj/FD3D/TrasformStack.o
+		../build/.obj/FD3D/TransformStack.o \
+		../build/.obj/FD3D/Behavior.o \
+		../build/.obj/FD3D/StrategyBehavior.o
 DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/unix.conf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/linux.conf \
@@ -285,23 +289,25 @@ DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		include/FD3D/SceneGraph/Scene.h \
 		include/FD3D/SceneGraph/SceneNode.h \
 		include/FD3D/Light/Light.h \
+		include/FD3D/Light/LightColor.h \
+		include/FD3D/Light/LightAttenuation.h \
+		include/FD3D/Light/LightCone.h \
+		include/FD3D/Light/LightType.h \
 		include/FD3D/Camera/Camera.h \
 		include/FD3D/Camera/Projection.h \
+		include/FD3D/Camera/ProjectionType.h \
 		include/FD3D/Material/Material.h \
 		include/FD3D/Material/Texture.h \
 		include/FD3D/Utils/IndexProxy.h \
 		include/FD3D/Utils/Vertex.h \
 		include/FD3D/Utils/Transform.h \
 		include/FD3D/Utils/VertexProxy.h \
+		include/FD3D/Utils/TransformStack.h \
 		include/FD3D/Mesh/AbstractMesh.h \
 		include/FD3D/Mesh/Model.h \
 		include/FD3D/Mesh/Mesh.h \
-		include/FD3D/Light/LightColor.h \
-		include/FD3D/Light/LightAttenuation.h \
-		include/FD3D/Light/LightCone.h \
-		include/FD3D/Light/LightType.h \
-		include/FD3D/Camera/ProjectionType.h \
-		include/FD3D/Utils/TrasformStack.h src/AbstractMesh.cpp \
+		include/FD3D/Behavior/Behavior.h \
+		include/FD3D/Behavior/StrategyBehavior.h src/AbstractMesh.cpp \
 		src/Component.cpp \
 		src/IndexProxy.cpp \
 		src/Light.cpp \
@@ -319,7 +325,9 @@ DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		src/LightColor.cpp \
 		src/LightAttenuation.cpp \
 		src/LightCone.cpp \
-		src/TrasformStack.cpp
+		src/TransformStack.cpp \
+		src/Behavior.cpp \
+		src/StrategyBehavior.cpp
 QMAKE_TARGET  = FD3D
 DESTDIR       = ../build/lib/
 TARGET        = libFD3D.so.1.0.0
@@ -2263,7 +2271,7 @@ compiler_clean:
 		../thirdparty/glm/glm/gtc/constants.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/LightCone.o src/LightCone.cpp
 
-../build/.obj/FD3D/TrasformStack.o: src/TrasformStack.cpp include/FD3D/Utils/TrasformStack.h \
+../build/.obj/FD3D/TransformStack.o: src/TransformStack.cpp include/FD3D/Utils/TransformStack.h \
 		include/FD3D/Utils/Transform.h \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
@@ -2445,7 +2453,28 @@ compiler_clean:
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
 		../FDCore/include/FDCore/TypeInformation.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/TrasformStack.o src/TrasformStack.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/TransformStack.o src/TransformStack.cpp
+
+../build/.obj/FD3D/Behavior.o: src/Behavior.cpp include/FD3D/Behavior/Behavior.h \
+		include/FD3D/SceneGraph/Component.h \
+		../FDCore/include/FDCore/Identifiable.h \
+		../FDCore/include/FDCore/ComparableTrait.h \
+		../FDCore/include/FDCore/TypeInformation.h \
+		include/FD3D/SceneGraph/SceneNode.h \
+		include/FD3D/SceneGraph/Scene.h \
+		../FDCore/include/FDCore/AssociativeContainer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Behavior.o src/Behavior.cpp
+
+../build/.obj/FD3D/StrategyBehavior.o: src/StrategyBehavior.cpp include/FD3D/Behavior/StrategyBehavior.h \
+		include/FD3D/Behavior/Behavior.h \
+		include/FD3D/SceneGraph/Component.h \
+		../FDCore/include/FDCore/Identifiable.h \
+		../FDCore/include/FDCore/ComparableTrait.h \
+		../FDCore/include/FDCore/TypeInformation.h \
+		include/FD3D/SceneGraph/SceneNode.h \
+		include/FD3D/SceneGraph/Scene.h \
+		../FDCore/include/FDCore/AssociativeContainer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/StrategyBehavior.o src/StrategyBehavior.cpp
 
 ####### Install
 

@@ -23,6 +23,7 @@ namespace FD3D
             std::string m_name;
             std::vector<id_type> m_children;
             id_type m_parent;
+            bool m_isEnabled;
 
         public:
             SceneNode(id_type parent = 0);
@@ -77,6 +78,10 @@ namespace FD3D
             size_t getChildIdCount() const;
             void reserveChildIds(size_t size);
 
+            bool isEnabled() const;
+            void enable();
+            void disable();
+
             void clearChildIds();
 
             child_iterator childIdsBegin();
@@ -116,6 +121,9 @@ namespace FD3D
 
             RootNode &operator=(const RootNode &node) = delete;
 
+            const char *getTypeCode() const override;
+            size_t getTypeCodeHash() const override;
+            bool matchTypeCodeHash(size_t hash) const override;
     };
 
     template<typename T>
@@ -165,6 +173,10 @@ namespace FD3D
 
             const char *getTypeCode() const override;
             size_t getTypeCodeHash() const override;
+            bool matchTypeCodeHash(size_t hash) const override
+            {
+                return hash == EntityNode<T>::getTypeCodeHash() || SceneNode::matchTypeCodeHash(hash);
+            }
     };
 
     template<typename T>
@@ -180,6 +192,9 @@ namespace FD3D
         return FDCore::TypeCodeHelper<EntityNode<T>>::hash();
     }
 }
+
+generateTypeCode(FD3D::SceneNode);
+generateTypeCode(FD3D::RootNode);
 
 
 #endif // SCENENODE_H

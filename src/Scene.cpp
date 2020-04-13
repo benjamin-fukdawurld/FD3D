@@ -6,23 +6,33 @@
 #include <stack>
 
 
-FD3D::Scene::Scene()
+FD3D::Scene::Scene() :
+    m_rootId(0)
 {
-    auto p = new RootNode();
-    m_nodes.insert(p->getId(), std::unique_ptr<SceneNode>(p));
+    init();
 }
 
-FD3D::Scene::id_type FD3D::Scene::getRootId() const
+FD3D::Scene::node_id_type FD3D::Scene::getRootId() const
 {
     return m_rootId;
 }
 
-FD3D::ConstSceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::id_type id) const
+void FD3D::Scene::clear()
+{
+    m_components.clear();
+    m_componentBindings.clear();
+    m_nodes.clear();
+
+    m_rootId = 0;
+    init();
+}
+
+FD3D::ConstSceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::node_id_type id) const
 {
     return ConstSceneNodeProxy(*this, m_nodes[id]->value.get());
 }
 
-FD3D::SceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::id_type id)
+FD3D::SceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::node_id_type id)
 {
     auto n = m_nodes[id];
     if(n == nullptr)
@@ -34,12 +44,15 @@ FD3D::SceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::id_type id)
 void FD3D::Scene::addNode(SceneNode *node)
 {
     if(!node->hasParent() || !getNode(node->getParentId()))
+    {
         node->setParentId(m_rootId);
+        getNode(m_rootId)->addChildId(node->getId());
+    }
 
     m_nodes.insert(node->getId(), std::unique_ptr<SceneNode>(node));
 }
 
-void FD3D::Scene::removeNode(FD3D::Scene::id_type id)
+void FD3D::Scene::removeNode(FD3D::Scene::node_id_type id)
 {
     assert(id != m_rootId && "cannot remove root node");
     removeHierarchy(id);
@@ -74,12 +87,9 @@ size_t FD3D::Scene::getNodeCount() const
 }
 
 std::vector<FD3D::SceneNodeProxy> FD3D::Scene::findByName(const std::string &name,
-                                                          FD3D::Scene::id_type from)
+                                                          FD3D::Scene::node_id_type from)
 {
-    typedef FDCore::AssociativeContainer<
-                SceneNode::id_type,
-                std::unique_ptr<SceneNode>
-            >::cell_type cell_type;
+    typedef NodeMap::cell_type cell_type;
 
     if(from == 0)
         from = m_rootId;
@@ -93,7 +103,7 @@ std::vector<FD3D::SceneNodeProxy> FD3D::Scene::findByName(const std::string &nam
         return result;
     }
 
-    std::queue<FD3D::Scene::id_type> todo;
+    std::queue<FD3D::Scene::node_id_type> todo;
     todo.push(from);
     while(!todo.empty())
     {
@@ -102,7 +112,7 @@ std::vector<FD3D::SceneNodeProxy> FD3D::Scene::findByName(const std::string &nam
         if(!node)
             continue;
 
-        for(FD3D::Scene::id_type id: node->getChildIds())
+        for(FD3D::Scene::node_id_type id: node->getChildIds())
             todo.push(id);
 
         if(node->getName() == name)
@@ -113,12 +123,9 @@ std::vector<FD3D::SceneNodeProxy> FD3D::Scene::findByName(const std::string &nam
 }
 
 std::vector<FD3D::ConstSceneNodeProxy> FD3D::Scene::findByName(const std::string &name,
-                                                               FD3D::Scene::id_type from) const
+                                                               FD3D::Scene::node_id_type from) const
 {
-    typedef FDCore::AssociativeContainer<
-                SceneNode::id_type,
-                std::unique_ptr<SceneNode>
-            >::cell_type cell_type;
+    typedef NodeMap::cell_type cell_type;
 
     if(from == 0)
         from = m_rootId;
@@ -132,7 +139,7 @@ std::vector<FD3D::ConstSceneNodeProxy> FD3D::Scene::findByName(const std::string
         return result;
     }
 
-    std::queue<FD3D::Scene::id_type> todo;
+    std::queue<FD3D::Scene::node_id_type> todo;
     todo.push(from);
     while(!todo.empty())
     {
@@ -141,7 +148,7 @@ std::vector<FD3D::ConstSceneNodeProxy> FD3D::Scene::findByName(const std::string
         if(!node)
             continue;
 
-        for(FD3D::Scene::id_type id: node->getChildIds())
+        for(FD3D::Scene::node_id_type id: node->getChildIds())
             todo.push(id);
 
         if(node->getName() == name)
@@ -153,10 +160,8 @@ std::vector<FD3D::ConstSceneNodeProxy> FD3D::Scene::findByName(const std::string
 
 FD3D::Component *FD3D::Scene::getComponent(Component::id_type id)
 {
-    typedef FDCore::AssociativeContainer<
-                Component::id_type,
-                std::unique_ptr<Component>
-            >::cell_type cell_type;
+    typedef ComponentMap::cell_type cell_type;
+
     auto it = std::find_if(m_components.begin(), m_components.end(),
                  [id](const cell_type &c){ return c.value->getId() == id; });
 
@@ -168,10 +173,8 @@ FD3D::Component *FD3D::Scene::getComponent(Component::id_type id)
 
 const FD3D::Component *FD3D::Scene::getComponent(Component::id_type id) const
 {
-    typedef FDCore::AssociativeContainer<
-                Component::id_type,
-                std::unique_ptr<Component>
-            >::cell_type cell_type;
+    typedef ComponentMap::cell_type cell_type;
+
     auto it = std::find_if(m_components.begin(), m_components.end(),
                  [id](const cell_type &c){ return c.value->getId() == id; });
 
@@ -188,10 +191,8 @@ void FD3D::Scene::addComponent(Component *comp)
 
 void FD3D::Scene::removeComponent(Component::id_type id)
 {
-    typedef FDCore::AssociativeContainer<
-                Component::id_type,
-                std::unique_ptr<Component>
-            >::cell_type cell_type;
+    typedef ComponentMap::cell_type cell_type;
+
     auto it = std::find_if(m_components.begin(), m_components.end(),
                  [id](const cell_type &c){ return c.value->getId() == id; });
 
@@ -239,17 +240,11 @@ std::vector<const FD3D::Component*> FD3D::Scene::findComponentsByName(const std:
     return result;
 }
 
-void FD3D::Scene::bindComponent(Scene::id_type node, Component::id_type comp)
+void FD3D::Scene::bindComponent(Scene::node_id_type node, Component::id_type comp)
 {
-    typedef FDCore::AssociativeContainer<
-                SceneNode::id_type,
-                std::unique_ptr<SceneNode>
-            >::cell_type node_cell_type;
+    typedef NodeMap::cell_type node_cell_type;
 
-    typedef FDCore::AssociativeContainer<
-                Component::id_type,
-                std::unique_ptr<Component>
-            >::cell_type comp_cell_type;
+    typedef ComponentMap::cell_type comp_cell_type;
 
     if(std::find_if(m_nodes.begin(), m_nodes.end(),
         [node](const node_cell_type &n)
@@ -274,16 +269,16 @@ void FD3D::Scene::bindComponent(Scene::id_type node, Component::id_type comp)
     m_componentBindings.insert(node, comp);
 }
 
-void FD3D::Scene::unbindComponent(FD3D::Scene::id_type node, FD3D::Component::id_type comp)
+void FD3D::Scene::unbindComponent(FD3D::Scene::node_id_type node, FD3D::Component::id_type comp)
 {
-    typedef FDCore::AssociativeContainer<id_type, Component::id_type>::cell_type cell_type;
+    typedef BindingMap::cell_type cell_type;
     size_t h = m_componentBindings.hashKey(node);
     m_componentBindings.erase_if([h, comp](const cell_type &cell){
         return cell.key.hash == h && cell.value == comp;
     });
 }
 
-std::vector<FD3D::Component::id_type> FD3D::Scene::getNodeComponentIds(FD3D::Scene::id_type node) const
+std::vector<FD3D::Component::id_type> FD3D::Scene::getNodeComponentIds(FD3D::Scene::node_id_type node) const
 {
     std::vector<FD3D::Component::id_type> result;
     for(auto it = m_componentBindings.find(node), end = m_componentBindings.end(); it != end; ++it)
@@ -295,7 +290,7 @@ std::vector<FD3D::Component::id_type> FD3D::Scene::getNodeComponentIds(FD3D::Sce
 }
 
 std::vector<FD3D::Component::id_type>
-    FD3D::Scene::getNodeComponentIds(FD3D::Scene::id_type node,
+    FD3D::Scene::getNodeComponentIds(FD3D::Scene::node_id_type node,
                                      std::function<bool (const FD3D::Component *)> pred) const
 {
     std::vector<FD3D::Component::id_type> result;
@@ -308,7 +303,7 @@ std::vector<FD3D::Component::id_type>
     return result;
 }
 
-std::vector<FD3D::Component*> FD3D::Scene::getNodeComponents(FD3D::Scene::id_type node)
+std::vector<FD3D::Component*> FD3D::Scene::getNodeComponents(FD3D::Scene::node_id_type node)
 {
     std::vector<FD3D::Component*> result;
     for(auto it = m_componentBindings.find(node), end = m_componentBindings.end(); it != end; ++it)
@@ -319,7 +314,7 @@ std::vector<FD3D::Component*> FD3D::Scene::getNodeComponents(FD3D::Scene::id_typ
     return result;
 }
 
-std::vector<const FD3D::Component*> FD3D::Scene::getNodeComponents(FD3D::Scene::id_type node) const
+std::vector<const FD3D::Component*> FD3D::Scene::getNodeComponents(FD3D::Scene::node_id_type node) const
 {
     std::vector<const FD3D::Component*> result;
     for(auto it = m_componentBindings.find(node), end = m_componentBindings.end(); it != end; ++it)
@@ -331,7 +326,7 @@ std::vector<const FD3D::Component*> FD3D::Scene::getNodeComponents(FD3D::Scene::
 }
 
 std::vector<FD3D::Component*>
-    FD3D::Scene::getNodeComponents(FD3D::Scene::id_type node,
+    FD3D::Scene::getNodeComponents(FD3D::Scene::node_id_type node,
                                    std::function<bool (const FD3D::Component *)> pred)
 {
     std::vector<FD3D::Component*> result;
@@ -346,7 +341,7 @@ std::vector<FD3D::Component*>
 }
 
 std::vector<const FD3D::Component*>
-    FD3D::Scene::getNodeComponents(FD3D::Scene::id_type node,
+    FD3D::Scene::getNodeComponents(FD3D::Scene::node_id_type node,
                                    std::function<bool (const FD3D::Component *)> pred) const
 {
     std::vector<const FD3D::Component*> result;
@@ -358,6 +353,69 @@ std::vector<const FD3D::Component*>
     }
 
     return result;
+}
+
+std::vector<FD3D::SceneNodeProxy> FD3D::Scene::getBoundNodes(component_id_type comp)
+{
+    std::vector<BindingMap::iterator> v = m_componentBindings.find_all_if([comp](const BindingMap::cell_type &cell){
+        return cell.value == comp;
+    });
+
+    std::vector<FD3D::SceneNodeProxy> result;
+    result.reserve(v.size());
+    for(auto &b : v)
+        result.push_back(getNode(b->key.hash));
+
+    return result;
+}
+
+std::vector<FD3D::ConstSceneNodeProxy> FD3D::Scene::getBoundNodes(component_id_type comp) const
+{
+    std::vector<BindingMap::const_iterator> v = const_cast<const BindingMap&>(m_componentBindings).find_all_if([comp](const BindingMap::cell_type &cell){
+        return cell.value == comp;
+    });
+
+    std::vector<FD3D::ConstSceneNodeProxy> result;
+    result.reserve(v.size());
+    for(auto &b : v)
+        result.push_back(getNode(b->key.hash));
+
+    return result;
+}
+
+void FD3D::Scene::init()
+{
+    if(m_rootId != 0)
+        return;
+
+    auto p = new RootNode();
+    m_nodes.insert(p->getId(), std::unique_ptr<SceneNode>(p));
+    m_rootId = p->getId();
+}
+
+void FD3D::Scene::removeNodeComponents(FD3D::SceneNode::id_type id)
+{
+    auto begin = m_componentBindings.find(id);
+    if(begin == m_componentBindings.end())
+        return;
+
+    auto v = getNodeComponentIds(id);
+    for(auto c: v)
+    {
+        size_t s = m_componentBindings.count_if([c](const FDCore::AssociativeContainer<node_id_type, Component::id_type>::cell_type &cell)
+        {
+            return cell.value == c;
+        });
+
+        if(s < 2)
+            m_components.erase(c);
+    }
+
+    auto end = m_componentBindings.find_last(id);
+    if(begin == end)
+        m_componentBindings.erase(begin);
+    else
+        m_componentBindings.erase(begin, end);
 }
 
 std::vector<FD3D::Component*> FD3D::Scene::findComponentsByName(const std::string &name)
@@ -372,15 +430,12 @@ std::vector<FD3D::Component*> FD3D::Scene::findComponentsByName(const std::strin
     return result;
 }
 
-void FD3D::Scene::removeHierarchy(FD3D::Scene::id_type id)
+void FD3D::Scene::removeHierarchy(FD3D::Scene::node_id_type id)
 {
-    typedef FDCore::AssociativeContainer<
-                SceneNode::id_type,
-                std::unique_ptr<SceneNode>
-            >::cell_type cell_type;
+    typedef NodeMap::cell_type cell_type;
 
-    std::vector<FD3D::Scene::id_type> toErase;
-    std::stack<FD3D::Scene::id_type> todo;
+    std::vector<FD3D::Scene::node_id_type> toErase;
+    std::stack<FD3D::Scene::node_id_type> todo;
     todo.push(id);
     {
         auto node = getNode(id);
@@ -392,7 +447,7 @@ void FD3D::Scene::removeHierarchy(FD3D::Scene::id_type id)
     }
     while(!todo.empty())
     {
-        FD3D::Scene::id_type current = todo.top();
+        FD3D::Scene::node_id_type current = todo.top();
         todo.pop();
 
         toErase.push_back(current);

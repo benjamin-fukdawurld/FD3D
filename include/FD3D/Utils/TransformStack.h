@@ -7,7 +7,7 @@
 
 namespace FD3D
 {
-    class TrasformStack
+    class TransformStack
     {
         public:
             struct TransformData
@@ -27,7 +27,7 @@ namespace FD3D
             std::stack<std::pair<TransformData, glm::mat4>> m_stack;
 
         public:
-            TrasformStack() = default;
+            TransformStack() = default;
 
             TransformData &getCurrentTransformData();
 
@@ -37,9 +37,9 @@ namespace FD3D
 
             const glm::mat4 &getCurrentMatrix() const;
 
-            TrasformStack &operator<<(const Transform &trans);
+            TransformStack &operator<<(const Transform &trans);
 
-            TrasformStack &operator>>(Transform &trans);
+            TransformStack &operator>>(Transform &trans);
 
             const std::pair<TransformData, glm::mat4> &top() const;
 

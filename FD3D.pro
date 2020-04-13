@@ -42,7 +42,9 @@ SOURCES += \
     src/LightColor.cpp \
     src/LightAttenuation.cpp \
     src/LightCone.cpp \
-    src/TrasformStack.cpp
+    src/TransformStack.cpp \
+    src/Behavior.cpp \
+    src/StrategyBehavior.cpp
 
 HEADERS += \
     include/FD3D/SceneGraph/Component.h \
@@ -51,9 +53,14 @@ HEADERS += \
     include/FD3D/SceneGraph/SceneNode.h \
     \
     include/FD3D/Light/Light.h \
+    include/FD3D/Light/LightColor.h \
+    include/FD3D/Light/LightAttenuation.h \
+    include/FD3D/Light/LightCone.h \
+    include/FD3D/Light/LightType.h \
     \
     include/FD3D/Camera/Camera.h \
     include/FD3D/Camera/Projection.h \
+    include/FD3D/Camera/ProjectionType.h \
     \
     include/FD3D/Material/Material.h \
     include/FD3D/Material/Texture.h \
@@ -62,16 +69,14 @@ HEADERS += \
     include/FD3D/Utils/Vertex.h \
     include/FD3D/Utils/Transform.h \
     include/FD3D/Utils/VertexProxy.h \
+    include/FD3D/Utils/TransformStack.h \
     \
     include/FD3D/Mesh/AbstractMesh.h \
     include/FD3D/Mesh/Model.h \
     include/FD3D/Mesh/Mesh.h \
-    include/FD3D/Light/LightColor.h \
-    include/FD3D/Light/LightAttenuation.h \
-    include/FD3D/Light/LightCone.h \
-    include/FD3D/Light/LightType.h \
-    include/FD3D/Camera/ProjectionType.h \
-    include/FD3D/Utils/TrasformStack.h
+    \
+    include/FD3D/Behavior/Behavior.h \
+    include/FD3D/Behavior/StrategyBehavior.h
 
 unix {
     target.path = /usr/lib

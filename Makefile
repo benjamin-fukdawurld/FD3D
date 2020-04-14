@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = FD3D1.0.0
-DISTDIR = /home/benjamin/dev/FanatikDevelopment/build/.obj/FD3D/FD3D1.0.0
+DISTDIR = /home/benjamin/dev/FanatikDevelopment/build/obj/FD3D/FD3D1.0.0
 LINK          = g++
 LFLAGS        = -shared -Wl,-soname,libFD3D.so.1
 LIBS          = $(SUBLIBS) -L../thirdparty/assimp/bin -lassimp   
@@ -48,7 +48,7 @@ STRIP         = strip
 
 ####### Output directory
 
-OBJECTS_DIR   = ../build/.obj/FD3D/
+OBJECTS_DIR   = ../build/obj/FD3D/
 
 ####### Files
 
@@ -73,27 +73,27 @@ SOURCES       = src/AbstractMesh.cpp \
 		src/TransformStack.cpp \
 		src/Behavior.cpp \
 		src/StrategyBehavior.cpp 
-OBJECTS       = ../build/.obj/FD3D/AbstractMesh.o \
-		../build/.obj/FD3D/Component.o \
-		../build/.obj/FD3D/IndexProxy.o \
-		../build/.obj/FD3D/Light.o \
-		../build/.obj/FD3D/Material.o \
-		../build/.obj/FD3D/Mesh.o \
-		../build/.obj/FD3D/Projection.o \
-		../build/.obj/FD3D/Scene.o \
-		../build/.obj/FD3D/SceneLoader.o \
-		../build/.obj/FD3D/SceneNode.o \
-		../build/.obj/FD3D/Texture.o \
-		../build/.obj/FD3D/Transform.o \
-		../build/.obj/FD3D/Camera.o \
-		../build/.obj/FD3D/ModelLoader.o \
-		../build/.obj/FD3D/VertexProxy.o \
-		../build/.obj/FD3D/LightColor.o \
-		../build/.obj/FD3D/LightAttenuation.o \
-		../build/.obj/FD3D/LightCone.o \
-		../build/.obj/FD3D/TransformStack.o \
-		../build/.obj/FD3D/Behavior.o \
-		../build/.obj/FD3D/StrategyBehavior.o
+OBJECTS       = ../build/obj/FD3D/AbstractMesh.o \
+		../build/obj/FD3D/Component.o \
+		../build/obj/FD3D/IndexProxy.o \
+		../build/obj/FD3D/Light.o \
+		../build/obj/FD3D/Material.o \
+		../build/obj/FD3D/Mesh.o \
+		../build/obj/FD3D/Projection.o \
+		../build/obj/FD3D/Scene.o \
+		../build/obj/FD3D/SceneLoader.o \
+		../build/obj/FD3D/SceneNode.o \
+		../build/obj/FD3D/Texture.o \
+		../build/obj/FD3D/Transform.o \
+		../build/obj/FD3D/Camera.o \
+		../build/obj/FD3D/ModelLoader.o \
+		../build/obj/FD3D/VertexProxy.o \
+		../build/obj/FD3D/LightColor.o \
+		../build/obj/FD3D/LightAttenuation.o \
+		../build/obj/FD3D/LightCone.o \
+		../build/obj/FD3D/TransformStack.o \
+		../build/obj/FD3D/Behavior.o \
+		../build/obj/FD3D/StrategyBehavior.o
 DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/unix.conf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/linux.conf \
@@ -792,7 +792,7 @@ compiler_clean:
 
 ####### Compile
 
-../build/.obj/FD3D/AbstractMesh.o: src/AbstractMesh.cpp include/FD3D/Mesh/AbstractMesh.h \
+../build/obj/FD3D/AbstractMesh.o: src/AbstractMesh.cpp include/FD3D/Mesh/AbstractMesh.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
@@ -821,9 +821,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -834,9 +836,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
 		../thirdparty/glm/glm/vec2.hpp \
 		../thirdparty/glm/glm/ext/vector_bool2.hpp \
 		../thirdparty/glm/glm/detail/type_vec2.hpp \
@@ -847,15 +849,16 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		include/FD3D/Utils/IndexProxy.h \
 		../thirdparty/assimp/include/assimp/mesh.h \
-		../thirdparty/assimp/include/assimp/types.h \
+		../thirdparty/assimp/include/assimp/aabb.h \
+		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/defs.h \
 		../thirdparty/assimp/include/assimp/config.h \
-		../thirdparty/assimp/include/assimp/vector3.h \
+		../thirdparty/assimp/include/assimp/types.h \
 		../thirdparty/assimp/include/assimp/vector2.h \
 		../thirdparty/assimp/include/assimp/color4.h \
 		../thirdparty/assimp/include/assimp/matrix3x3.h \
@@ -864,20 +867,19 @@ compiler_clean:
 		../thirdparty/assimp/include/assimp/vector2.inl \
 		../thirdparty/assimp/include/assimp/vector3.inl \
 		../thirdparty/assimp/include/assimp/color4.inl \
-		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/matrix3x3.inl \
 		../thirdparty/assimp/include/assimp/matrix4x4.inl \
 		../thirdparty/assimp/include/assimp/MathFunctions.h \
-		../thirdparty/assimp/include/assimp/aabb.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/AbstractMesh.o src/AbstractMesh.cpp
+		../thirdparty/assimp/include/assimp/quaternion.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/AbstractMesh.o src/AbstractMesh.cpp
 
-../build/.obj/FD3D/Component.o: src/Component.cpp include/FD3D/SceneGraph/Component.h \
+../build/obj/FD3D/Component.o: src/Component.cpp include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
 		../FDCore/include/FDCore/TypeInformation.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Component.o src/Component.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Component.o src/Component.cpp
 
-../build/.obj/FD3D/IndexProxy.o: src/IndexProxy.cpp include/FD3D/Utils/IndexProxy.h \
+../build/obj/FD3D/IndexProxy.o: src/IndexProxy.cpp include/FD3D/Utils/IndexProxy.h \
 		../FDCore/include/FDCore/CRTPTrait.h \
 		include/FD3D/Mesh/AbstractMesh.h \
 		include/FD3D/SceneGraph/Component.h \
@@ -907,9 +909,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -920,9 +924,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
 		../thirdparty/glm/glm/vec2.hpp \
 		../thirdparty/glm/glm/ext/vector_bool2.hpp \
 		../thirdparty/glm/glm/detail/type_vec2.hpp \
@@ -933,12 +937,12 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/IndexProxy.o src/IndexProxy.cpp
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/IndexProxy.o src/IndexProxy.cpp
 
-../build/.obj/FD3D/Light.o: src/Light.cpp include/FD3D/Light/Light.h \
+../build/obj/FD3D/Light.o: src/Light.cpp include/FD3D/Light/Light.h \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -956,9 +960,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/gtc/quaternion.hpp \
 		../thirdparty/glm/glm/gtc/constants.hpp \
 		../thirdparty/glm/glm/ext/scalar_constants.hpp \
@@ -983,9 +989,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		../thirdparty/glm/glm/vec4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4_precision.hpp \
@@ -994,9 +1000,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
 		../thirdparty/glm/glm/mat2x2.hpp \
 		../thirdparty/glm/glm/ext/matrix_double2x2.hpp \
 		../thirdparty/glm/glm/detail/type_mat2x2.hpp \
@@ -1138,9 +1144,9 @@ compiler_clean:
 		../thirdparty/glm/glm/gtx/euler_angles.inl \
 		../thirdparty/glm/glm/gtx/compatibility.hpp \
 		../thirdparty/glm/glm/gtx/compatibility.inl
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Light.o src/Light.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Light.o src/Light.cpp
 
-../build/.obj/FD3D/Material.o: src/Material.cpp include/FD3D/Material/Material.h \
+../build/obj/FD3D/Material.o: src/Material.cpp include/FD3D/Material/Material.h \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -1158,9 +1164,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		include/FD3D/Material/Texture.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
@@ -1170,8 +1178,8 @@ compiler_clean:
 		../thirdparty/assimp/include/assimp/types.h \
 		../thirdparty/assimp/include/assimp/defs.h \
 		../thirdparty/assimp/include/assimp/config.h \
-		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/vector2.h \
+		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/color4.h \
 		../thirdparty/assimp/include/assimp/matrix3x3.h \
 		../thirdparty/assimp/include/assimp/matrix4x4.h \
@@ -1179,16 +1187,16 @@ compiler_clean:
 		../thirdparty/assimp/include/assimp/vector2.inl \
 		../thirdparty/assimp/include/assimp/vector3.inl \
 		../thirdparty/assimp/include/assimp/color4.inl \
-		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/matrix3x3.inl \
 		../thirdparty/assimp/include/assimp/matrix4x4.inl \
 		../thirdparty/assimp/include/assimp/MathFunctions.h \
+		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/Compiler/pushpack1.h \
 		../thirdparty/assimp/include/assimp/Compiler/poppack1.h \
 		../thirdparty/assimp/include/assimp/material.inl
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Material.o src/Material.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Material.o src/Material.cpp
 
-../build/.obj/FD3D/Mesh.o: src/Mesh.cpp include/FD3D/Mesh/Mesh.h \
+../build/obj/FD3D/Mesh.o: src/Mesh.cpp include/FD3D/Mesh/Mesh.h \
 		include/FD3D/Mesh/AbstractMesh.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
@@ -1218,9 +1226,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -1231,9 +1241,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
 		../thirdparty/glm/glm/vec2.hpp \
 		../thirdparty/glm/glm/ext/vector_bool2.hpp \
 		../thirdparty/glm/glm/detail/type_vec2.hpp \
@@ -1244,15 +1254,16 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		include/FD3D/Utils/IndexProxy.h \
 		../thirdparty/assimp/include/assimp/mesh.h \
-		../thirdparty/assimp/include/assimp/types.h \
+		../thirdparty/assimp/include/assimp/aabb.h \
+		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/defs.h \
 		../thirdparty/assimp/include/assimp/config.h \
-		../thirdparty/assimp/include/assimp/vector3.h \
+		../thirdparty/assimp/include/assimp/types.h \
 		../thirdparty/assimp/include/assimp/vector2.h \
 		../thirdparty/assimp/include/assimp/color4.h \
 		../thirdparty/assimp/include/assimp/matrix3x3.h \
@@ -1261,14 +1272,13 @@ compiler_clean:
 		../thirdparty/assimp/include/assimp/vector2.inl \
 		../thirdparty/assimp/include/assimp/vector3.inl \
 		../thirdparty/assimp/include/assimp/color4.inl \
-		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/matrix3x3.inl \
 		../thirdparty/assimp/include/assimp/matrix4x4.inl \
 		../thirdparty/assimp/include/assimp/MathFunctions.h \
-		../thirdparty/assimp/include/assimp/aabb.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Mesh.o src/Mesh.cpp
+		../thirdparty/assimp/include/assimp/quaternion.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Mesh.o src/Mesh.cpp
 
-../build/.obj/FD3D/Projection.o: src/Projection.cpp include/FD3D/Camera/Projection.h \
+../build/obj/FD3D/Projection.o: src/Projection.cpp include/FD3D/Camera/Projection.h \
 		../thirdparty/glm/glm/mat4x4.hpp \
 		../thirdparty/glm/glm/ext/matrix_double4x4.hpp \
 		../thirdparty/glm/glm/detail/type_mat4x4.hpp \
@@ -1294,9 +1304,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -1307,9 +1319,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
 		../thirdparty/glm/glm/vec4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4_precision.hpp \
@@ -1318,9 +1330,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
 		../thirdparty/glm/glm/mat2x2.hpp \
 		../thirdparty/glm/glm/ext/matrix_double2x2.hpp \
 		../thirdparty/glm/glm/detail/type_mat2x2.hpp \
@@ -1455,28 +1467,28 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double1.hpp \
 		../thirdparty/glm/glm/ext/vector_double1_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int1.hpp \
-		../thirdparty/glm/glm/ext/vector_int1_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int1_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint1.hpp \
-		../thirdparty/glm/glm/ext/vector_uint1_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint1_sized.hpp \
 		../thirdparty/glm/glm/gtc/type_ptr.inl
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Projection.o src/Projection.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Projection.o src/Projection.cpp
 
-../build/.obj/FD3D/Scene.o: src/Scene.cpp include/FD3D/SceneGraph/Scene.h \
+../build/obj/FD3D/Scene.o: src/Scene.cpp include/FD3D/SceneGraph/Scene.h \
 		include/FD3D/SceneGraph/SceneNode.h \
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
 		../FDCore/include/FDCore/TypeInformation.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/AssociativeContainer.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Scene.o src/Scene.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Scene.o src/Scene.cpp
 
-../build/.obj/FD3D/SceneLoader.o: src/SceneLoader.cpp include/FD3D/SceneGraph/SceneLoader.h \
+../build/obj/FD3D/SceneLoader.o: src/SceneLoader.cpp include/FD3D/SceneGraph/SceneLoader.h \
 		../thirdparty/assimp/include/assimp/Importer.hpp \
 		../thirdparty/assimp/include/assimp/types.h \
 		../thirdparty/assimp/include/assimp/defs.h \
 		../thirdparty/assimp/include/assimp/config.h \
-		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/vector2.h \
+		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/color4.h \
 		../thirdparty/assimp/include/assimp/matrix3x3.h \
 		../thirdparty/assimp/include/assimp/matrix4x4.h \
@@ -1484,10 +1496,10 @@ compiler_clean:
 		../thirdparty/assimp/include/assimp/vector2.inl \
 		../thirdparty/assimp/include/assimp/vector3.inl \
 		../thirdparty/assimp/include/assimp/color4.inl \
-		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/matrix3x3.inl \
 		../thirdparty/assimp/include/assimp/matrix4x4.inl \
 		../thirdparty/assimp/include/assimp/MathFunctions.h \
+		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/postprocess.h \
 		../thirdparty/assimp/include/assimp/light.h \
 		../thirdparty/assimp/include/assimp/scene.h \
@@ -1527,9 +1539,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		include/FD3D/Material/Texture.h \
 		include/FD3D/Light/Light.h \
 		../thirdparty/glm/glm/gtc/quaternion.hpp \
@@ -1556,9 +1570,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		../thirdparty/glm/glm/vec4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4_precision.hpp \
@@ -1567,9 +1581,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
 		../thirdparty/glm/glm/mat2x2.hpp \
 		../thirdparty/glm/glm/ext/matrix_double2x2.hpp \
 		../thirdparty/glm/glm/detail/type_mat2x2.hpp \
@@ -1702,15 +1716,15 @@ compiler_clean:
 		include/FD3D/Utils/Transform.h \
 		include/FD3D/Camera/Projection.h \
 		include/FD3D/Camera/ProjectionType.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/SceneLoader.o src/SceneLoader.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/SceneLoader.o src/SceneLoader.cpp
 
-../build/.obj/FD3D/SceneNode.o: src/SceneNode.cpp include/FD3D/SceneGraph/SceneNode.h \
+../build/obj/FD3D/SceneNode.o: src/SceneNode.cpp include/FD3D/SceneGraph/SceneNode.h \
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
 		../FDCore/include/FDCore/TypeInformation.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/SceneNode.o src/SceneNode.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/SceneNode.o src/SceneNode.cpp
 
-../build/.obj/FD3D/Texture.o: src/Texture.cpp include/FD3D/Material/Texture.h \
+../build/obj/FD3D/Texture.o: src/Texture.cpp include/FD3D/Material/Texture.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
@@ -1719,8 +1733,8 @@ compiler_clean:
 		../thirdparty/assimp/include/assimp/types.h \
 		../thirdparty/assimp/include/assimp/defs.h \
 		../thirdparty/assimp/include/assimp/config.h \
-		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/vector2.h \
+		../thirdparty/assimp/include/assimp/vector3.h \
 		../thirdparty/assimp/include/assimp/color4.h \
 		../thirdparty/assimp/include/assimp/matrix3x3.h \
 		../thirdparty/assimp/include/assimp/matrix4x4.h \
@@ -1728,16 +1742,16 @@ compiler_clean:
 		../thirdparty/assimp/include/assimp/vector2.inl \
 		../thirdparty/assimp/include/assimp/vector3.inl \
 		../thirdparty/assimp/include/assimp/color4.inl \
-		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/matrix3x3.inl \
 		../thirdparty/assimp/include/assimp/matrix4x4.inl \
 		../thirdparty/assimp/include/assimp/MathFunctions.h \
+		../thirdparty/assimp/include/assimp/quaternion.inl \
 		../thirdparty/assimp/include/assimp/Compiler/pushpack1.h \
 		../thirdparty/assimp/include/assimp/Compiler/poppack1.h \
 		../thirdparty/assimp/include/assimp/material.inl
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Texture.o src/Texture.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Texture.o src/Texture.cpp
 
-../build/.obj/FD3D/Transform.o: src/Transform.cpp include/FD3D/Utils/Transform.h \
+../build/obj/FD3D/Transform.o: src/Transform.cpp include/FD3D/Utils/Transform.h \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -1755,9 +1769,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/gtc/quaternion.hpp \
 		../thirdparty/glm/glm/gtc/constants.hpp \
 		../thirdparty/glm/glm/ext/scalar_constants.hpp \
@@ -1782,9 +1798,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		../thirdparty/glm/glm/vec4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4_precision.hpp \
@@ -1793,9 +1809,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
 		../thirdparty/glm/glm/mat2x2.hpp \
 		../thirdparty/glm/glm/ext/matrix_double2x2.hpp \
 		../thirdparty/glm/glm/detail/type_mat2x2.hpp \
@@ -1950,13 +1966,13 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double1.hpp \
 		../thirdparty/glm/glm/ext/vector_double1_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int1.hpp \
-		../thirdparty/glm/glm/ext/vector_int1_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int1_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint1.hpp \
-		../thirdparty/glm/glm/ext/vector_uint1_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint1_sized.hpp \
 		../thirdparty/glm/glm/gtc/type_ptr.inl
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Transform.o src/Transform.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Transform.o src/Transform.cpp
 
-../build/.obj/FD3D/Camera.o: src/Camera.cpp include/FD3D/Camera/Camera.h \
+../build/obj/FD3D/Camera.o: src/Camera.cpp include/FD3D/Camera/Camera.h \
 		include/FD3D/SceneGraph/SceneNode.h \
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
@@ -1979,9 +1995,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/gtc/quaternion.hpp \
 		../thirdparty/glm/glm/gtc/constants.hpp \
 		../thirdparty/glm/glm/ext/scalar_constants.hpp \
@@ -2006,9 +2024,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		../thirdparty/glm/glm/vec4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4_precision.hpp \
@@ -2017,9 +2035,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
 		../thirdparty/glm/glm/mat2x2.hpp \
 		../thirdparty/glm/glm/ext/matrix_double2x2.hpp \
 		../thirdparty/glm/glm/detail/type_mat2x2.hpp \
@@ -2164,16 +2182,16 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double1.hpp \
 		../thirdparty/glm/glm/ext/vector_double1_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int1.hpp \
-		../thirdparty/glm/glm/ext/vector_int1_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int1_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint1.hpp \
-		../thirdparty/glm/glm/ext/vector_uint1_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint1_sized.hpp \
 		../thirdparty/glm/glm/gtc/type_ptr.inl
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Camera.o src/Camera.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Camera.o src/Camera.cpp
 
-../build/.obj/FD3D/ModelLoader.o: src/ModelLoader.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/ModelLoader.o src/ModelLoader.cpp
+../build/obj/FD3D/ModelLoader.o: src/ModelLoader.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/ModelLoader.o src/ModelLoader.cpp
 
-../build/.obj/FD3D/VertexProxy.o: src/VertexProxy.cpp include/FD3D/Utils/VertexProxy.h \
+../build/obj/FD3D/VertexProxy.o: src/VertexProxy.cpp include/FD3D/Utils/VertexProxy.h \
 		../FDCore/include/FDCore/EnumFlag.h \
 		../FDCore/include/FDCore/CRTPTrait.h \
 		../thirdparty/glm/glm/vec4.hpp \
@@ -2194,9 +2212,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
 		../thirdparty/glm/glm/detail/type_vec3.hpp \
@@ -2207,9 +2227,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
 		../thirdparty/glm/glm/vec2.hpp \
 		../thirdparty/glm/glm/ext/vector_bool2.hpp \
 		../thirdparty/glm/glm/detail/type_vec2.hpp \
@@ -2220,9 +2240,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		include/FD3D/Mesh/AbstractMesh.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
@@ -2232,9 +2252,9 @@ compiler_clean:
 		include/FD3D/SceneGraph/SceneNode.h \
 		../FDCore/include/FDCore/AssociativeContainer.h \
 		include/FD3D/Utils/IndexProxy.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/VertexProxy.o src/VertexProxy.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/VertexProxy.o src/VertexProxy.cpp
 
-../build/.obj/FD3D/LightColor.o: src/LightColor.cpp include/FD3D/Light/LightColor.h \
+../build/obj/FD3D/LightColor.o: src/LightColor.cpp include/FD3D/Light/LightColor.h \
 		../thirdparty/glm/glm/vec4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4.hpp \
 		../thirdparty/glm/glm/detail/type_vec4.hpp \
@@ -2253,15 +2273,17 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/LightColor.o src/LightColor.cpp
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/LightColor.o src/LightColor.cpp
 
-../build/.obj/FD3D/LightAttenuation.o: src/LightAttenuation.cpp include/FD3D/Light/LightAttenuation.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/LightAttenuation.o src/LightAttenuation.cpp
+../build/obj/FD3D/LightAttenuation.o: src/LightAttenuation.cpp include/FD3D/Light/LightAttenuation.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/LightAttenuation.o src/LightAttenuation.cpp
 
-../build/.obj/FD3D/LightCone.o: src/LightCone.cpp include/FD3D/Light/LightCone.h \
+../build/obj/FD3D/LightCone.o: src/LightCone.cpp include/FD3D/Light/LightCone.h \
 		../thirdparty/glm/glm/gtc/constants.hpp \
 		../thirdparty/glm/glm/ext/scalar_constants.hpp \
 		../thirdparty/glm/glm/detail/setup.hpp \
@@ -2269,9 +2291,9 @@ compiler_clean:
 		../thirdparty/glm/glm/simd/neon.h \
 		../thirdparty/glm/glm/ext/scalar_constants.inl \
 		../thirdparty/glm/glm/gtc/constants.inl
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/LightCone.o src/LightCone.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/LightCone.o src/LightCone.cpp
 
-../build/.obj/FD3D/TransformStack.o: src/TransformStack.cpp include/FD3D/Utils/TransformStack.h \
+../build/obj/FD3D/TransformStack.o: src/TransformStack.cpp include/FD3D/Utils/TransformStack.h \
 		include/FD3D/Utils/Transform.h \
 		../thirdparty/glm/glm/vec3.hpp \
 		../thirdparty/glm/glm/ext/vector_bool3.hpp \
@@ -2290,9 +2312,11 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double3.hpp \
 		../thirdparty/glm/glm/ext/vector_double3_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int3.hpp \
-		../thirdparty/glm/glm/ext/vector_int3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_int_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint3.hpp \
-		../thirdparty/glm/glm/ext/vector_uint3_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint3_sized.hpp \
+		../thirdparty/glm/glm/ext/scalar_uint_sized.hpp \
 		../thirdparty/glm/glm/gtc/quaternion.hpp \
 		../thirdparty/glm/glm/gtc/constants.hpp \
 		../thirdparty/glm/glm/ext/scalar_constants.hpp \
@@ -2317,9 +2341,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double2.hpp \
 		../thirdparty/glm/glm/ext/vector_double2_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int2.hpp \
-		../thirdparty/glm/glm/ext/vector_int2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int2_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint2.hpp \
-		../thirdparty/glm/glm/ext/vector_uint2_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint2_sized.hpp \
 		../thirdparty/glm/glm/vec4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4.hpp \
 		../thirdparty/glm/glm/ext/vector_bool4_precision.hpp \
@@ -2328,9 +2352,9 @@ compiler_clean:
 		../thirdparty/glm/glm/ext/vector_double4.hpp \
 		../thirdparty/glm/glm/ext/vector_double4_precision.hpp \
 		../thirdparty/glm/glm/ext/vector_int4.hpp \
-		../thirdparty/glm/glm/ext/vector_int4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_int4_sized.hpp \
 		../thirdparty/glm/glm/ext/vector_uint4.hpp \
-		../thirdparty/glm/glm/ext/vector_uint4_precision.hpp \
+		../thirdparty/glm/glm/ext/vector_uint4_sized.hpp \
 		../thirdparty/glm/glm/mat2x2.hpp \
 		../thirdparty/glm/glm/ext/matrix_double2x2.hpp \
 		../thirdparty/glm/glm/detail/type_mat2x2.hpp \
@@ -2453,9 +2477,9 @@ compiler_clean:
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
 		../FDCore/include/FDCore/TypeInformation.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/TransformStack.o src/TransformStack.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/TransformStack.o src/TransformStack.cpp
 
-../build/.obj/FD3D/Behavior.o: src/Behavior.cpp include/FD3D/Behavior/Behavior.h \
+../build/obj/FD3D/Behavior.o: src/Behavior.cpp include/FD3D/Behavior/Behavior.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
 		../FDCore/include/FDCore/ComparableTrait.h \
@@ -2463,9 +2487,9 @@ compiler_clean:
 		include/FD3D/SceneGraph/SceneNode.h \
 		include/FD3D/SceneGraph/Scene.h \
 		../FDCore/include/FDCore/AssociativeContainer.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/Behavior.o src/Behavior.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/Behavior.o src/Behavior.cpp
 
-../build/.obj/FD3D/StrategyBehavior.o: src/StrategyBehavior.cpp include/FD3D/Behavior/StrategyBehavior.h \
+../build/obj/FD3D/StrategyBehavior.o: src/StrategyBehavior.cpp include/FD3D/Behavior/StrategyBehavior.h \
 		include/FD3D/Behavior/Behavior.h \
 		include/FD3D/SceneGraph/Component.h \
 		../FDCore/include/FDCore/Identifiable.h \
@@ -2474,7 +2498,7 @@ compiler_clean:
 		include/FD3D/SceneGraph/SceneNode.h \
 		include/FD3D/SceneGraph/Scene.h \
 		../FDCore/include/FDCore/AssociativeContainer.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/.obj/FD3D/StrategyBehavior.o src/StrategyBehavior.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3D/StrategyBehavior.o src/StrategyBehavior.cpp
 
 ####### Install
 

@@ -12,7 +12,7 @@ CONFIG -= qt
 
 DESTDIR = ../../build/bin
 MAKEFILE = ../../build/makefiles/$${TARGET}
-OBJECTS_DIR = ../../build/.obj/$${TARGET}
+OBJECTS_DIR = ../../build/obj/$${TARGET}
 
 LIBS += \
     -L../../build/lib \

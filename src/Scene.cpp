@@ -29,7 +29,7 @@ void FD3D::Scene::clear()
 
 FD3D::ConstSceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::node_id_type id) const
 {
-    return ConstSceneNodeProxy(*this, m_nodes[id]->value.get());
+    return ConstSceneNodeProxy(*this, m_nodes[id]->get());
 }
 
 FD3D::SceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::node_id_type id)
@@ -38,7 +38,7 @@ FD3D::SceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::node_id_type id)
     if(n == nullptr)
         return SceneNodeProxy(*this, nullptr);
 
-    return SceneNodeProxy(*this, m_nodes[id]->value.get());
+    return SceneNodeProxy(*this, m_nodes[id]->get());
 }
 
 void FD3D::Scene::addNode(SceneNode *node)
@@ -75,7 +75,7 @@ bool FD3D::Scene::hasNodes() const
 
 void FD3D::Scene::clearNodes()
 {
-    m_nodes[0]->value->clearChildIds();
+    m_nodes[0]->get()->clearChildIds();
     auto it = m_nodes.begin();
     ++it;
     m_nodes.erase(it, m_nodes.end());

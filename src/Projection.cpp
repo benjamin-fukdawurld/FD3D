@@ -167,3 +167,35 @@ void FD3D::Projection::setType(const FD3D::ProjectionType &type)
     m_isUpToDate = false;
     m_type = type;
 }
+
+std::string_view FD3D::projectionTypeToString(FD3D::ProjectionType type)
+{
+    switch(type)
+    {
+        case ProjectionType::Orthographic:
+            return "Orthographic";
+
+        case ProjectionType::Perspective:
+            return "Perspective";
+
+        case ProjectionType::Frustum:
+            return "Frustum";
+
+        case ProjectionType::Invalid:
+            return "Invalid";
+    }
+}
+
+FD3D::ProjectionType FD3D::projectionTypeFromString(std::string_view str)
+{
+    if(str == "Orthographic")
+        return ProjectionType::Orthographic;
+
+    if(str == "Perspective")
+        return ProjectionType::Perspective;
+
+    if(str == "Frustum")
+        return ProjectionType::Frustum;
+
+    return ProjectionType::Invalid;
+}

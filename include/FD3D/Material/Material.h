@@ -20,6 +20,7 @@ namespace FD3D
             glm::vec3 m_diffuseColor;
             glm::vec3 m_specularColor;
             float m_shininess;
+            float m_opacity;
 
             std::unordered_map<TextureType, std::vector<uint32_t>> m_textures;
 
@@ -41,6 +42,9 @@ namespace FD3D
 
             float getShininess() const;
             void setShininess(float shininess);
+
+            float getOpacity() const;
+            void setOpacity(float opacity);
 
             std::unordered_map<TextureType, std::vector<uint32_t>> &getTextures()
             {

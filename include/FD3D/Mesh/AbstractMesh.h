@@ -18,6 +18,7 @@ namespace FD3D
 {
     enum class MeshOption : uint8_t
     {
+        Invalid = 255,
         None = 0,
         Interlaced = 1
     };
@@ -75,7 +76,7 @@ namespace FD3D
             VertexProxy operator()(size_t index) { return getVertexFromIndex(index); }
             ConstVertexProxy operator()(size_t index) const { return getVertexFromIndex(index); }
 
-            VertexComponentFlag getFlags() const { return m_componentsFlags; }
+            VertexComponentFlag getComponentFlags() const { return m_componentsFlags; }
             void setComponentsFlags(VertexComponentFlag flags) { m_componentsFlags = flags; }
 
             bool hasVertexComponent(VertexComponentType val) const

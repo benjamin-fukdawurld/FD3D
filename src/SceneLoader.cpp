@@ -266,7 +266,7 @@ bool FD3D::AbstractSceneLoader::loadLight(const aiLight *in, Scene &out)
 
         case aiLightSource_UNDEFINED:
         default:
-            result.setType(LightType::Undefined);
+            result.setType(LightType::Invalid);
         break;
     }
 

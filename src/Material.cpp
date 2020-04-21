@@ -53,7 +53,8 @@ FD3D::Material::Material() :
     m_ambientColor(1.0f, 1.0f, 1.0f),
     m_diffuseColor(1.0f, 1.0f, 1.0f),
     m_specularColor(1.0f, 1.0f, 1.0f),
-    m_shininess(1.0f)
+    m_shininess(1.0f),
+    m_opacity(1.0f)
 {
 
 }
@@ -113,6 +114,16 @@ float FD3D::Material::getShininess() const
 void FD3D::Material::setShininess(float shininess)
 {
     m_shininess = shininess;
+}
+
+float FD3D::Material::getOpacity() const
+{
+    return m_opacity;
+}
+
+void FD3D::Material::setOpacity(float opacity)
+{
+    m_opacity = opacity;
 }
 
 const char *FD3D::Material::getTypeCode() const
@@ -176,6 +187,10 @@ bool FD3D::load(const aiMaterial *in, FD3D::Material &out, const std::string &di
 
     if(in->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
         out.setSpecularColor({color.r, color.g, color.b});
+
+    float opacity = 1.0;
+    if(in->Get(AI_MATKEY_OPACITY, opacity) == AI_SUCCESS)
+        out.setOpacity(opacity);
 
     return true;
 }

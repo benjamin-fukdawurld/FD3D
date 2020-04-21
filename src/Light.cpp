@@ -9,7 +9,7 @@
 FD3D::Light::Light() :
     m_position(0.0f, 1.0f, 0.0f),
     m_direction(0.0f, -1.0f, 0.0f),
-    m_type(LightType::Undefined)
+    m_type(LightType::Invalid)
 {
 
 }
@@ -82,4 +82,48 @@ FD3D::LightType FD3D::Light::getType() const
 void FD3D::Light::setType(const LightType &type)
 {
     m_type = type;
+}
+
+std::string_view FD3D::lightTypeToString(FD3D::LightType type)
+{
+    switch(type)
+    {
+        case LightType::Invalid:
+        return "Invalid";
+
+        case LightType::SpotLight:
+        return "SpotLight";
+
+        case LightType::PointLight:
+        return "PointLight";
+
+        case LightType::DirectionalLight:
+        return "DirectionalLight";
+
+        case LightType::AmbientLight:
+        return "AmbientLight";
+
+        case LightType::AreaLight:
+        return "AreaLight";
+    }
+}
+
+FD3D::LightType FD3D::lightTypeFromString(std::string_view str)
+{
+    if(str == "SpotLight")
+        return LightType::SpotLight;
+
+    if(str == "PointLight")
+        return LightType::PointLight;
+
+    if(str == "DirectionalLight")
+        return LightType::DirectionalLight;
+
+    if(str == "AmbientLight")
+        return LightType::AmbientLight;
+
+    if(str == "AreaLight")
+        return LightType::AreaLight;
+
+    return LightType::Invalid;
 }

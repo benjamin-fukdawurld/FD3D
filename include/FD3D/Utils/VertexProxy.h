@@ -11,6 +11,8 @@
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
+#include <string_view>
+
 namespace FD3D
 {
     class AbstractMesh;
@@ -26,6 +28,9 @@ namespace FD3D
         Texture = 4,
         Tangent = 8
     };
+
+    std::string_view vertexComponentTypeToString(VertexComponentType type);
+    VertexComponentType vertexComponentTypeFromString(std::string_view str);
 
     typedef FDCore::EnumFlag<VertexComponentType, uint8_t> VertexComponentFlag;
 
@@ -193,6 +198,18 @@ namespace FD3D
 
         public:
             virtual ~VertexProxy();
+
+            const glm::vec3 *getPosition() const;
+
+            const glm::vec3 *getNormal() const;
+
+            const glm::vec3 *getTangent() const;
+
+            const glm::vec3 *getBitangent() const;
+
+            const glm::vec2 *getUv(size_t index) const;
+
+            const glm::vec4 *getColor(size_t index) const;
 
             glm::vec3 *getPosition();
 

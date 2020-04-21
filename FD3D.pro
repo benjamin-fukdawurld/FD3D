@@ -66,17 +66,15 @@ HEADERS += \
     include/FD3D/Material/Texture.h \
     \
     include/FD3D/Utils/IndexProxy.h \
-    include/FD3D/Utils/Vertex.h \
     include/FD3D/Utils/Transform.h \
     include/FD3D/Utils/VertexProxy.h \
     include/FD3D/Utils/TransformStack.h \
     \
     include/FD3D/Mesh/AbstractMesh.h \
-    include/FD3D/Mesh/Model.h \
     include/FD3D/Mesh/Mesh.h \
     \
     include/FD3D/Behavior/Behavior.h \
-    include/FD3D/Behavior/StrategyBehavior.h
+    include/FD3D/Behavior/StrategyBehavior.h \`
 
 unix {
     target.path = /usr/lib

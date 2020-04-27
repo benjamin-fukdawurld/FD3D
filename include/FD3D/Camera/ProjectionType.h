@@ -5,6 +5,8 @@
 
 #include<string_view>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
     enum class ProjectionType : uint8_t
@@ -15,9 +17,9 @@ namespace FD3D
         Frustum
     };
 
-    std::string_view projectionTypeToString(ProjectionType type);
+    FD_EXPORT  std::string_view projectionTypeToString(ProjectionType type);
 
-    ProjectionType projectionTypeFromString(std::string_view str);
+    FD_EXPORT ProjectionType projectionTypeFromString(std::string_view str);
 }
 
 #endif // PROJECTIONTYPE_H

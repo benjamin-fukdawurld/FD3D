@@ -10,7 +10,46 @@
 
 namespace FD3D
 {
-    class FD_EXPORT Behavior : public Component
+    class FD_EXPORT AbstractBehavior : public Component
+    {
+        public:
+            AbstractBehavior() = default;
+
+            ~AbstractBehavior() override = default;
+
+            virtual bool hasScene() const;
+
+            virtual bool hasNode() const;
+
+            virtual FD3D::SceneNodeProxy getNode();
+
+            virtual FD3D::ConstSceneNodeProxy getNode() const;
+
+            virtual FD3D::Scene *getScene() = 0;
+
+            virtual const FD3D::Scene *getScene() const = 0;
+
+            virtual void setScene(FD3D::Scene *scene) = 0;
+
+            virtual FD3D::SceneNode::id_type getNodeId() const = 0;
+
+            virtual void setNodeId(FD3D::SceneNode::id_type id) = 0;
+
+            virtual void init() = 0;
+            virtual void quit() = 0;
+            virtual void update() = 0;
+
+            virtual void onDisable() = 0;
+            virtual void onEnable() = 0;
+
+            const char *getTypeCode() const override;
+
+            size_t getTypeCodeHash() const override;
+
+            bool matchTypeCodeHash(size_t hash) const override;
+    };
+
+    class FD_EXPORT Behavior : public AbstractBehavior
     {
         protected:
             FD3D::Scene *m_scene;
@@ -23,30 +62,22 @@ namespace FD3D
 
             ~Behavior() override = default;
 
-            virtual bool hasScene() const;
+            FD3D::Scene *getScene() override;
 
-            virtual FD3D::Scene *getScene();
+            const FD3D::Scene *getScene() const override;
 
-            virtual const FD3D::Scene *getScene() const;
+            void setScene(FD3D::Scene *scene) override;
 
-            virtual void setScene(FD3D::Scene *scene);
+            FD3D::SceneNode::id_type getNodeId() const override;
 
-            virtual bool hasNode() const;
+            void setNodeId(FD3D::SceneNode::id_type id) override;
 
-            virtual FD3D::SceneNode::id_type getNodeId() const;
+            void init() override;
+            void quit() override;
+            void update() override;
 
-            virtual void setNodeId(FD3D::SceneNode::id_type id);
-
-            virtual FD3D::SceneNodeProxy getNode();
-
-            virtual FD3D::ConstSceneNodeProxy getNode() const;
-
-            virtual void init();
-            virtual void quit();
-            virtual void update();
-
-            virtual void onDisable();
-            virtual void onEnable();
+            void onDisable() override;
+            void onEnable() override;
 
             const char *getTypeCode() const override;
 
@@ -56,6 +87,7 @@ namespace FD3D
     };
 }
 
+generateTypeCode(FD3D::AbstractBehavior);
 generateTypeCode(FD3D::Behavior);
 
 #endif // BEHAVIOR_H

@@ -106,7 +106,7 @@ namespace FD3D
         PYBIND11_EXPORT void bind_behavior(pybind11::module &m);
     }
 
-    class PYBIND11_EXPORT PythonBehaviorWrapper : public FD3D::Behavior
+    class PYBIND11_EXPORT PythonBehaviorWrapper : public FD3D::AbstractBehavior
     {
         protected:
             pybind11::object m_self;
@@ -114,22 +114,35 @@ namespace FD3D
         public:
             PythonBehaviorWrapper(pybind11::object self);
 
-            PythonBehaviorWrapper(pybind11::object self, FD3D::Scene *scene, FD3D::SceneNode::id_type nodeId);
-
             ~PythonBehaviorWrapper() override = default;
 
             pybind11::object getSelf();
 
+            FD3D::Scene *getScene() override;
+
+            const FD3D::Scene *getScene() const override;
+
+            void setScene(FD3D::Scene *scene) override;
+
+            FD3D::SceneNode::id_type getNodeId() const override;
+
+            void setNodeId(FD3D::SceneNode::id_type id) override;
+
             void init() override;
-
             void quit() override;
-
             void update() override;
 
             void onDisable() override;
-
             void onEnable() override;
+
+            const char *getTypeCode() const override;
+
+            size_t getTypeCodeHash() const override;
+
+            bool matchTypeCodeHash(size_t hash) const override;
     };
 }
+
+generateTypeCode(FD3D::PythonBehaviorWrapper);
 
 #endif // BEHAVIOR_PYTHON_H

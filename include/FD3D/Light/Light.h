@@ -11,10 +11,11 @@
 #include <FD3D/Light/LightType.h>
 
 #include <FDCore/TypeInformation.h>
+#include <FDCore/Macros.h>
 
 namespace FD3D
 {
-    class Light
+    class FD_EXPORT Light
     {
         public:
             LightColor color;
@@ -32,19 +33,19 @@ namespace FD3D
 
             glm::vec3 &getPosition();
             const glm::vec3 &getPosition() const;
-            void setPosition(const glm::vec3 position);
+            void setPosition(const glm::vec3 &position);
 
             glm::vec3 &getDirection();
             const glm::vec3 &getDirection() const;
-            void setDirection(const glm::vec3 direction);
+            void setDirection(const glm::vec3 &direction);
 
             glm::vec3 &getUp();
             const glm::vec3 &getUp() const;
-            void setUp(const glm::vec3 up);
+            void setUp(const glm::vec3 &up);
 
-            void translate(const glm::vec3 v);
-            void rotate(const glm::vec3 angles);
-            void rotate(const glm::quat quaternion);
+            void translate(const glm::vec3 &v);
+            void rotate(const glm::vec3 &angles);
+            void rotate(const glm::quat &quaternion);
 
             LightType getType() const;
             void setType(const LightType &type);

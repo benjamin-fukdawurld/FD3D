@@ -6,9 +6,11 @@
 
 #include <string>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class Component : public FDCore::Identifiable<>
+    class FD_EXPORT Component : public FDCore::Identifiable<>
     {
         protected:
             std::string m_name;

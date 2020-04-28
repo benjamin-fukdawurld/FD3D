@@ -7,9 +7,11 @@
 
 #include <FDCore/TypeInformation.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class Camera : public Transform
+    class FD_EXPORT Camera : public Transform
     {
         public:
             Projection projection;

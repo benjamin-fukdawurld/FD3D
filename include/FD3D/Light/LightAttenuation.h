@@ -1,9 +1,11 @@
 #ifndef LIGHTATTENUATION_H
 #define LIGHTATTENUATION_H
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class LightAttenuation
+    class FD_EXPORT LightAttenuation
     {
         protected:
             float m_constantAttenuation;

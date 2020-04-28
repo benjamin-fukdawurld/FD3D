@@ -6,9 +6,11 @@
 
 #include <FD3D/Camera/ProjectionType.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class Projection
+    class FD_EXPORT Projection
     {
         protected:
             mutable glm::mat4 m_mat;
@@ -37,7 +39,6 @@ namespace FD3D
             void setRight(float right);
             float getWidth() const;
             void setWidth(float w);
-            float getAspectRatio() const { return getWidth() / getHeight(); }
 
             float getBottom() const;
             void setBottom(float bottom);
@@ -46,16 +47,21 @@ namespace FD3D
             float getHeight() const;
             void setHeight(float h);
 
+            float getAspectRatio() const { return getWidth() / getHeight(); }
+
             float getNear() const;
             void setNear(float near);
             float getFar() const;
             void setFar(float far);
-            ProjectionType getType() const;
-            void setType(const ProjectionType &type);
             float getFov() const;
             void setFov(float fov);
 
-            void invalidate();
+            ProjectionType getType() const;
+            void setType(const ProjectionType &type);
+
+            void invalidate() const;
+            bool isUptoDate() const;
+            virtual void update() const;
 
         protected:
             void generateMatrix() const;

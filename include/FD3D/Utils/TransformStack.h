@@ -5,9 +5,11 @@
 
 #include <FD3D/Utils/Transform.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class TransformStack
+    class FD_EXPORT TransformStack
     {
         public:
             struct TransformData

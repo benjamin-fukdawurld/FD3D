@@ -7,9 +7,11 @@
 
 #include <FD3D/SceneGraph/SceneNode.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class Transform
+    class FD_EXPORT Transform
     {
         protected:
             mutable glm::mat4 m_mat;
@@ -63,7 +65,7 @@ namespace FD3D
             glm::vec3 getDown() const;
 
             void invalidate() const;
-            bool isUptoDate() const;
+            bool isUpToDate() const;
             virtual void update() const;
 
             static glm::mat4 generateMatrix(const glm::vec3 &position,

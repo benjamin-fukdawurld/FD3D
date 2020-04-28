@@ -9,6 +9,8 @@
 
 #include <assimp/material.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
     enum class TextureType : uint8_t
@@ -28,7 +30,7 @@ namespace FD3D
         Reflection
     };
 
-    class Texture : public Component
+    class FD_EXPORT Texture : public Component
     {
         protected:
             uint32_t m_textureId;

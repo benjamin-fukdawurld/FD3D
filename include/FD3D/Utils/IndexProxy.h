@@ -6,6 +6,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
     class AbstractMesh;
@@ -15,7 +17,7 @@ namespace FD3D
         template<typename DerivedType>
         class ConstIndexProxyTrait : public FDCore::CRTPTrait<DerivedType>
         {
-            friend class AbstractMesh;
+            friend class FD3D::AbstractMesh;
             protected:
                 size_t m_position;
 
@@ -27,7 +29,7 @@ namespace FD3D
             public:
                 virtual ~ConstIndexProxyTrait();
 
-                const AbstractMesh *getMesh() const
+                const FD3D::AbstractMesh *getMesh() const
                 {
                     return this->asDerived().m_mesh;
                 }
@@ -108,7 +110,7 @@ namespace FD3D
         ConstIndexProxyTrait<Derived>::~ConstIndexProxyTrait() {}
     }
 
-    class ConstIndexProxy : public internal::ConstIndexProxyTrait<ConstIndexProxy>
+    class FD_EXPORT ConstIndexProxy : public internal::ConstIndexProxyTrait<ConstIndexProxy>
     {
         friend class AbstractMesh;
         friend class internal::ConstIndexProxyTrait<ConstIndexProxy>;
@@ -122,7 +124,7 @@ namespace FD3D
             virtual ~ConstIndexProxy();
     };
 
-    class IndexProxy : public internal::ConstIndexProxyTrait<IndexProxy>
+    class FD_EXPORT IndexProxy : public internal::ConstIndexProxyTrait<IndexProxy>
     {
         friend class AbstractMesh;
         friend class internal::ConstIndexProxyTrait<IndexProxy>;
@@ -134,6 +136,11 @@ namespace FD3D
 
         public:
             virtual ~IndexProxy();
+
+            AbstractMesh *getMesh()
+            {
+                return this->asDerived().m_mesh;
+            }
 
             uint32_t getValue() const;
 

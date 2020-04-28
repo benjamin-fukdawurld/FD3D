@@ -173,7 +173,7 @@ void FD3D::Transform::invalidate() const
     m_isUpToDate = false;
 }
 
-bool FD3D::Transform::isUptoDate() const
+bool FD3D::Transform::isUpToDate() const
 {
     return m_isUpToDate;
 }

@@ -8,12 +8,14 @@
 
 #include <memory>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
     class SceneNodeProxy;
     class ConstSceneNodeProxy;
 
-    class Scene
+    class FD_EXPORT Scene
     {
         public:
             typedef SceneNode::id_type node_id_type;
@@ -33,6 +35,9 @@ namespace FD3D
 
         public:
             Scene();
+            Scene(const Scene&) = delete;
+
+            Scene &operator=(const Scene&) = delete;
 
             node_id_type getRootId() const;
 
@@ -226,7 +231,7 @@ namespace FD3D
                     return d.m_scene;
                 }
 
-                ConstProxyType &getNode() const
+                const SceneNode &getNode() const
                 {
                     auto &d = asDerived();
                     return d.m_node;
@@ -291,7 +296,7 @@ namespace FD3D
         };
     }
 
-    class SceneNodeProxy : public internal::ConstSceneNodeProxyTrait<ConstSceneNodeProxy>
+    class FD_EXPORT SceneNodeProxy : public internal::ConstSceneNodeProxyTrait<ConstSceneNodeProxy>
     {
         friend class internal::ConstSceneNodeProxyTrait<ConstSceneNodeProxy>;
 
@@ -307,6 +312,17 @@ namespace FD3D
                 m_scene(&scene),
                 m_node(node)
             {}
+
+            SceneNode &getNode()
+            {
+                return *m_node;
+            }
+
+            template<typename T>
+            T *getNodeAs()
+            {
+                return m_node->as<T>();
+            }
 
             SceneNode &operator*() { return *m_node; }
             SceneNode *operator->() { return m_node; }
@@ -341,7 +357,7 @@ namespace FD3D
             }
     };
 
-    class ConstSceneNodeProxy : public internal::ConstSceneNodeProxyTrait<ConstSceneNodeProxy>
+    class FD_EXPORT ConstSceneNodeProxy : public internal::ConstSceneNodeProxyTrait<ConstSceneNodeProxy>
     {
         friend class internal::ConstSceneNodeProxyTrait<ConstSceneNodeProxy>;
 
@@ -357,6 +373,12 @@ namespace FD3D
                 m_scene(&scene),
                 m_node(node)
             {}
+
+            template<typename T>
+            const T *getNodeAs()
+            {
+                return m_node->as<T>();
+            }
 
             ConstSceneNodeProxy(ConstSceneNodeProxy &&other) = default;
             ConstSceneNodeProxy(const ConstSceneNodeProxy &other) = default;

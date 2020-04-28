@@ -67,13 +67,7 @@ void FD3D::SceneNode::setChildIds(const std::vector<FD3D::SceneNode::id_type> &c
 {
     m_children = children;
 }
-
-FD3D::SceneNode::id_type &FD3D::SceneNode::getChildId(size_t index)
-{
-    return m_children[index];
-}
-
-const FD3D::SceneNode::id_type &FD3D::SceneNode::getChildId(size_t index) const
+FD3D::SceneNode::id_type FD3D::SceneNode::getChildId(size_t index) const
 {
     return m_children[index];
 }

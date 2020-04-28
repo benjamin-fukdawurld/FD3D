@@ -26,7 +26,7 @@ const float *FD3D::Projection::getMatrixPtr() const
 const glm::mat4x4 &FD3D::Projection::getMatrix() const
 {
     if(!m_isUpToDate)
-        generateMatrix();
+        update();
 
     return m_mat;
 }
@@ -42,9 +42,19 @@ void FD3D::Projection::setFov(float fov)
     m_fov = fov;
 }
 
-void FD3D::Projection::invalidate()
+void FD3D::Projection::invalidate() const
 {
     m_isUpToDate = false;
+}
+
+bool FD3D::Projection::isUptoDate() const
+{
+    return m_isUpToDate;
+}
+
+void FD3D::Projection::update() const
+{
+    generateMatrix();
 }
 
 void FD3D::Projection::generateMatrix() const
@@ -61,6 +71,10 @@ void FD3D::Projection::generateMatrix() const
 
         case FD3D::ProjectionType::Frustum:
         m_mat = glm::frustum(m_left, m_right, m_bottom, m_top, m_near, m_far);
+        break;
+
+        case FD3D::ProjectionType::Invalid:
+        m_mat = glm::mat4(1.0f);
         break;
     }
 
@@ -184,6 +198,8 @@ std::string_view FD3D::projectionTypeToString(FD3D::ProjectionType type)
         case ProjectionType::Invalid:
             return "Invalid";
     }
+
+    return "Invalid";
 }
 
 FD3D::ProjectionType FD3D::projectionTypeFromString(std::string_view str)

@@ -3,9 +3,11 @@
 
 #include <glm/vec4.hpp>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    struct LightColor
+    struct FD_EXPORT LightColor
     {
         glm::vec4 ambient;
         glm::vec4 diffuse;

@@ -45,7 +45,6 @@ HEADERS += \
     include/FD3D/Serialization/Json/Transform_Json.h \
     include/FD3D/Serialization/Json/Projection_Json.h \
     include/FD3D/Serialization/Glm_Serialize_utils.h \
-    include/FD3D/Serialization/FD3D_Serialize_utils.h \
     include/FD3D/Serialization/Json/Camera_Json.h \
     include/FD3D/Serialization/Json/Light_Json.h \
     include/FD3D/Serialization/Json/Material_Json.h \

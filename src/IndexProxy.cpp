@@ -34,7 +34,7 @@ uint32_t &FD3D::IndexProxy::operator*()
 
 uint32_t FD3D::IndexProxy::getValue() const
 {
-    assert(m_position < getMesh()->getNumberOfIndices());
+    assert(m_position < static_cast<const internal::ConstIndexProxyTrait<IndexProxy>*>(this)->getMesh()->getNumberOfIndices());
     return *(m_mesh->getIndices() + m_position);
 }
 

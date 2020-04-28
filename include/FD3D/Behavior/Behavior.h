@@ -6,9 +6,11 @@
 
 #include <FD3D/SceneGraph/Scene.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class Behavior : public Component
+    class FD_EXPORT Behavior : public Component
     {
         protected:
             FD3D::Scene *m_scene;
@@ -21,23 +23,23 @@ namespace FD3D
 
             ~Behavior() override = default;
 
-            bool hasScene() const;
+            virtual bool hasScene() const;
 
-            FD3D::Scene *getScene();
+            virtual FD3D::Scene *getScene();
 
-            const FD3D::Scene *getScene() const;
+            virtual const FD3D::Scene *getScene() const;
 
-            void setScene(FD3D::Scene *scene);
+            virtual void setScene(FD3D::Scene *scene);
 
-            bool hasNode() const;
+            virtual bool hasNode() const;
 
-            FD3D::SceneNode::id_type getNodeId() const;
+            virtual FD3D::SceneNode::id_type getNodeId() const;
 
-            void setNodeId(FD3D::SceneNode::id_type id);
+            virtual void setNodeId(FD3D::SceneNode::id_type id);
 
-            FD3D::SceneNodeProxy getNode();
+            virtual FD3D::SceneNodeProxy getNode();
 
-            FD3D::ConstSceneNodeProxy getNode() const;
+            virtual FD3D::ConstSceneNodeProxy getNode() const;
 
             virtual void init();
             virtual void quit();

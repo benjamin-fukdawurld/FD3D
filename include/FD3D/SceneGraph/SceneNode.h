@@ -8,9 +8,11 @@
 #include <FDCore/Identifiable.h>
 #include <FDCore/TypeInformation.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class SceneNode : public FDCore::Identifiable<>
+    class FD_EXPORT SceneNode : public FDCore::Identifiable<>
     {
         public:
             typedef typename FDCore::Identifiable<>::id_type id_type;
@@ -67,8 +69,7 @@ namespace FD3D
             void setChildIds(std::vector<id_type> &&children);
             void setChildIds(const std::vector<id_type> &children);
 
-            id_type &getChildId(size_t index);
-            const id_type &getChildId(size_t index) const;
+            id_type getChildId(size_t index) const;
 
             void addChildId(id_type id);
             void removeChildId(id_type id);
@@ -109,7 +110,7 @@ namespace FD3D
             virtual bool matchTypeCodeHash(size_t hash) const;
     };
 
-    class RootNode : public SceneNode
+    class FD_EXPORT RootNode : public SceneNode
     {
         friend class Scene;
 
@@ -121,6 +122,7 @@ namespace FD3D
 
             RootNode &operator=(const RootNode &node) = delete;
 
+        public:
             const char *getTypeCode() const override;
             size_t getTypeCodeHash() const override;
             bool matchTypeCodeHash(size_t hash) const override;

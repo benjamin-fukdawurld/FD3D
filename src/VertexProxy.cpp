@@ -132,6 +132,8 @@ std::string_view FD3D::vertexComponentTypeToString(FD3D::VertexComponentType typ
         case VertexComponentType::Invalid:
         return "Invalid";
     }
+
+    return "Invalid";
 }
 
 FD3D::VertexComponentType FD3D::vertexComponentTypeFromString(std::string_view str)

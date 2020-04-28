@@ -7,7 +7,7 @@
 
 namespace FD3D
 {
-    class StrategyBehavior final : public Behavior
+    class FD_EXPORT StrategyBehavior final : public Behavior
     {
         protected:
             std::function<void(StrategyBehavior*)> m_initStrategy;

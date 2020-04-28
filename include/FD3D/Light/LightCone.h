@@ -1,9 +1,11 @@
 #ifndef LIGHTCONE_H
 #define LIGHTCONE_H
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class LightCone
+    class FD_EXPORT LightCone
     {
         protected:
             float m_innerAngle;

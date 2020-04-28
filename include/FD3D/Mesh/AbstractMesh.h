@@ -12,6 +12,8 @@
 #include <cstdint>
 #include <vector>
 
+#include <FDCore/Macros.h>
+
 class aiMesh;
 
 namespace FD3D
@@ -25,7 +27,7 @@ namespace FD3D
 
     typedef FDCore::EnumFlag<MeshOption, uint8_t> MeshOptionFlag;
 
-    class AbstractMesh : public Component
+    class FD_EXPORT AbstractMesh : public Component
     {
         protected:
             id_type m_materialId;
@@ -129,7 +131,7 @@ namespace FD3D
             bool matchTypeCodeHash(size_t hash) const override;
     };
 
-    class AbstractMeshStrategy : public Component
+    class FD_EXPORT AbstractMeshStrategy : public Component
     {
         public:
             AbstractMeshStrategy();
@@ -147,7 +149,7 @@ namespace FD3D
             virtual void setNumberOfIndices(AbstractMesh &mesh, size_t val) = 0;
     };
 
-    class FunctionalMeshStrategy : public AbstractMeshStrategy
+    class FD_EXPORT FunctionalMeshStrategy : public AbstractMeshStrategy
     {
         protected:
             std::function<float *(AbstractMesh &)> m_getVertices;
@@ -199,7 +201,7 @@ namespace FD3D
             void setNumberOfIndices(AbstractMesh &mesh, size_t val) override;
     };
 
-    class StrategyManagedMesh : public AbstractMesh
+    class FD_EXPORT StrategyManagedMesh : public AbstractMesh
     {
         protected:
             AbstractMeshStrategy &m_strategy;

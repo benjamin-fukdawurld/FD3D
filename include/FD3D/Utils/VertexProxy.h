@@ -13,6 +13,8 @@
 
 #include <string_view>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
     class AbstractMesh;
@@ -29,8 +31,8 @@ namespace FD3D
         Tangent = 8
     };
 
-    std::string_view vertexComponentTypeToString(VertexComponentType type);
-    VertexComponentType vertexComponentTypeFromString(std::string_view str);
+    FD_EXPORT std::string_view vertexComponentTypeToString(VertexComponentType type);
+    FD_EXPORT VertexComponentType vertexComponentTypeFromString(std::string_view str);
 
     typedef FDCore::EnumFlag<VertexComponentType, uint8_t> VertexComponentFlag;
 
@@ -63,7 +65,7 @@ namespace FD3D
 
                 void setIndex(size_t index)
                 {
-                    assert(index < getMesh()->getNumberOfVertices);
+                    assert(index < getMesh()->getNumberOfVertices());
                     m_index = index;
                 }
 
@@ -171,7 +173,7 @@ namespace FD3D
         ConstVertexProxyTrait<DerivedType>::~ConstVertexProxyTrait() {}
     }
 
-    class ConstVertexProxy : public internal::ConstVertexProxyTrait<ConstVertexProxy>
+    class FD_EXPORT ConstVertexProxy : public internal::ConstVertexProxyTrait<ConstVertexProxy>
     {
         friend class AbstractMesh;
         friend class internal::ConstVertexProxyTrait<ConstVertexProxy>;
@@ -186,7 +188,7 @@ namespace FD3D
             virtual ~ConstVertexProxy();
     };
 
-    class VertexProxy : public internal::ConstVertexProxyTrait<VertexProxy>
+    class FD_EXPORT VertexProxy : public internal::ConstVertexProxyTrait<VertexProxy>
     {
         friend class AbstractMesh;
         friend class internal::ConstVertexProxyTrait<VertexProxy>;

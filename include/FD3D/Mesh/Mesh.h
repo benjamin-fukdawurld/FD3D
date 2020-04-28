@@ -6,9 +6,11 @@
 #include <FD3D/Mesh/AbstractMesh.h>
 #include <assimp/mesh.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class Mesh : public AbstractMesh
+    class FD_EXPORT Mesh : public AbstractMesh
     {
         protected:
             std::vector<float> m_vertices;

@@ -34,17 +34,17 @@ const glm::vec3 &FD3D::Light::getDirection() const
     return m_position;
 }
 
-void FD3D::Light::setPosition(const glm::vec3 position)
+void FD3D::Light::setPosition(const glm::vec3 &position)
 {
     m_position = position;
 }
 
-void FD3D::Light::translate(const glm::vec3 v)
+void FD3D::Light::translate(const glm::vec3 &v)
 {
     m_position += v;
 }
 
-void FD3D::Light::setDirection(const glm::vec3 direction)
+void FD3D::Light::setDirection(const glm::vec3 &direction)
 {
     m_direction = direction;
 }
@@ -59,17 +59,17 @@ const glm::vec3 &FD3D::Light::getUp() const
     return m_up;
 }
 
-void FD3D::Light::setUp(const glm::vec3 up)
+void FD3D::Light::setUp(const glm::vec3 &up)
 {
     m_up = up;
 }
 
-void FD3D::Light::rotate(const glm::vec3 angles)
+void FD3D::Light::rotate(const glm::vec3 &angles)
 {
     m_direction = glm::orientate3(angles) * m_direction;
 }
 
-void FD3D::Light::rotate(const glm::quat quaternion)
+void FD3D::Light::rotate(const glm::quat &quaternion)
 {
     m_direction = quaternion * m_direction;
 }
@@ -106,6 +106,8 @@ std::string_view FD3D::lightTypeToString(FD3D::LightType type)
         case LightType::AreaLight:
         return "AreaLight";
     }
+
+    return "Invalid";
 }
 
 FD3D::LightType FD3D::lightTypeFromString(std::string_view str)

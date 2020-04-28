@@ -11,9 +11,11 @@
 
 #include <FDCore/TypeInformation.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
-    class Material : public Component
+    class FD_EXPORT Material : public Component
     {
         protected:
             glm::vec3 m_ambientColor;

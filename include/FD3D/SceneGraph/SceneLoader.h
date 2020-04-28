@@ -17,6 +17,8 @@
 
 #include <FDCore/AssociativeContainer.h>
 
+#include <FDCore/Macros.h>
+
 namespace FD3D
 {
     namespace internal2
@@ -26,7 +28,7 @@ namespace FD3D
                                    unsigned int flags);
     }
 
-    class AbstractSceneLoader
+    class FD_EXPORT AbstractSceneLoader
     {
         protected:
             Assimp::Importer m_importer;
@@ -68,7 +70,7 @@ namespace FD3D
             virtual AbstractMesh *createMesh() = 0;
     };
 
-    class SceneLoader final : public AbstractSceneLoader
+    class FD_EXPORT SceneLoader final : public AbstractSceneLoader
     {
         private:
             std::function<uint32_t(const std::string &)> m_textureLoader;

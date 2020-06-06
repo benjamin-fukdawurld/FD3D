@@ -43,5 +43,5 @@ size_t FD3D::StrategyBehavior::getTypeCodeHash() const
 
 bool FD3D::StrategyBehavior::matchTypeCodeHash(size_t hash) const
 {
-    return hash == StrategyBehavior::getTypeCodeHash() || Behavior::matchTypeCodeHash(hash);
+    return hash == StrategyBehavior::getTypeCodeHash() || BaseBehavior::matchTypeCodeHash(hash);
 }

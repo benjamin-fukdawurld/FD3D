@@ -1,9 +1,9 @@
-#ifndef MESH_PYTHON_H
-#define MESH_PYTHON_H
+#ifndef FD3D_MESH_PYTHON_H
+#define FD3D_MESH_PYTHON_H
 
 #include <pybind11/embed.h>
-#include <FD3D/Mesh/AbstractMesh.h>
-#include <FD3D/Mesh/Mesh.h>
+#include <FD3D/Mesh/AbstractMeshComponent.h>
+#include <FD3D/Mesh/MeshComponent.h>
 
 #include <FD3D/Binding/Python/Component_python.h>
 
@@ -11,7 +11,7 @@ namespace FD3D
 {
     namespace Python
     {
-        template<typename MeshBase = FD3D::AbstractMesh>
+        template<typename MeshBase = FD3D::AbstractMeshComponent>
         class PYBIND11_EXPORT PyAbstractMesh : public PyComponent<MeshBase>
         {
             public:
@@ -105,7 +105,7 @@ namespace FD3D
                 }
         };
 
-        template<typename MeshBase = FD3D::Mesh>
+        template<typename MeshBase = FD3D::MeshComponent>
         class PYBIND11_EXPORT PyMesh : public PyAbstractMesh<MeshBase>
         {
             public:
@@ -193,4 +193,4 @@ namespace FD3D
     }
 }
 
-#endif // MESH_PYTHON_H
+#endif // FD3D_MESH_PYTHON_H

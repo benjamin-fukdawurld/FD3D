@@ -1,9 +1,9 @@
-#ifndef MATERIAL_PYTHON_H
-#define MATERIAL_PYTHON_H
+#ifndef FD3D_MATERIAL_PYTHON_H
+#define FD3D_MATERIAL_PYTHON_H
 
 #include <pybind11/embed.h>
-#include <FD3D/Material/Material.h>
-#include <FD3D/Material/Texture.h>
+#include <FD3D/Material/MaterialComponent.h>
+#include <FD3D/Material/TextureComponent.h>
 
 
 namespace FD3D
@@ -14,4 +14,4 @@ namespace FD3D
     }
 }
 
-#endif // MATERIAL_PYTHON_H
+#endif // FD3D_MATERIAL_PYTHON_H

@@ -1,6 +1,7 @@
 #include <FD3D/SceneGraph/Component.h>
 
-FD3D::Component::Component()
+FD3D::Component::Component() :
+    Element()
 {
 
 }
@@ -22,15 +23,16 @@ void FD3D::Component::setName(const std::string &name)
 
 const char *FD3D::Component::getTypeCode() const
 {
-    return "";
+    return FDCore::TypeCodeHelper<FD3D::Component>::code;
 }
 
 size_t FD3D::Component::getTypeCodeHash() const
 {
-    return 0;
+    return FDCore::TypeCodeHelper<FD3D::Component>::hash();
 }
 
 bool FD3D::Component::matchTypeCodeHash(size_t hash) const
 {
-    return hash == getTypeCodeHash();
+    return hash == FDCore::TypeCodeHelper<FD3D::Component>::hash()
+            || FD3D::Element::matchTypeCodeHash(hash);
 }

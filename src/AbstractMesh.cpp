@@ -1,81 +1,8 @@
 #include <FD3D/Mesh/AbstractMesh.h>
 
-#include <FD3D/Utils/VertexProxy.h>
+#include <iostream>
 
-#include <assimp/mesh.h>
-
-FD3D::AbstractMesh::AbstractMesh() :
-    m_materialId(0),
-    m_shaderId(0),
-    m_nbColorChannels(0),
-    m_nbTexChannels(0),
-    m_options(MeshOption::Interlaced)
-{}
-
-int FD3D::AbstractMesh::getComponentOffset(FD3D::VertexComponentType comp) const
-{
-    if(!hasVertexComponent(comp))
-        return -1;
-
-    switch(comp)
-    {
-        case VertexComponentType::Position:
-        return 0;
-
-        case VertexComponentType::Normal:
-        return 3 * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
-
-        case VertexComponentType::Tangent:
-        return (hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
-                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
-
-        case VertexComponentType::Texture:
-        return ((hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
-                + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0))
-                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
-
-        case VertexComponentType::Color:
-        return ((hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
-                + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0)
-                + (hasVertexComponent(VertexComponentType::Texture)
-                   ? 2 * m_nbTexChannels : 0))
-                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
-
-        case VertexComponentType::Invalid:
-        return -1;
-    }
-
-    return -1;
-}
-
-size_t FD3D::AbstractMesh::getVertexSize() const
-{
-    return 3 + (hasVertexComponent(VertexComponentType::Normal) ? 3 : 0)
-            + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0)
-            + (hasVertexComponent(VertexComponentType::Texture)
-               ? 2 * m_nbTexChannels : 0)
-            + (hasVertexComponent(VertexComponentType::Texture)
-               ? 4 * m_nbColorChannels : 0);
-}
-
-
-
-const char *FD3D::AbstractMesh::getTypeCode() const
-{
-    return FDCore::TypeCodeHelper<AbstractMesh>::code;
-}
-
-size_t FD3D::AbstractMesh::getTypeCodeHash() const
-{
-    return FDCore::TypeCodeHelper<AbstractMesh>::hash();
-}
-
-bool FD3D::AbstractMesh::matchTypeCodeHash(size_t hash) const
-{
-    return hash == FD3D::AbstractMesh::getTypeCodeHash() || Component::matchTypeCodeHash(hash);
-}
-
-FD3D::VertexComponentFlag FD3D::internal::getVertexComponents(const aiMesh *mesh)
+FD3D::VertexComponentFlag FD3D::internal::vertexComponentsFromMesh(const aiMesh *mesh)
 {
     return VertexComponentFlag(VertexComponentType::Position)
             | (mesh->HasNormals()
@@ -159,82 +86,195 @@ std::vector<uint32_t> FD3D::internal::getIndices(const aiMesh *mesh)
     return indices;
 }
 
-float *FD3D::FunctionalMeshStrategy::getVertices(FD3D::AbstractMesh &mesh)
+
+FD3D::AbstractMesh::AbstractMesh() :
+    m_material(nullptr),
+    m_shader(nullptr),
+    m_nbColorChannels(0),
+    m_nbTexChannels(0),
+    m_options(MeshOption::Interlaced)
+{}
+
+int FD3D::AbstractMesh::getComponentOffset(FD3D::VertexComponentType comp) const
 {
-    return m_getVertices(mesh);
+    if(!hasVertexComponent(comp))
+        return -1;
+
+    switch(comp)
+    {
+        case VertexComponentType::Position:
+        return 0;
+
+        case VertexComponentType::Normal:
+        return 3 * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
+
+        case VertexComponentType::Tangent:
+        return (hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
+                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
+
+        case VertexComponentType::Texture:
+        return ((hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
+                + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0))
+                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
+
+        case VertexComponentType::Color:
+        return ((hasVertexComponent(VertexComponentType::Normal) ? 6 : 3)
+                + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0)
+                + (hasVertexComponent(VertexComponentType::Texture)
+                   ? 2 * m_nbTexChannels : 0))
+                * (isInterlaced() ? 1 : static_cast<int>(getNumberOfVertices()));
+
+        case VertexComponentType::Invalid:
+        return -1;
+    }
+
+    return -1;
 }
 
-const float *FD3D::FunctionalMeshStrategy::getVertices(const FD3D::AbstractMesh &mesh) const
+size_t FD3D::AbstractMesh::getVertexSize() const
 {
-    return m_getConstVertices(mesh);
+    return 3 + (hasVertexComponent(VertexComponentType::Normal) ? 3 : 0)
+            + (hasVertexComponent(VertexComponentType::Tangent) ? 6 : 0)
+            + (hasVertexComponent(VertexComponentType::Texture)
+               ? 2 * m_nbTexChannels : 0)
+            + (hasVertexComponent(VertexComponentType::Texture)
+               ? 4 * m_nbColorChannels : 0);
 }
 
-uint32_t *FD3D::FunctionalMeshStrategy::getIndices(FD3D::AbstractMesh &mesh)
+const char *FD3D::AbstractMesh::getTypeCode() const
 {
-    return m_getIndices(mesh);
+    return FDCore::TypeCodeHelper<FD3D::AbstractMesh>::code;
 }
 
-const uint32_t *FD3D::FunctionalMeshStrategy::getIndices(const FD3D::AbstractMesh &mesh) const
+size_t FD3D::AbstractMesh::getTypeCodeHash() const
 {
-    return m_getConstIndices(mesh);
+    return FDCore::TypeCodeHelper<FD3D::AbstractMesh>::hash();
 }
 
-size_t FD3D::FunctionalMeshStrategy::getNumberOfVertices(const FD3D::AbstractMesh &mesh) const
+bool FD3D::AbstractMesh::matchTypeCodeHash(size_t hash) const
 {
-    return m_getNumberOfVertices(mesh);
+    return hash == FDCore::TypeCodeHelper<FD3D::AbstractMesh>::hash()
+            || FDCore::BaseResource::matchTypeCodeHash(hash);
 }
 
-void FD3D::FunctionalMeshStrategy::setNumberOfVertices(FD3D::AbstractMesh &mesh, size_t val)
+bool FD3D::AbstractMesh::fromMesh(const aiMesh *mesh, const aiScene *scene, FDCore::ResourceManager &mgr)
 {
-    m_setNumberOfVertices(mesh, val);
+    VertexComponentFlag f = internal::vertexComponentsFromMesh(mesh);
+
+    setComponentsFlags(f);
+    setNumberOfUvChannel(static_cast<uint8_t>(mesh->GetNumUVChannels()));
+    setNumberOfColorChannel(static_cast<uint8_t>(mesh->GetNumColorChannels()));
+    setNumberOfVertices(mesh->mNumVertices);
+    setNumberOfIndices(mesh->mNumFaces * 3);
+    setResourceName(mesh->mName.C_Str());
+
+
+    if(mesh->mMaterialIndex < scene->mNumMaterials)
+    {
+        const aiMaterial *mat = scene->mMaterials[mesh->mMaterialIndex];
+        aiString str;
+        if(mat->Get(AI_MATKEY_NAME, str) != AI_SUCCESS)
+        {
+            std::cerr << "material has no name" << std::endl;
+            return false;
+        }
+        
+        FD3D::Material *m = static_cast<FD3D::Material*>(mgr.at(str.C_Str()));
+        if(!m)
+        {
+            std::unique_ptr<FD3D::Material> mtl(new FD3D::Material());
+            mtl->setResourceName(str.C_Str());
+            if(!mtl->fromMaterial(mat, mgr))
+            {
+                std::cerr << "unable to load material" << std::endl;
+                return false;
+            }
+
+            m = mtl.release();
+            mgr.insert(m);
+        }
+
+        setMaterial(m);
+    }
+    
+    for(size_t i = 0; i < mesh->mNumVertices; ++i)
+    {
+        VertexProxy v = getVertex(i);
+        {
+            glm::vec3 *pos = v.getPosition();
+            *pos = internal::getVertexPosition(mesh, i);
+        }
+
+        if(f[VertexComponentType::Normal])
+        {
+            glm::vec3 *norm = v.getNormal();
+            *norm = internal::getVertexNormal(mesh, i);
+        }
+
+        if(f[VertexComponentType::Tangent])
+        {
+            glm::vec3 *t = v.getTangent();
+            *t = internal::getVertexTangent(mesh, i);
+            t = v.getBitangent();
+            *t = internal::getVertexBitangent(mesh, i);
+        }
+
+        if(f[VertexComponentType::Texture])
+        {
+            for(uint8_t j = 0; j < getNumberOfUvChannel(); ++j)
+            {
+                glm::vec2 *tex = v.getUv(j);
+                *tex = internal::getVertexUv(mesh, i, j);
+            }
+        }
+
+        if(f[VertexComponentType::Color])
+        {
+            for(uint8_t j = 0; j < getNumberOfColorChannel(); ++j)
+            {
+                glm::vec4 *col = v.getColor(j);
+                *col = internal::getVertexColor(mesh, i, j);
+            }
+        }
+    }
+
+    for(unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+        size_t pos = i * 3;
+        aiFace face = mesh->mFaces[i];
+        for(unsigned int j = 0; j < face.mNumIndices; j++)
+            getIndex(pos + j).setValue(face.mIndices[j]);
+    }
+
+    return true;
 }
 
-size_t FD3D::FunctionalMeshStrategy::getNumberOfIndices(const FD3D::AbstractMesh &mesh) const
+FD3D::VertexProxy FD3D::AbstractMesh::getVertex(size_t index)
 {
-    return m_getNumberOfIndices(mesh);
+    return { this, index };
 }
 
-void FD3D::FunctionalMeshStrategy::setNumberOfIndices(FD3D::AbstractMesh &mesh, size_t val)
+FD3D::ConstVertexProxy FD3D::AbstractMesh::getVertex(size_t index) const
 {
-    m_setNumberOfIndices(mesh, val);
+    return { this, index };
 }
 
-float *FD3D::StrategyManagedMesh::getVertices()
+FD3D::VertexProxy FD3D::AbstractMesh::getVertexFromIndex(size_t index)
 {
-    return m_strategy.getVertices(*this);
+    return { this, *(getIndices() + index) };
 }
 
-const float *FD3D::StrategyManagedMesh::getVertices() const
+FD3D::ConstVertexProxy FD3D::AbstractMesh::getVertexFromIndex(size_t index) const
 {
-    return m_strategy.getVertices(*this);
+    return { this, *(getIndices() + index) };
 }
 
-uint32_t *FD3D::StrategyManagedMesh::getIndices()
+FD3D::IndexProxy FD3D::AbstractMesh::getIndex(size_t pos)
 {
-    return m_strategy.getIndices(*this);
+    return { this, pos };
 }
 
-const uint32_t *FD3D::StrategyManagedMesh::getIndices() const
+FD3D::ConstIndexProxy FD3D::AbstractMesh::getIndex(size_t pos) const
 {
-    return m_strategy.getIndices(*this);
-}
-
-size_t FD3D::StrategyManagedMesh::getNumberOfVertices() const
-{
-    return m_strategy.getNumberOfVertices(*this);
-}
-
-void FD3D::StrategyManagedMesh::setNumberOfVertices(size_t val)
-{
-    m_strategy.setNumberOfVertices(*this, val);
-}
-
-size_t FD3D::StrategyManagedMesh::getNumberOfIndices() const
-{
-    return m_strategy.getNumberOfIndices(*this);
-}
-
-void FD3D::StrategyManagedMesh::setNumberOfIndices(size_t val)
-{
-    m_strategy.setNumberOfIndices(*this, val);
+    return { this, pos };
 }

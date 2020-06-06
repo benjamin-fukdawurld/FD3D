@@ -1,5 +1,5 @@
-#ifndef LIGHTCOLOR_H
-#define LIGHTCOLOR_H
+#ifndef FD3D_LIGHTCOLOR_H
+#define FD3D_LIGHTCOLOR_H
 
 #include <glm/vec4.hpp>
 
@@ -21,4 +21,4 @@ namespace FD3D
     };
 }
 
-#endif // LIGHTCOLOR_H
+#endif // FD3D_LIGHTCOLOR_H

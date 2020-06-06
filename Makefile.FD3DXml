@@ -52,8 +52,8 @@ OBJECTS_DIR   = ../build/obj/FD3DXml/
 
 ####### Files
 
-SOURCES       = src/Glm_Xml_utils.cpp 
-OBJECTS       = ../build/obj/FD3DXml/Glm_Xml_utils.o
+SOURCES       =  
+OBJECTS       = 
 DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/unix.conf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/common/linux.conf \
@@ -244,9 +244,9 @@ DIST          = ../../../Qt/5.13.2/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/features/exceptions.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/features/yacc.prf \
 		../../../Qt/5.13.2/gcc_64/mkspecs/features/lex.prf \
-		FD3DXml.pro include/FD3D/Serialization/Xml/Glm_Xml_fwd.h \
-		include/FD3D/Serialization/Xml/Glm_Xml_utils.h \
-		include/FD3D/Serialization/Glm_Serialize_utils.h src/Glm_Xml_utils.cpp
+		FD3DXml.pro include/FD3D/Serialization/Glm_Serialize_utils.h \
+		include/FD3D/Serialization/Xml/Glm_xml_fwd.h \
+		include/FD3D/Serialization/Xml/Glm_xml.h 
 QMAKE_TARGET  = FD3DXml
 DESTDIR       = ../build/lib/
 TARGET        = libFD3DXml.so.1.0.0
@@ -684,7 +684,6 @@ distdir: FORCE
 
 
 clean: compiler_clean 
-	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
 
 
@@ -710,9 +709,6 @@ compiler_lex_clean:
 compiler_clean: 
 
 ####### Compile
-
-../build/obj/FD3DXml/Glm_Xml_utils.o: src/Glm_Xml_utils.cpp include/FD3D/Serialization/Xml/Glm_Xml_fwd.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../build/obj/FD3DXml/Glm_Xml_utils.o src/Glm_Xml_utils.cpp
 
 ####### Install
 

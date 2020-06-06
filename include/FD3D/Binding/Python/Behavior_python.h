@@ -1,9 +1,9 @@
-#ifndef BEHAVIOR_PYTHON_H
-#define BEHAVIOR_PYTHON_H
+#ifndef FD3D_BEHAVIOR_PYTHON_H
+#define FD3D_BEHAVIOR_PYTHON_H
 
 #include <pybind11/embed.h>
-#include <FD3D/Behavior/Behavior.h>
-#include <FD3D/Behavior/StrategyBehavior.h>
+#include <FD3D/Behavior/BehaviorComponent.h>
+#include <FD3D/Behavior/StrategyBehaviorComponent.h>
 
 #include <FD3D/Binding/Python/Component_python.h>
 
@@ -11,7 +11,7 @@ namespace FD3D
 {
     namespace Python
     {
-        template<typename BehaviorBase = FD3D::Behavior>
+        template<typename BehaviorBase = FD3D::BehaviorComponent>
         class PYBIND11_EXPORT PyBehavior : public PyComponent<BehaviorBase>
         {
             public:
@@ -106,16 +106,18 @@ namespace FD3D
         PYBIND11_EXPORT void bind_behavior(pybind11::module &m);
     }
 
-    class PYBIND11_EXPORT PythonBehaviorWrapper : public FD3D::AbstractBehavior
+    class PYBIND11_EXPORT PythonBehaviorWrapper : public FD3D::AbstractBehaviorComponent
     {
         protected:
             pybind11::object m_self;
 
         public:
+            PythonBehaviorWrapper() = default;
             PythonBehaviorWrapper(pybind11::object self);
 
             ~PythonBehaviorWrapper() override = default;
 
+            void setSelf(pybind11::object self);
             pybind11::object getSelf();
 
             FD3D::Scene *getScene() override;
@@ -145,4 +147,4 @@ namespace FD3D
 
 generateTypeCode(FD3D::PythonBehaviorWrapper);
 
-#endif // BEHAVIOR_PYTHON_H
+#endif // FD3D_BEHAVIOR_PYTHON_H

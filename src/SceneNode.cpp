@@ -3,28 +3,37 @@
 #include <algorithm>
 #include <cassert>
 
-FD3D::SceneNode::SceneNode(id_type parent) : m_parent(parent) {}
+FD3D::SceneNode::SceneNode(id_type parent) :
+    Element(),
+    m_parent(parent),
+    m_isEnabled(true)
+{}
 
 FD3D::SceneNode::SceneNode(FD3D::SceneNode &&node) :
-    Identifiable<>(),
+    Element(),
     m_name(std::move(node.m_name)),
     m_children(std::move(node.m_children)),
-    m_parent(node.m_parent)
+    m_parent(node.m_parent),
+    m_isEnabled(node.m_isEnabled)
 {
 
 }
 
 FD3D::SceneNode::SceneNode(const FD3D::SceneNode &node) :
-    Identifiable<>(),
+    Element(),
     m_name(node.m_name),
     m_children(node.m_children),
-    m_parent(node.m_parent)
+    m_parent(node.m_parent),
+    m_isEnabled(node.m_isEnabled)
 {
 
 }
 
 FD3D::SceneNode &FD3D::SceneNode::operator=(SceneNode &&node)
 {
+    if(&node == this)
+        return *this;
+
     m_parent = node.m_parent;
     m_name = std::move(node.m_name);
     m_children = std::move(node.m_children);
@@ -34,6 +43,9 @@ FD3D::SceneNode &FD3D::SceneNode::operator=(SceneNode &&node)
 
 FD3D::SceneNode &FD3D::SceneNode::operator=(const SceneNode &node)
 {
+    if(&node == this)
+        return *this;
+
     m_parent = node.m_parent;
     m_name = std::move(node.m_name);
     m_children = std::move(node.m_children);
@@ -219,12 +231,13 @@ size_t FD3D::SceneNode::getTypeCodeHash() const
 
 bool FD3D::SceneNode::matchTypeCodeHash(size_t hash) const
 {
-    return hash == getTypeCodeHash();
+    return hash == FDCore::TypeCodeHelper<FD3D::SceneNode>::hash()
+            || FD3D::Element::matchTypeCodeHash(hash);
 }
 
 const char *FD3D::RootNode::getTypeCode() const
 {
-    return FDCore::TypeCodeHelper<FD3D::SceneNode>::code;
+    return FDCore::TypeCodeHelper<FD3D::RootNode>::code;
 }
 
 size_t FD3D::RootNode::getTypeCodeHash() const

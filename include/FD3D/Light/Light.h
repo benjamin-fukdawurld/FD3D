@@ -5,6 +5,8 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include <FD3D/SceneGraph/SceneNode.h>
+#include <FD3D/SceneGraph/Component.h>
+
 #include <FD3D/Light/LightColor.h>
 #include <FD3D/Light/LightAttenuation.h>
 #include <FD3D/Light/LightCone.h>
@@ -13,9 +15,11 @@
 #include <FDCore/TypeInformation.h>
 #include <FDCore/Macros.h>
 
+#include <assimp/light.h>
+
 namespace FD3D
 {
-    class FD_EXPORT Light
+    class FD_EXPORT Light : public FD3D::Component
     {
         public:
             LightColor color;
@@ -49,6 +53,12 @@ namespace FD3D
 
             LightType getType() const;
             void setType(const LightType &type);
+
+            const char *getTypeCode() const override;
+            size_t getTypeCodeHash() const override;
+            bool matchTypeCodeHash(size_t hash) const override;
+
+            bool fromLight(const aiLight *in);
     };
 
     typedef EntityNode<Light> LightNode;

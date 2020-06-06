@@ -1,5 +1,5 @@
-#ifndef PROJECTIONTYPE_H
-#define PROJECTIONTYPE_H
+#ifndef FD3D_PROJECTIONTYPE_H
+#define FD3D_PROJECTIONTYPE_H
 
 #include <cstdint>
 
@@ -22,4 +22,4 @@ namespace FD3D
     FD_EXPORT ProjectionType projectionTypeFromString(std::string_view str);
 }
 
-#endif // PROJECTIONTYPE_H
+#endif // FD3D_PROJECTIONTYPE_H

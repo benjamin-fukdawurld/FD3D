@@ -36,8 +36,8 @@ void FD3D::Python::bind_transform(pybind11::module &m)
 
     auto node = py::class_<FD3D::ObjectNode, FD3D::Python::PySceneNode<FD3D::ObjectNode>>(m, "ObjectNode")
                 .def(py::init_alias<FD3D::SceneNode::id_type>(), py::arg("parent") = 0)
-                .def_property("entity", [] (FD3D::ObjectNode &node) { return &node.getEntity(); },
-                                        [] (FD3D::ObjectNode &node, const FD3D::Transform &t) { node.setEntity(t); }, py::return_value_policy::reference_internal)
+                .def_property("entity", [] (FD3D::ObjectNode &node) { return node.getEntity(); }, &FD3D::ObjectNode::setEntity,
+                              py::return_value_policy::reference)
                 .def_property_readonly("typeCode", &FD3D::SceneNode::getTypeCode, py::return_value_policy::reference)
                 .def_property_readonly("typeHash", &FD3D::SceneNode::getTypeCodeHash)
                 .def("matchTypeCodeHash", &FD3D::SceneNode::matchTypeCodeHash);

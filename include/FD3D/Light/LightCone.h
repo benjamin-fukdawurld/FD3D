@@ -1,5 +1,5 @@
-#ifndef LIGHTCONE_H
-#define LIGHTCONE_H
+#ifndef FD3D_LIGHTCONE_H
+#define FD3D_LIGHTCONE_H
 
 #include <FDCore/Macros.h>
 
@@ -23,4 +23,4 @@ namespace FD3D
     };
 }
 
-#endif // LIGHTCONE_H
+#endif // FD3D_LIGHTCONE_H

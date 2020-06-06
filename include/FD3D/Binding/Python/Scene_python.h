@@ -1,5 +1,5 @@
-#ifndef SCENE_PYTHON_H
-#define SCENE_PYTHON_H
+#ifndef FD3D_SCENE_PYTHON_H
+#define FD3D_SCENE_PYTHON_H
 
 #include <pybind11/embed.h>
 #include <FD3D/SceneGraph/Scene.h>
@@ -12,4 +12,4 @@ namespace FD3D
     }
 }
 
-#endif // SCENE_PYTHON_H
+#endif // FD3D_SCENE_PYTHON_H

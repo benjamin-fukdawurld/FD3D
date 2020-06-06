@@ -17,6 +17,12 @@ FD3D::Scene::node_id_type FD3D::Scene::getRootId() const
     return m_rootId;
 }
 
+const FD3D::Scene::ComponentMap &FD3D::Scene::getComponents() const { return m_components; }
+
+const FD3D::Scene::NodeMap &FD3D::Scene::getNodes() const { return m_nodes; }
+
+const FD3D::Scene::BindingMap &FD3D::Scene::getBindings() const { return m_componentBindings; }
+
 void FD3D::Scene::clear()
 {
     m_components.clear();
@@ -25,6 +31,16 @@ void FD3D::Scene::clear()
 
     m_rootId = 0;
     init();
+}
+
+FD3D::SceneNodeProxy FD3D::Scene::getRootNode()
+{
+    return SceneNodeProxy(*this, m_nodes[m_rootId]->get());
+}
+
+FD3D::ConstSceneNodeProxy FD3D::Scene::getRootNode() const
+{
+    return ConstSceneNodeProxy(*this, m_nodes[m_rootId]->get());
 }
 
 FD3D::ConstSceneNodeProxy FD3D::Scene::getNode(FD3D::Scene::node_id_type id) const

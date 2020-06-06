@@ -1,6 +1,5 @@
 #include <FD3D/Mesh/Mesh.h>
 
-
 FD3D::Mesh::Mesh() : AbstractMesh()
 {
 
@@ -18,10 +17,11 @@ FD3D::Mesh::Mesh(const std::vector<float> &vertices, const std::vector<uint32_t>
     m_indices(indices)
 {}
 
-FD3D::Mesh::~Mesh()
-{
+bool FD3D::Mesh::load() { return true; }
 
-}
+bool FD3D::Mesh::isLoaded() const { return true; }
+
+void FD3D::Mesh::release() {}
 
 void FD3D::Mesh::setVertices(const float *data)
 {
@@ -35,15 +35,16 @@ void FD3D::Mesh::setIndices(const uint32_t *data)
 
 const char *FD3D::Mesh::getTypeCode() const
 {
-    return FDCore::TypeCodeHelper<Mesh>::code;
+    return FDCore::TypeCodeHelper<FD3D::Mesh>::code;
 }
 
 size_t FD3D::Mesh::getTypeCodeHash() const
 {
-    return FDCore::TypeCodeHelper<Mesh>::hash();
+    return FDCore::TypeCodeHelper<FD3D::Mesh>::hash();
 }
 
 bool FD3D::Mesh::matchTypeCodeHash(size_t hash) const
 {
-    return hash == FD3D::Mesh::getTypeCodeHash() || AbstractMesh::matchTypeCodeHash(hash);
+    return hash == FDCore::TypeCodeHelper<FD3D::Mesh>::hash()
+            || FD3D::AbstractMesh::matchTypeCodeHash(hash);
 }

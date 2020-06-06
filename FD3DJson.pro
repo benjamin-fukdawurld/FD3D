@@ -14,7 +14,7 @@ DESTDIR = ../build/lib
 MAKEFILE = ../build/makefiles/$${TARGET}
 OBJECTS_DIR = ../build/obj/$${TARGET}
 
-LIBS += -L../build/lib -lFDCore -lFD3D -lFDSerialize -lFDJson \
+LIBS += -L../build/lib -lFDCore -lFD3D -lFDSerialize -lFDJson -lFDCoreJson \
     -L../thirdparty/assimp/bin \
     -lassimp
 
@@ -26,34 +26,36 @@ INCLUDEPATH += include \
     ../thirdparty/glm \
     ../thirdparty/assimp/include \
 
-SOURCES += \
-    src/Glm_Json_utils.cpp \
-    src/VertexProxy_Json.cpp \
-    src/Transform_Json.cpp \
-    src/Projection_Json.cpp \
-    src/Camera_Json.cpp \
-    src/Light_Json.cpp \
-    src/Material_Json.cpp \
-    src/Mesh_Json.cpp \
-    src/Component_Json.cpp \
-    src/SceneNode_Json.cpp
+SOURCES +=
 
 HEADERS += \
-    include/FD3D/Serialization/Json/Glm_Json_fwd.h \
-    include/FD3D/Serialization/Json/Glm_Json_utils.h \
-    include/FD3D/Serialization/Json/VertexProxy_Json.h \
-    include/FD3D/Serialization/Json/Transform_Json.h \
-    include/FD3D/Serialization/Json/Projection_Json.h \
     include/FD3D/Serialization/Glm_Serialize_utils.h \
-    include/FD3D/Serialization/Json/Camera_Json.h \
-    include/FD3D/Serialization/Json/Light_Json.h \
-    include/FD3D/Serialization/Json/Material_Json.h \
-    include/FD3D/Serialization/Json/Mesh_Json.h \
-    include/FD3D/Serialization/Json/Component_Json.h \
-    include/FD3D/Serialization/Json/SceneNode_Json.h \
-    include/FD3D/Serialization/Json/SceneNode_Json_fwd.h \
-    include/FD3D/Serialization/Json/FD3D_Json_fwd.h \
-    include/FD3D/Serialization/Json/FD3D_Json_utils.h
+    include/FD3D/Serialization/Json/FD3DJson_fwd.h \
+    include/FD3D/Serialization/Json/FD3DJson.h \
+    include/FD3D/Serialization/Json/Camera_json.h \
+    include/FD3D/Serialization/Json/Camera_json_fwd.h \
+    include/FD3D/Serialization/Json/Component_json.h \
+    include/FD3D/Serialization/Json/Component_json_fwd.h \
+    include/FD3D/Serialization/Json/Glm_json_fwd.h \
+    include/FD3D/Serialization/Json/Glm_json.h \
+    include/FD3D/Serialization/Json/Light_json.h \
+    include/FD3D/Serialization/Json/Light_json_fwd.h \
+    include/FD3D/Serialization/Json/Material_json.h \
+    include/FD3D/Serialization/Json/Material_json_fwd.h \
+    include/FD3D/Serialization/Json/Mesh_json.h \
+    include/FD3D/Serialization/Json/Mesh_json_fwd.h \
+    include/FD3D/Serialization/Json/Scene_json_fwd.h \
+    include/FD3D/Serialization/Json/Scene_json.h \
+    include/FD3D/Serialization/Json/SceneNode_json.h \
+    include/FD3D/Serialization/Json/SceneNode_json_fwd.h \
+    include/FD3D/Serialization/Json/Projection_json.h \
+    include/FD3D/Serialization/Json/Projection_json_fwd.h \
+    include/FD3D/Serialization/Json/Transform_json.h \
+    include/FD3D/Serialization/Json/Transform_json_fwd.h \
+    include/FD3D/Serialization/Json/VertexProxy_json.h \
+    include/FD3D/Serialization/Json/VertexProxy_json_fwd.h \
+    include/FD3D/Serialization/Json/Element_json_fwd.h \
+    include/FD3D/Serialization/Json/Element_json.h
 
 unix {
     target.path = /usr/lib

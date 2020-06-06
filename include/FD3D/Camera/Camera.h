@@ -6,8 +6,10 @@
 #include <FD3D/Camera/Projection.h>
 
 #include <FDCore/TypeInformation.h>
-
+#include <FDCore/ResourceManager.h>
 #include <FDCore/Macros.h>
+
+#include <assimp/camera.h>
 
 namespace FD3D
 {
@@ -17,15 +19,22 @@ namespace FD3D
             Projection projection;
 
         public:
-            Camera();
+            Camera() = default;
 
             glm::vec3 getTarget() const { return getBackward(); }
+            void setTarget(const glm::vec3 &target);
 
             void update() const override;
+
+            const char *getTypeCode() const override;
+            size_t getTypeCodeHash() const override;
+            bool matchTypeCodeHash(size_t hash) const override;
 
             static glm::mat4 generateLookAtMatrix(const glm::vec3 &position,
                                                   const glm::vec3 &target,
                                                   const glm::vec3 &up);
+
+            bool fromCamera(const aiCamera *cam);
     };
 
     typedef EntityNode<Camera> CameraNode;

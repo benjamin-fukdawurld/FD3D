@@ -1,5 +1,5 @@
-#ifndef LIGHTTYPE_H
-#define LIGHTTYPE_H
+#ifndef FD3D_LIGHTTYPE_H
+#define FD3D_LIGHTTYPE_H
 
 #include <cstdint>
 
@@ -23,4 +23,4 @@ namespace FD3D
     FD_EXPORT LightType lightTypeFromString(std::string_view str);
 }
 
-#endif // LIGHTTYPE_H
+#endif // FD3D_LIGHTTYPE_H

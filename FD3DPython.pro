@@ -16,7 +16,7 @@ DESTDIR = ../build/lib
 MAKEFILE = ../build/makefiles/$${TARGET}
 OBJECTS_DIR = ../build/obj/$${TARGET}
 
-LIBS += -L../build/lib -lFDCore -lFD3D \
+LIBS += -L../build/lib -lFDCore -lFD3D -lFDCorePython \
     -L../thirdparty/assimp/bin \
     -lassimp
 

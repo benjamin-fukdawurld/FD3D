@@ -17,21 +17,17 @@ OBJECTS_DIR = ../../build/obj/$${TARGET}
 LIBS += \
     -L../../build/lib \
     -L../../thirdparty/googletest/build/lib \
-    -L../../thirdparty/assimp/bin \
 
 LIBS += \
     -ldl \
     -pthread \
-    -lgtest \
+    -lFDCore \
     -lFD3D \
-    -lassimp \
+    -lgtest \
 
 INCLUDEPATH += \
     ../include \
-    ../../FDCore/include \
-    ../../thirdparty/glm \
     ../../thirdparty/googletest/googletest/include \
-    ../../thirdparty/assimp/include \
 
 SOURCES += \
     main.cpp

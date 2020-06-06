@@ -1,13 +1,13 @@
 #ifndef STRATEGYBEHAVIOR_H
 #define STRATEGYBEHAVIOR_H
 
-#include <FD3D/Behavior/Behavior.h>
+#include <FD3D/Behavior/BaseBehavior.h>
 
 #include <functional>
 
 namespace FD3D
 {
-    class FD_EXPORT StrategyBehavior final : public Behavior
+    class FD_EXPORT StrategyBehavior final : public BaseBehavior
     {
         protected:
             std::function<void(StrategyBehavior*)> m_initStrategy;
@@ -17,7 +17,7 @@ namespace FD3D
             std::function<void(StrategyBehavior*)> m_onEnableStrategy;
 
         public:
-            using Behavior::Behavior;
+            using BaseBehavior::BaseBehavior;
 
             ~StrategyBehavior() override = default;
 

@@ -9,7 +9,10 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+#include <assimp/quaternion.h>
+
 FD3D::Transform::Transform() :
+    FD3D::Component(),
     m_mat(1.0f),
     m_position(0.0f),
     m_scale(1.0f),
@@ -184,9 +187,38 @@ void FD3D::Transform::update() const
     m_isUpToDate = true;
 }
 
+const char *FD3D::Transform::getTypeCode() const
+{
+    return FDCore::TypeCodeHelper<FD3D::Transform>::code;
+}
+
+size_t FD3D::Transform::getTypeCodeHash() const
+{
+    return FDCore::TypeCodeHelper<FD3D::Transform>::hash();
+}
+
+bool FD3D::Transform::matchTypeCodeHash(size_t hash) const
+{
+    return hash == FD3D::Transform::getTypeCodeHash() || FD3D::Component::matchTypeCodeHash(hash);
+}
+
 glm::mat4 FD3D::Transform::generateMatrix(const glm::vec3 &position,
                                           const glm::vec3 &scale,
                                           const glm::quat &rotation)
 {
     return glm::translate(glm::scale(glm::mat4(1.0f), scale) * glm::toMat4(rotation), position);
+}
+
+bool FD3D::Transform::fromMatrix(const aiMatrix4x4 &mat)
+{
+    aiVector3D scale;
+    aiVector3D position;
+    aiQuaternion rotation;
+
+    mat.Decompose(scale, rotation, position);
+    setScale({scale.x, scale.y, scale.z});
+    setRotation({rotation.w, rotation.x, rotation.y, rotation.z});
+    setPosition({position.x, position.y, position.z});
+
+    return true;
 }

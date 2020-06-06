@@ -1,9 +1,10 @@
-#ifndef FD3D_MESH_H
-#define FD3D_MESH_H
+#ifndef MESH_H
+#define MESH_H
 
-#include <vector>
 
 #include <FD3D/Mesh/AbstractMesh.h>
+
+#include <vector>
 #include <assimp/mesh.h>
 
 #include <FDCore/Macros.h>
@@ -25,7 +26,11 @@ namespace FD3D
             Mesh(const std::vector<float> &vertices,
                  const std::vector<uint32_t> &indices);
 
-            ~Mesh() override;
+            bool load() override;
+            bool isLoaded() const override;
+            void release() override;
+
+            ~Mesh() override = default;
 
             float *getVertices() override { return m_vertices.data(); }
             const float *getVertices() const override { return m_vertices.data(); }
@@ -55,4 +60,4 @@ namespace FD3D
 
 generateTypeCode(FD3D::Mesh);
 
-#endif // FD3D_MESH_H
+#endif // MESH_H

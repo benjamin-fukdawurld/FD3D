@@ -1,5 +1,5 @@
-#ifndef SCENENODE_PYTHON_H
-#define SCENENODE_PYTHON_H
+#ifndef FD3D_SCENENODE_PYTHON_H
+#define FD3D_SCENENODE_PYTHON_H
 
 #include <pybind11/embed.h>
 #include <FD3D/SceneGraph/SceneNode.h>
@@ -48,4 +48,4 @@ namespace FD3D
     }
 }
 
-#endif // SCENENODE_PYTHON_H
+#endif // FD3D_SCENENODE_PYTHON_H

@@ -1,5 +1,5 @@
-#ifndef GLM_SERIALIZE_UTILS_H
-#define GLM_SERIALIZE_UTILS_H
+#ifndef FD3D_GLM_SERIALIZE_UTILS_H
+#define FD3D_GLM_SERIALIZE_UTILS_H
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -104,4 +104,4 @@ namespace FD3D
     };
 }
 
-#endif // GLM_SERIALIZE_UTILS_H
+#endif // FD3D_GLM_SERIALIZE_UTILS_H

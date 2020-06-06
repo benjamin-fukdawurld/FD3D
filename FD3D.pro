@@ -16,25 +16,23 @@ OBJECTS_DIR = ../build/obj/$${TARGET}
 LIBS += \
     -L../thirdparty/assimp/bin \
     -lassimp
+    -lFDCore
 
 INCLUDEPATH += \
     include \
     ../FDCore/include \
     ../thirdparty/glm \
     ../thirdparty/assimp/include \
+    ../thirdparty/ \
 
 SOURCES += \
-    src/AbstractMesh.cpp \
     src/Component.cpp \
     src/IndexProxy.cpp \
     src/Light.cpp \
-    src/Material.cpp \
-    src/Mesh.cpp \
     src/Projection.cpp \
     src/Scene.cpp \
     src/SceneLoader.cpp \
     src/SceneNode.cpp \
-    src/Texture.cpp \
     src/Transform.cpp \
     src/Camera.cpp \
     src/ModelLoader.cpp \
@@ -43,8 +41,25 @@ SOURCES += \
     src/LightAttenuation.cpp \
     src/LightCone.cpp \
     src/TransformStack.cpp \
-    src/Behavior.cpp \
-    src/StrategyBehavior.cpp
+    src/Element.cpp \
+    src/SceneManager.cpp \
+    src/TextureComponent.cpp \
+    src/AbstractTexture.cpp \
+    src/MaterialComponent.cpp \
+    src/Material.cpp \
+    src/Texture.cpp \
+    src/AbstractMeshComponent.cpp \
+    src/MeshComponent.cpp \
+    src/AbstractMesh.cpp \
+    src/Mesh.cpp \
+    src/AbstractBehaviorComponent.cpp \
+    src/BehaviorComponent.cpp \
+    src/StrategyBehaviorComponent.cpp \
+    src/AbstractBehavior.cpp \
+    src/BaseBehavior.cpp \
+    src/AbstractBehaviorGenerator.cpp \
+    src/StrategyBehavior.cpp \
+    src/EmbeddedTexture.cpp
 
 HEADERS += \
     include/FD3D/SceneGraph/Component.h \
@@ -62,19 +77,34 @@ HEADERS += \
     include/FD3D/Camera/Projection.h \
     include/FD3D/Camera/ProjectionType.h \
     \
-    include/FD3D/Material/Material.h \
-    include/FD3D/Material/Texture.h \
     \
     include/FD3D/Utils/IndexProxy.h \
     include/FD3D/Utils/Transform.h \
     include/FD3D/Utils/VertexProxy.h \
     include/FD3D/Utils/TransformStack.h \
     \
+    \
+    \` \
+    include/FD3D/SceneGraph/Element.h \
+    include/FD3D/SceneGraph/SceneManager.h \
+    include/FD3D/Material/TextureComponent.h \
+    include/FD3D/Material/AbstractTexture.h \
+    include/FD3D/Material/MaterialComponent.h \
+    include/FD3D/Material/Material.h \
+    include/FD3D/Material/Texture.h \
+    include/FD3D/Mesh/AbstractMeshComponent.h \
+    include/FD3D/Mesh/MeshComponent.h \
     include/FD3D/Mesh/AbstractMesh.h \
     include/FD3D/Mesh/Mesh.h \
-    \
-    include/FD3D/Behavior/Behavior.h \
-    include/FD3D/Behavior/StrategyBehavior.h \`
+    include/FD3D/Behavior/AbstractBehaviorComponent.h \
+    include/FD3D/Behavior/BehaviorComponent.h \
+    include/FD3D/Behavior/StrategyBehaviorComponent.h \
+    include/FD3D/Behavior/AbstractBehavior.h \
+    include/FD3D/Behavior/BaseBehavior.h \
+    include/FD3D/Behavior/AbstractBehaviorGenerator.h \
+    include/FD3D/Behavior/StrategyBehavior.h \
+    include/FD3D/SceneGraph/SceneNodeProxy.h \
+    include/FD3D/Material/EmbeddedTexture.h
 
 unix {
     target.path = /usr/lib

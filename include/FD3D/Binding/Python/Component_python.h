@@ -1,5 +1,5 @@
-#ifndef COMPONENT_PYTHON_H
-#define COMPONENT_PYTHON_H
+#ifndef FD3D_COMPONENT_PYTHON_H
+#define FD3D_COMPONENT_PYTHON_H
 
 #include <FD3D/SceneGraph/Component.h>
 
@@ -47,4 +47,4 @@ namespace FD3D
     }
 }
 
-#endif // COMPONENT_PYTHON_H
+#endif // FD3D_COMPONENT_PYTHON_H

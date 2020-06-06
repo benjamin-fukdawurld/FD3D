@@ -1,21 +1,19 @@
-#ifndef SCENENODE_H
-#define SCENENODE_H
+#ifndef FD3D_SCENENODE_H
+#define FD3D_SCENENODE_H
 
 #include <cstdint>
 #include <string>
 #include <vector>
 
-#include <FDCore/Identifiable.h>
+#include <FD3D/SceneGraph/Element.h>
 #include <FDCore/TypeInformation.h>
-
-#include <FDCore/Macros.h>
 
 namespace FD3D
 {
-    class FD_EXPORT SceneNode : public FDCore::Identifiable<>
+    class FD_EXPORT SceneNode : public FD3D::Element
     {
         public:
-            typedef typename FDCore::Identifiable<>::id_type id_type;
+            typedef typename FDCore::Identifiable<uintptr_t>::id_type id_type;
             typedef typename std::vector<id_type>::iterator child_iterator;
             typedef typename std::vector<id_type>::const_iterator const_child_iterator;
             typedef typename std::vector<id_type>::reverse_iterator reverse_child_iterator;
@@ -59,7 +57,7 @@ namespace FD3D
                 if(!is<T>())
                     return nullptr;
 
-                return static_cast<T*>(this);
+                return static_cast<const T*>(this);
             }
 
             const std::string &getName() const;
@@ -118,6 +116,8 @@ namespace FD3D
             using SceneNode::SceneNode;
             using SceneNode::setParentId;
 
+            RootNode() = default;
+
             RootNode(const RootNode &node) = delete;
 
             RootNode &operator=(const RootNode &node) = delete;
@@ -135,43 +135,44 @@ namespace FD3D
             typedef T EntityType;
 
         protected:
-            EntityType m_entity;
+            EntityType *m_entity;
 
         public:
-            EntityNode(id_type parent = 0) :
-                SceneNode(parent)
+            EntityNode(id_type parent) :
+                EntityNode(nullptr, parent)
             {}
 
-            EntityNode(EntityNode &&node) :
-                SceneNode(std::move(node)),
-                m_entity(std::move(node.m_entity))
+            EntityNode(EntityType *entity = nullptr, id_type parent = 0) :
+                SceneNode(parent),
+                m_entity(entity)
+            {}
+
+
+            EntityNode(EntityNode &&node)
             {
+                m_entity = node.m_entity;
+                SceneNode::operator=(std::move(node));
             }
 
-            EntityNode(const EntityNode &node) :
-                SceneNode(node),
-                m_entity(node.m_entity)
-            {}
+            EntityNode(const EntityNode &node) = delete;
 
             EntityNode &operator=(EntityNode &&node)
             {
+                if(&node == this)
+                    return *this;
+
                 m_entity = std::move(node.m_entity);
                 SceneNode::operator=(std::move(node));
                 return *this;
             }
 
-            EntityNode &operator=(const EntityNode &node)
-            {
-                m_entity = node.m_entity;
-                SceneNode::operator=(node);
-                return *this;
-            }
+            EntityNode &operator=(const EntityNode &node) = delete;
 
-            EntityType &getEntity() { return m_entity; }
-            const EntityType &getEntity() const { return m_entity; }
+            bool hasEntity() { return m_entity != nullptr; }
+            EntityType *getEntity() { return m_entity; }
+            const EntityType *getEntity() const { return m_entity; }
 
-            void setEntity(EntityType &&entity) { m_entity = std::move(entity); }
-            void setEntity(const EntityType &entity) { m_entity = entity; }
+            void setEntity(EntityType *entity) { m_entity = entity; }
 
             const char *getTypeCode() const override;
             size_t getTypeCodeHash() const override;
@@ -199,4 +200,4 @@ generateTypeCode(FD3D::SceneNode);
 generateTypeCode(FD3D::RootNode);
 
 
-#endif // SCENENODE_H
+#endif // FD3D_SCENENODE_H

@@ -1,5 +1,7 @@
 #include <FD3D/Binding/Python/Light_python.h>
 
+#include <FD3D/Binding/Python/SceneNode_python.h>
+
 namespace py = pybind11;
 
 void FD3D::Python::bind_light(pybind11::module &m)
@@ -42,4 +44,12 @@ void FD3D::Python::bind_light(pybind11::module &m)
                  .def("translate", &FD3D::Light::translate)
                  .def("rotate", py::overload_cast<const glm::vec3&>(&FD3D::Light::rotate))
                  .def("rotate", py::overload_cast<const glm::quat&>(&FD3D::Light::rotate));
+
+    auto node = py::class_<FD3D::LightNode, FD3D::Python::PySceneNode<FD3D::LightNode>>(m, "LightNode")
+                .def(py::init_alias<FD3D::SceneNode::id_type>(), py::arg("parent") = 0)
+                .def_property("entity", [] (FD3D::LightNode &node) { return node.getEntity(); }, &FD3D::LightNode::setEntity,
+                              py::return_value_policy::reference)
+                .def_property_readonly("typeCode", &FD3D::SceneNode::getTypeCode, py::return_value_policy::reference)
+                .def_property_readonly("typeHash", &FD3D::SceneNode::getTypeCodeHash)
+                .def("matchTypeCodeHash", &FD3D::SceneNode::matchTypeCodeHash);
 }

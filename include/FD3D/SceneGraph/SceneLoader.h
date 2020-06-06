@@ -1,5 +1,5 @@
-#ifndef SCENELOADER_H
-#define SCENELOADER_H
+#ifndef FD3D_SCENELOADER_H
+#define FD3D_SCENELOADER_H
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
@@ -8,11 +8,12 @@
 
 #include <functional>
 
+#include <FD3D/SceneGraph/SceneManager.h>
 #include <FD3D/SceneGraph/Scene.h>
 #include <FD3D/SceneGraph/Component.h>
-#include <FD3D/Material/Material.h>
+#include <FD3D/Material/MaterialComponent.h>
 #include <FD3D/Light/Light.h>
-#include <FD3D/Mesh/Mesh.h>
+#include <FD3D/Mesh/MeshComponent.h>
 #include <FD3D/Camera/Camera.h>
 
 #include <FDCore/AssociativeContainer.h>
@@ -67,7 +68,7 @@ namespace FD3D
             virtual Scene::node_id_type loadNode(const aiNode *in, Scene &out, Scene::node_id_type parent);
 
         private:
-            virtual AbstractMesh *createMesh() = 0;
+            virtual AbstractMeshComponent *createMesh() = 0;
     };
 
     class FD_EXPORT SceneLoader final : public AbstractSceneLoader
@@ -75,7 +76,7 @@ namespace FD3D
         private:
             std::function<uint32_t(const std::string &)> m_textureLoader;
             std::function<uint32_t(const aiTexture*)> m_embeddedTextureLoader;
-            std::function<AbstractMesh*()> m_meshAllocator;
+            std::function<AbstractMeshComponent*()> m_meshAllocator;
 
         public:
             std::function<uint32_t(const std::string &)> getTextureLoader()
@@ -129,11 +130,132 @@ namespace FD3D
         private:
             uint32_t loadTexture(const std::string &path) override final;
             uint32_t loadEmbeddedTexture(const aiTexture *tex) override final;
-            AbstractMesh *createMesh() override final;
+            AbstractMeshComponent *createMesh() override final;
 
         public:
-            static AbstractMesh *defaultMeshAllocator();
+            static AbstractMeshComponent *defaultMeshAllocator();
     };
+
+    namespace internal
+    {
+        FD3D::LightType lightTypeFromAsimpType(aiLightSourceType type);
+        glm::vec3 vec3FromAssimpVec3(aiVector3D v);
+        glm::vec4 vec4FromAssimpColor3D(aiColor3D c);
+    }
+
+    class FD_EXPORT AssetImporter
+    {
+        protected:
+            Assimp::Importer m_importer;
+            const aiScene *m_scene;
+            std::string m_directory;
+
+            // Resources
+            std::vector<std::unique_ptr<Material>> m_materials;
+            std::vector<std::unique_ptr<AbstractMesh>> m_meshes;
+            std::unordered_map<std::string, std::unique_ptr<AbstractTexture>> m_textures;
+
+            // Components
+            std::vector<std::unique_ptr<FD3D::Light>> m_lights;
+            std::vector<std::unique_ptr<FD3D::Camera>> m_cameras;
+            std::vector<std::unique_ptr<FD3D::Transform>> m_transforms;
+            std::vector<std::unique_ptr<AssetComponent<AbstractMesh>>> m_meshComponents;
+            std::vector<std::pair<Scene::node_id_type, Scene::component_id_type>> m_meshBindings;
+
+            // Nodes
+            std::vector<std::unique_ptr<FD3D::SceneNode>> m_nodes;
+
+            // Callables
+            std::function<std::unique_ptr<AbstractMesh>()> m_meshAllocator;
+            std::function<std::unique_ptr<AbstractTexture>(const aiScene*, std::string_view, std::string_view)> m_textureLoader;
+
+        public:
+            AssetImporter()
+            {}
+
+            virtual ~AssetImporter() = default;
+
+            bool import(std::string_view path, SceneManager &mgr, Scene::node_id_type where = 0,
+                        unsigned int flags = aiProcess_Triangulate | aiProcess_FlipUVs);
+
+            template<typename MeshAllocator>
+            void setMeshAllocator(MeshAllocator allocator)
+            {
+                m_meshAllocator = allocator;
+            }
+
+            template<typename MeshAllocator, typename ...Args>
+            void setMeshAllocator(MeshAllocator allocator, Args ...args)
+            {
+                m_meshAllocator = std::bind(allocator, args...);
+            }
+
+            template<typename TextureAllocator>
+            void setTextureAllocator(TextureAllocator allocator)
+            {
+                m_textureLoader = allocator;
+            }
+
+            template<typename TextureAllocator, typename ...Args>
+            void setTextureAllocator(TextureAllocator allocator, Args ...args)
+            {
+                m_textureLoader = std::bind(allocator, args..., std::placeholders::_1);
+            }
+
+
+            static bool isEmbeddedTexture(std::string_view path);
+
+            template<typename MeshType>
+            static std::enable_if_t<std::is_base_of_v<AbstractMesh, MeshType>,
+            std::unique_ptr<AbstractMesh>> defaultMeshAllocator()
+            {
+                return std::make_unique<MeshType>();
+            }
+
+            template<typename TextureType, typename EmbeddedTextureType>
+            static std::enable_if_t<
+                std::is_base_of_v<AbstractTexture, TextureType>
+                && std::is_base_of_v<AbstractTexture, EmbeddedTextureType>,
+            std::unique_ptr<AbstractTexture>> defaultTextureLoader(const aiScene *scene, std::string_view directory, std::string_view name);
+
+        protected:
+            virtual bool loadNodes();
+            virtual bool loadCameras();
+            virtual bool loadMaterials();
+            virtual bool loadLights();
+            virtual bool loadMeshes();
+
+            virtual bool loadTextures(const aiMaterial *mat, FD3D::TextureType type, Material &out);
+            virtual bool loadMaterial(const aiMaterial *mat, FD3D::Material &out);
+            virtual bool loadCamera(const aiCamera *cam, Camera &out);
+            virtual bool loadLight(const aiLight *light, Light &out);
+            virtual bool loadMesh(const aiMesh *mesh, AbstractMesh &out);
+            virtual bool loadNode(const aiNode *node, SceneNode *parent, ObjectNode &out);
+            virtual bool loadTransform(const aiMatrix4x4 &mat, Transform &trans);
+    };
+
+    template<typename TextureType, typename EmbeddedTextureType>
+    std::enable_if_t<std::is_base_of_v<AbstractTexture, TextureType> && std::is_base_of_v<AbstractTexture, EmbeddedTextureType>,
+    std::unique_ptr<AbstractTexture>> AssetImporter::defaultTextureLoader(const aiScene *scene, std::string_view directory, std::string_view name)
+    {
+        std::unique_ptr<AbstractTexture> result;
+        std::string path(directory);
+        path += '/';
+        path += name;
+
+        if(isEmbeddedTexture(name))
+        {
+            size_t index = std::stoul(path.c_str() + 1);
+            result  = new EmbeddedTextureType(name, path, scene->mTextures[index]);
+        }
+        else
+            result = new TextureType(name, path);
+
+        if(!result->load())
+            result.reset();
+
+        return result;
+    }
 }
 
-#endif // SCENELOADER_H
+#endif // FD3D_SCENELOADER_H

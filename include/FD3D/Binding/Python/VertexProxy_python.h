@@ -1,5 +1,5 @@
-#ifndef VERTEXPROXY_PYTHON_H
-#define VERTEXPROXY_PYTHON_H
+#ifndef FD3D_VERTEXPROXY_PYTHON_H
+#define FD3D_VERTEXPROXY_PYTHON_H
 
 #include <pybind11/embed.h>
 #include <FD3D/Utils/VertexProxy.h>
@@ -16,4 +16,4 @@ namespace FD3D
     }
 }
 
-#endif // VERTEXPROXY_PYTHON_H
+#endif // FD3D_VERTEXPROXY_PYTHON_H

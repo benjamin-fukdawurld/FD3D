@@ -1,6 +1,6 @@
 #include <FD3D/Binding/Python/VertexProxy_python.h>
 
-#include <FD3D/Mesh/AbstractMesh.h>
+#include <FD3D/Mesh/AbstractMeshComponent.h>
 
 #include <pybind11/operators.h>
 
@@ -26,46 +26,46 @@ void FD3D::Python::bind_vertex_component_type(pybind11::module &m)
 
 void FD3D::Python::bind_vertexproxy_class(pybind11::module &m)
 {
-    auto cls = py::class_<FD3D::VertexProxy>(m, "VertexProxy")
-               .def(py::init([](FD3D::AbstractMesh *m, size_t index){ return m->getVertex(index); }))
-               .def_property("index", &FD3D::internal::ConstVertexProxyTrait<FD3D::VertexProxy>::getIndex,
-                                      &FD3D::internal::ConstVertexProxyTrait<FD3D::VertexProxy>::setIndex)
-               .def_property_readonly("mesh", &FD3D::internal::ConstVertexProxyTrait<FD3D::VertexProxy>::getMesh)
-               .def_property_readonly("numberOfUvChannels", [](const FD3D::VertexProxy &v)
+    auto cls = py::class_<FD3D::VertexProxy2>(m, "VertexProxy")
+               .def(py::init([](FD3D::AbstractMeshComponent *m, size_t index){ return m->getVertex(index); }))
+               .def_property("index", &FD3D::internal::ConstVertexProxyTrait2<FD3D::VertexProxy2>::getIndex,
+                                      &FD3D::internal::ConstVertexProxyTrait2<FD3D::VertexProxy2>::setIndex)
+               .def_property_readonly("mesh", &FD3D::internal::ConstVertexProxyTrait2<FD3D::VertexProxy2>::getMesh)
+               .def_property_readonly("numberOfUvChannels", [](const FD3D::VertexProxy2 &v)
                {
                    return v.getMesh()->getNumberOfUvChannel();
                })
-               .def_property_readonly("numberOfColorChannels", [](const FD3D::VertexProxy &v)
+               .def_property_readonly("numberOfColorChannels", [](const FD3D::VertexProxy2 &v)
                {
                    return v.getMesh()->getNumberOfColorChannel();
                })
-               .def("hasComponent", [](const FD3D::VertexProxy &v, FD3D::VertexComponentType comp)
+               .def("hasComponent", [](const FD3D::VertexProxy2 &v, FD3D::VertexComponentType comp)
                {
                    return v.getMesh()->hasVertexComponent(comp);
                })
-               .def_property_readonly("mesh", &FD3D::internal::ConstVertexProxyTrait<FD3D::VertexProxy>::getMesh)
-               .def("getPosition", py::overload_cast<>(&FD3D::VertexProxy::getPosition), py::return_value_policy::reference_internal)
-               .def("getPosition", py::overload_cast<>(&FD3D::VertexProxy::getPosition, py::const_), py::return_value_policy::reference_internal)
-               .def("getNormal", py::overload_cast<>(&FD3D::VertexProxy::getNormal), py::return_value_policy::reference_internal)
-               .def("getNormal", py::overload_cast<>(&FD3D::VertexProxy::getNormal, py::const_), py::return_value_policy::reference_internal)
-               .def("getTangent", py::overload_cast<>(&FD3D::VertexProxy::getTangent), py::return_value_policy::reference_internal)
-               .def("getTangent", py::overload_cast<>(&FD3D::VertexProxy::getTangent, py::const_), py::return_value_policy::reference_internal)
-               .def("getBitangent", py::overload_cast<>(&FD3D::VertexProxy::getBitangent), py::return_value_policy::reference_internal)
-               .def("getBitangent", py::overload_cast<>(&FD3D::VertexProxy::getBitangent, py::const_), py::return_value_policy::reference_internal)
+               .def_property_readonly("mesh", &FD3D::internal::ConstVertexProxyTrait2<FD3D::VertexProxy2>::getMesh)
+               .def("getPosition", py::overload_cast<>(&FD3D::VertexProxy2::getPosition), py::return_value_policy::reference_internal)
+               .def("getPosition", py::overload_cast<>(&FD3D::VertexProxy2::getPosition, py::const_), py::return_value_policy::reference_internal)
+               .def("getNormal", py::overload_cast<>(&FD3D::VertexProxy2::getNormal), py::return_value_policy::reference_internal)
+               .def("getNormal", py::overload_cast<>(&FD3D::VertexProxy2::getNormal, py::const_), py::return_value_policy::reference_internal)
+               .def("getTangent", py::overload_cast<>(&FD3D::VertexProxy2::getTangent), py::return_value_policy::reference_internal)
+               .def("getTangent", py::overload_cast<>(&FD3D::VertexProxy2::getTangent, py::const_), py::return_value_policy::reference_internal)
+               .def("getBitangent", py::overload_cast<>(&FD3D::VertexProxy2::getBitangent), py::return_value_policy::reference_internal)
+               .def("getBitangent", py::overload_cast<>(&FD3D::VertexProxy2::getBitangent, py::const_), py::return_value_policy::reference_internal)
                .def(py::self += size_t())
                .def(py::self -= size_t());
 }
 
 void FD3D::Python::bind_indexproxy_class(pybind11::module &m)
 {
-    auto cls = py::class_<FD3D::IndexProxy>(m, "IndexProxy")
-               .def(py::init([](FD3D::AbstractMesh *m, size_t pos){ return m->getIndex(pos); }))
-               .def_property("position", &FD3D::internal::ConstIndexProxyTrait<FD3D::IndexProxy>::getPosition,
-                                         &FD3D::internal::ConstIndexProxyTrait<FD3D::IndexProxy>::setPosition)
-               .def_property("value", &FD3D::internal::ConstIndexProxyTrait<FD3D::IndexProxy>::getValue, &FD3D::IndexProxy::setValue)
-               .def("getMesh", &FD3D::IndexProxy::getMesh)
-               .def_property_readonly("mesh", &FD3D::internal::ConstIndexProxyTrait<FD3D::IndexProxy>::getMesh)
-               .def_property_readonly("vertex", [](FD3D::IndexProxy &ind) { return ind.getMesh()->getVertex(*ind); })
+    auto cls = py::class_<FD3D::IndexProxy2>(m, "IndexProxy")
+               .def(py::init([](FD3D::AbstractMeshComponent *m, size_t pos){ return m->getIndex(pos); }))
+               .def_property("position", &FD3D::internal::ConstIndexProxyTrait2<FD3D::IndexProxy2>::getPosition,
+                                         &FD3D::internal::ConstIndexProxyTrait2<FD3D::IndexProxy2>::setPosition)
+               .def_property("value", &FD3D::internal::ConstIndexProxyTrait2<FD3D::IndexProxy2>::getValue, &FD3D::IndexProxy2::setValue)
+               .def("getMesh", &FD3D::IndexProxy2::getMesh)
+               .def_property_readonly("mesh", &FD3D::internal::ConstIndexProxyTrait2<FD3D::IndexProxy2>::getMesh)
+               .def_property_readonly("vertex", [](FD3D::IndexProxy2 &ind) { return ind.getMesh()->getVertex(*ind); })
                .def(py::self += size_t())
                .def(py::self -= size_t());
 }

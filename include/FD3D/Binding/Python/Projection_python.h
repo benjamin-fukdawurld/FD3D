@@ -1,5 +1,5 @@
-#ifndef PROJECTION_PYTHON_H
-#define PROJECTION_PYTHON_H
+#ifndef FD3D_PROJECTION_PYTHON_H
+#define FD3D_PROJECTION_PYTHON_H
 
 #include <pybind11/embed.h>
 #include <FD3D/Camera/Projection.h>
@@ -14,4 +14,4 @@ namespace FD3D
     }
 }
 
-#endif // PROJECTION_PYTHON_H
+#endif // FD3D_PROJECTION_PYTHON_H

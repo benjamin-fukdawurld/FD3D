@@ -1,5 +1,5 @@
-#ifndef GLM_VEC2_PYTHON_H
-#define GLM_VEC2_PYTHON_H
+#ifndef FD3D_GLM_VEC_PYTHON_H
+#define FD3D_GLM_VEC_PYTHON_H
 
 #include <pybind11/embed.h>
 #include <glm/vec2.hpp>
@@ -27,4 +27,4 @@ namespace FD3D
     }
 }
 
-#endif // GLM_VEC2_PYTHON_H
+#endif // FD3D_GLM_VEC_PYTHON_H

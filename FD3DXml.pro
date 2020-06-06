@@ -26,13 +26,12 @@ INCLUDEPATH += include \
     ../thirdparty/glm \
     ../thirdparty/assimp/include \
 
-SOURCES += \
-    src/Glm_Xml_utils.cpp
+SOURCES +=
 
 HEADERS += \
-    include/FD3D/Serialization/Xml/Glm_Xml_fwd.h \
-    include/FD3D/Serialization/Xml/Glm_Xml_utils.h \
-    include/FD3D/Serialization/Glm_Serialize_utils.h
+    include/FD3D/Serialization/Glm_Serialize_utils.h \
+    include/FD3D/Serialization/Xml/Glm_xml_fwd.h \
+    include/FD3D/Serialization/Xml/Glm_xml.h
 
 
 unix {

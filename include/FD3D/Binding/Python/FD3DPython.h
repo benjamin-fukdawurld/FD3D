@@ -1,4 +1,4 @@
-#ifndef FD3DPYTHON_H
+#ifndef FD3D_FD3DPYTHON_H
 #define FD3DPYTHON_H
 
 #include <FD3D/Binding/Python/Glm_vec_python.h>
@@ -32,4 +32,4 @@ PYBIND11_EMBEDDED_MODULE(PyFD3D, m)
     FD3D::Python::bind_mesh(m);
 }
 
-#endif // FD3DPYTHON_H
+#endif // FD3D_FD3DPYTHON_H

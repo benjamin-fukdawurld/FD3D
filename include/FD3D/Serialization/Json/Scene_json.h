@@ -1,0 +1,266 @@
+#ifndef FD3D_SCENE_JSON_H
+#define FD3D_SCENE_JSON_H
+
+#include <FD3D/Serialization/Json/Scene_json_fwd.h>
+#include <FD3D/Serialization/Json/FD3DJson_fwd.h>
+
+#include <FDJson/JsonSerializer.h>
+#include <FDJson/Json_primitive.h>
+#include <FDJson/JsonSerializer.h>
+
+#include <FD3D/Mesh/AbstractMeshComponent.h>
+#include <FD3D/Mesh/MeshComponent.h>
+
+#include <FD3D/Material/MaterialComponent.h>
+#include <FD3D/Material/TextureComponent.h>
+
+#include <FD3D/Utils/Transform.h>
+
+#include <FD3D/Camera/Camera.h>
+
+#include <FD3D/Light/Light.h>
+
+#include <FD3D/SceneGraph/SceneManager.h>
+
+#include <queue>
+
+namespace FDJson
+{
+    FD_INLINE rapidjson::Value serialize(const FD3D::Scene &scene, FDJson::Serializer &serializer)
+    {
+        assert(serializer.getUserData() != nullptr);
+        FD3D::SceneManager *mgr = serializer.getUserDataAs<FD3D::SceneManager>();
+        auto handlers = mgr->findHandlerMap("json-serialize");
+
+        rapidjson::Value result(rapidjson::kObjectType);
+        rapidjson::Value components(rapidjson::kArrayType);
+
+        for(auto &comp : scene.getComponents())
+        {
+            auto h = handlers->value.find(comp.value->getTypeCode());
+            if(h == handlers->value.end())
+                components.PushBack(serializer.serialize(*comp.value), serializer.getAllocator());
+            else
+            {
+                auto user_data = std::make_pair(&serializer, rapidjson::Value{});
+                h->value(mgr, comp.value.get(), &user_data);
+                components.PushBack(user_data.second, serializer.getAllocator());
+            }
+        }
+        result.AddMember(serializer.serialize("components"), components, serializer.getAllocator());
+
+        rapidjson::Value nodes(rapidjson::kArrayType);
+        std::queue<FD3D::Scene::node_id_type> todo;
+        todo.push(scene.getRootId());
+        while(!todo.empty())
+        {
+            FD3D::ConstSceneNodeProxy node = scene.getNode(todo.front());
+            todo.pop();
+
+            auto h = handlers->value.find(node->getTypeCode());
+            rapidjson::Value json;
+            if(h == handlers->value.end())
+                json = serializer.serialize(*node);
+            else
+            {
+                auto user_data = std::make_pair(&serializer, rapidjson::Value{});
+                h->value(mgr, const_cast<FD3D::SceneNode*>(node.getNodeAs<FD3D::SceneNode>()), &user_data);
+                json = user_data.second;
+            }
+
+            nodes.PushBack(json, serializer.getAllocator());
+            for(auto id: node->getChildIds())
+                todo.push(id);
+        }
+        result.AddMember(serializer.serialize("nodes"), nodes, serializer.getAllocator());
+
+        return result;
+    }
+
+    FD_INLINE bool unserialize(const rapidjson::Value &val, FD3D::Scene &scene, Serializer &serializer, std::string *err)
+    {
+        assert(serializer.getUserData() != nullptr);
+        FD3D::SceneManager *mgr = serializer.getUserDataAs<FD3D::SceneManager>();
+        auto handlers = mgr->findHandlerMap("json-unserialize");
+
+        typedef std::tuple<FDJson::Serializer*, const FDJson::Serializer::Value&, FD3D::Element **, bool, std::string*> user_data_t;
+
+        if(!val.IsObject())
+        {
+            if(err)
+                *err = "value is not an object";
+
+            return false;
+        }
+
+        {
+            if(!val.HasMember("components"))
+            {
+                if(err)
+                    *err = "value has no member components";
+
+                return false;
+            }
+
+            const rapidjson::Value &components = val["components"];
+            if(!components.IsArray())
+            {
+                if(err)
+                    *err = "components is not an array";
+
+                return false;
+            }
+
+            for(auto it = components.Begin(); it != components.End(); ++it)
+            {
+                FD3D::Element *elm = nullptr;
+                user_data_t t{&serializer, *it, &elm, false, err};
+                if(!it->HasMember("type"))
+                {
+                    if(err)
+                        *err = "component has no member type";
+
+                    return false;
+                }
+
+                std::string type = (*it)["type"].GetString();
+                auto h = handlers->value.find(type);
+                if(h == handlers->value.end())
+                {
+                    if(err)
+                        *err = "unkonwn component type '" + type + "'";
+
+                    return false;
+                }
+
+                h->value(mgr, nullptr, &t);
+                if(!std::get<3>(t) || elm == nullptr)
+                {
+                    if(err)
+                        *err = "error parsing component: " + *err;
+
+                    return false;
+                }
+            }
+        }
+
+        {
+            if(!val.HasMember("nodes"))
+            {
+                if(err)
+                    *err = "value has no member nodes";
+
+                return false;
+            }
+
+            const rapidjson::Value &nodes = val["nodes"];
+            if(!nodes.IsArray())
+            {
+                if(err)
+                    *err = "nodes is not an array";
+
+                return false;
+            }
+
+            for(auto it = nodes.Begin(); it != nodes.End(); ++it)
+            {
+                FD3D::Element *elm = nullptr;
+                user_data_t t{&serializer, *it, &elm, false, err};
+
+                if(!it->HasMember("type"))
+                {
+                    if(err)
+                        *err = "component has no member type";
+
+                    return false;
+                }
+
+                std::string type = (*it)["type"].GetString();
+                auto h = handlers->value.find(type);
+                if(h == handlers->value.end())
+                {
+                    if(err)
+                        *err = "unkonwn node type '" + type + "'";
+
+                    return false;
+                }
+
+                h->value(mgr, nullptr, &t);
+                if(!std::get<3>(t) || elm == nullptr)
+                {
+                    if(err)
+                        *err = "error parsing nodes: " + *err;
+
+                    return false;
+                }
+            }
+
+            for(auto it = nodes.Begin(); it != nodes.End(); ++it)
+            {
+                int index = (*it)["id"].GetInt();
+                FD3D::SceneNodeProxy n = scene.getNode(mgr->getIndexId(index));
+                assert(n && "Invalid node Id");
+
+                if(!it->HasMember("children"))
+                {
+                    if(err)
+                        *err = "value has no member children";
+
+                    return false;
+                }
+
+                const rapidjson::Value &children = (*it)["children"];
+                if(!children.IsArray())
+                {
+                    if(err)
+                        *err = "children is not an array";
+
+                    return false;
+                }
+
+                for(auto childIt = children.Begin(); childIt != children.End(); ++childIt)
+                {
+                    FD3D::SceneNodeProxy child = scene.getNode(mgr->getIndexId(childIt->GetInt()));
+                    assert(child && "Invalid node Id");
+                    child->setParentId(n->getId());
+                    n->addChildId(child->getId());
+                }
+
+                if(!val.HasMember("components"))
+                {
+                    if(err)
+                        *err = "value has no attribute 'components'";
+
+                    return false;
+                }
+
+                std::vector<int> components;
+                if(!serializer.unserialize((*it)["components"], components, err))
+                {
+                    if(err)
+                        *err = "Error parsing attribute components: " + *err;
+
+                    return false;
+                }
+
+                for(int index: components)
+                {
+                    FD3D::Element::id_type id = mgr->getIndexId(index);
+                    if(id == 0)
+                    {
+                        if(err)
+                            *err = "Error parsing components: id '" + std::to_string(index) + "' does not exist";
+
+                        return false;
+                    }
+
+                    mgr->getScene()->bindComponent(n->getId(), id);
+                }
+            }
+        }
+
+        return true;
+    }
+}
+
+#endif // FD3D_SCENE_JSON_H

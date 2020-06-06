@@ -1,5 +1,5 @@
-#ifndef LIGHTATTENUATION_H
-#define LIGHTATTENUATION_H
+#ifndef FD3D_LIGHTATTENUATION_H
+#define FD3D_LIGHTATTENUATION_H
 
 #include <FDCore/Macros.h>
 
@@ -30,4 +30,4 @@ namespace FD3D
     };
 }
 
-#endif // LIGHTATTENUATION_H
+#endif // FD3D_LIGHTATTENUATION_H

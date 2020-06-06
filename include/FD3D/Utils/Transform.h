@@ -6,12 +6,15 @@
 #include <glm/mat4x4.hpp>
 
 #include <FD3D/SceneGraph/SceneNode.h>
+#include <FD3D/SceneGraph/Component.h>
 
 #include <FDCore/Macros.h>
 
+#include <assimp/matrix4x4.h>
+
 namespace FD3D
 {
-    class FD_EXPORT Transform
+    class FD_EXPORT Transform : public FD3D::Component
     {
         protected:
             mutable glm::mat4 m_mat;
@@ -27,7 +30,7 @@ namespace FD3D
                       const glm::vec3 &scale,
                       const glm::quat &rotation);
 
-            virtual ~Transform() = default;
+            ~Transform() override = default;
 
             const float *getMatrixPtr() const;
 
@@ -68,9 +71,15 @@ namespace FD3D
             bool isUpToDate() const;
             virtual void update() const;
 
+            const char *getTypeCode() const override;
+            size_t getTypeCodeHash() const override;
+            bool matchTypeCodeHash(size_t hash) const override;
+
             static glm::mat4 generateMatrix(const glm::vec3 &position,
                                             const glm::vec3 &scale,
                                             const glm::quat &rotation);
+
+            bool fromMatrix(const aiMatrix4x4 &mat);
     };
 
     typedef EntityNode<Transform> ObjectNode;

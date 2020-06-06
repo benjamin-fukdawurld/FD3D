@@ -26,12 +26,12 @@ const glm::vec3 &FD3D::Light::getPosition() const
 
 glm::vec3 &FD3D::Light::getDirection()
 {
-    return m_position;
+    return m_direction;
 }
 
 const glm::vec3 &FD3D::Light::getDirection() const
 {
-    return m_position;
+    return m_direction;
 }
 
 void FD3D::Light::setPosition(const glm::vec3 &position)
@@ -82,6 +82,99 @@ FD3D::LightType FD3D::Light::getType() const
 void FD3D::Light::setType(const LightType &type)
 {
     m_type = type;
+}
+
+const char *FD3D::Light::getTypeCode() const
+{
+    return FDCore::TypeCodeHelper<FD3D::Light>::code;
+}
+
+size_t FD3D::Light::getTypeCodeHash() const
+{
+    return FDCore::TypeCodeHelper<FD3D::Light>::hash();
+}
+
+bool FD3D::Light::matchTypeCodeHash(size_t hash) const
+{
+    return hash == FD3D::Light::getTypeCodeHash() || FD3D::Component::matchTypeCodeHash(hash);
+}
+
+bool FD3D::Light::fromLight(const aiLight *light)
+{
+    switch (light->mType)
+    {
+        case aiLightSource_AREA:
+            setType(LightType::AreaLight);
+        break;
+
+        case aiLightSource_SPOT:
+            setType(LightType::SpotLight);
+        break;
+
+        case aiLightSource_POINT:
+            setType(LightType::PointLight);
+        break;
+
+        case aiLightSource_AMBIENT:
+            setType(LightType::AmbientLight);
+        break;
+
+        case aiLightSource_DIRECTIONAL:
+            setType(LightType::DirectionalLight);
+        break;
+
+        case aiLightSource_UNDEFINED:
+        default:
+            setType(LightType::Invalid);
+        break;
+    }
+
+    setPosition(
+        {
+            light->mPosition.x,
+            light->mPosition.y,
+            light->mPosition.z
+        }
+    );
+
+    setDirection(
+        {
+            light->mDirection.x,
+            light->mDirection.y,
+            light->mDirection.z
+        }
+    );
+
+    setUp(
+        {
+            light->mUp.x,
+            light->mUp.y,
+            light->mUp.z
+        }
+    );
+
+    color.ambient = {
+        light->mColorAmbient.r,
+        light->mColorAmbient.g,
+        light->mColorAmbient.b,
+        1.0f
+    };
+
+    color.diffuse = {
+        light->mColorDiffuse.r,
+        light->mColorDiffuse.g,
+        light->mColorDiffuse.b,
+        1.0f
+    };
+
+    color.specular = {
+        light->mColorSpecular.r,
+        light->mColorSpecular.g,
+        light->mColorSpecular.b,
+        1.0f
+    };
+
+    return true;
 }
 
 std::string_view FD3D::lightTypeToString(FD3D::LightType type)

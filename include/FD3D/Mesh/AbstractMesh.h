@@ -1,20 +1,16 @@
 #ifndef ABSTRACTMESH_H
 #define ABSTRACTMESH_H
 
-#include <FD3D/SceneGraph/Component.h>
-#include <FD3D/SceneGraph/Scene.h>
+#include <FDCore/EnumFlag.h>
+#include <FDCore/BaseResource.h>
+
+#include <FD3D/Material/Material.h>
+
 #include <FD3D/Utils/VertexProxy.h>
 #include <FD3D/Utils/IndexProxy.h>
 
-#include <FDCore/EnumFlag.h>
-
-#include <cstddef>
-#include <cstdint>
-#include <vector>
-
-#include <FDCore/Macros.h>
-
-class aiMesh;
+#include <assimp/scene.h>
+#include <assimp/mesh.h>
 
 namespace FD3D
 {
@@ -27,11 +23,11 @@ namespace FD3D
 
     typedef FDCore::EnumFlag<MeshOption, uint8_t> MeshOptionFlag;
 
-    class FD_EXPORT AbstractMesh : public Component
+    class FD_EXPORT AbstractMesh : public FDCore::BaseResource
     {
         protected:
-            id_type m_materialId;
-            id_type m_shaderId;
+            Material *m_material;
+            FDCore::AbstractResource *m_shader;
             uint8_t m_nbColorChannels;
             uint8_t m_nbTexChannels;
             VertexComponentFlag m_componentsFlags;
@@ -41,13 +37,13 @@ namespace FD3D
             AbstractMesh();
             ~AbstractMesh() override = default;
 
-            bool hasMaterial() const { return m_materialId != 0; }
-            id_type getMaterialId() const { return m_materialId; }
-            void setMaterialId(id_type id) { m_materialId = id; }
+            bool hasMaterial() const { return m_material != nullptr; }
+            Material *getMaterial() const { return m_material; }
+            void setMaterial(Material *mat) { m_material = mat; }
 
-            bool hasShader() const { return m_shaderId != 0; }
-            id_type getShaderId() const { return m_shaderId; }
-            void setShaderId(id_type id) { m_shaderId = id; }
+            bool hasShader() const { return m_shader != nullptr; }
+            FDCore::AbstractResource *getShader() const { return m_shader; }
+            void setShader(FDCore::AbstractResource *shad) { m_shader = shad; }
 
             virtual float *getVertices() = 0;
             virtual const float *getVertices() const = 0;
@@ -129,99 +125,8 @@ namespace FD3D
             size_t getTypeCodeHash() const override;
 
             bool matchTypeCodeHash(size_t hash) const override;
-    };
 
-    class FD_EXPORT AbstractMeshStrategy : public Component
-    {
-        public:
-            AbstractMeshStrategy();
-            virtual ~AbstractMeshStrategy() = default;
-
-            virtual float *getVertices(AbstractMesh &mesh) = 0;
-            virtual const float *getVertices(const AbstractMesh &mesh) const = 0;
-            virtual uint32_t *getIndices(AbstractMesh &mesh) = 0;
-            virtual const uint32_t *getIndices(const AbstractMesh &mesh) const = 0;
-
-            virtual size_t getNumberOfVertices(const AbstractMesh &mesh) const = 0;
-            virtual void setNumberOfVertices(AbstractMesh &mesh, size_t val) = 0;
-
-            virtual size_t getNumberOfIndices(const AbstractMesh &mesh) const = 0;
-            virtual void setNumberOfIndices(AbstractMesh &mesh, size_t val) = 0;
-    };
-
-    class FD_EXPORT FunctionalMeshStrategy : public AbstractMeshStrategy
-    {
-        protected:
-            std::function<float *(AbstractMesh &)> m_getVertices;
-            std::function<const float *(const AbstractMesh &)> m_getConstVertices;
-
-            std::function<uint32_t *(AbstractMesh &)> m_getIndices;
-            std::function<const uint32_t *(const AbstractMesh &)> m_getConstIndices;
-
-            std::function<size_t (const AbstractMesh &)> m_getNumberOfVertices;
-            std::function<void(AbstractMesh &, size_t)> m_setNumberOfVertices;
-
-            std::function<size_t (const AbstractMesh &)> m_getNumberOfIndices;
-            std::function<void(AbstractMesh &, size_t)> m_setNumberOfIndices;
-
-        public:
-            template<typename VerticesGetter, typename ConstVerticesGetter,
-                     typename IndicesGetter, typename ConstIndicesGetter,
-                     typename VerticesNumberGetter, typename VerticesNumberSetter,
-                     typename IndicesNumberGetter, typename IndicesNumberSetter>
-            FunctionalMeshStrategy(VerticesGetter getVertices,
-                                   ConstVerticesGetter getConstVertices,
-                                   IndicesGetter getIndices,
-                                   ConstIndicesGetter getConstIndices,
-                                   VerticesNumberGetter getNumberOfVertices,
-                                   VerticesNumberSetter setNumberOfVertices,
-                                   IndicesNumberGetter getNumberOfIndices,
-                                   IndicesNumberSetter setNumberOfIndices) :
-                m_getVertices(getVertices),
-                m_getConstVertices(getConstVertices),
-                m_getIndices(getIndices),
-                m_getConstIndices(getConstIndices),
-                m_getNumberOfVertices(getNumberOfVertices),
-                m_setNumberOfVertices(setNumberOfVertices),
-                m_getNumberOfIndices(getNumberOfIndices),
-                m_setNumberOfIndices(setNumberOfIndices)
-            {}
-
-            ~FunctionalMeshStrategy () override = default;
-
-            float *getVertices(AbstractMesh &mesh) override;
-            const float *getVertices(const AbstractMesh &mesh) const override;
-            uint32_t *getIndices(AbstractMesh &mesh) override;
-            const uint32_t *getIndices(const AbstractMesh &mesh) const override;
-
-            size_t getNumberOfVertices(const AbstractMesh &mesh) const override;
-            void setNumberOfVertices(AbstractMesh &mesh, size_t val) override;
-
-            size_t getNumberOfIndices(const AbstractMesh &mesh) const override;
-            void setNumberOfIndices(AbstractMesh &mesh, size_t val) override;
-    };
-
-    class FD_EXPORT StrategyManagedMesh : public AbstractMesh
-    {
-        protected:
-            AbstractMeshStrategy &m_strategy;
-
-        public:
-            StrategyManagedMesh(AbstractMeshStrategy &strategy) :
-                m_strategy(strategy)
-            {}
-            ~StrategyManagedMesh() override = default;
-
-            float *getVertices() override;
-            const float *getVertices() const override;
-            uint32_t *getIndices() override;
-            const uint32_t *getIndices() const override;
-
-            size_t getNumberOfVertices() const override;
-            void setNumberOfVertices(size_t val) override;
-
-            size_t getNumberOfIndices() const override;
-            void setNumberOfIndices(size_t val) override;
+            bool fromMesh(const aiMesh *mesh, const aiScene *scene, FDCore::ResourceManager &mgr);
     };
 
     namespace internal
@@ -239,7 +144,7 @@ namespace FD3D
                                        : m_index * 3);
         }
 
-        VertexComponentFlag getVertexComponents(const aiMesh *mesh);
+        VertexComponentFlag vertexComponentsFromMesh(const aiMesh *mesh);
 
         size_t getVertexSize(const aiMesh *mesh);
 
@@ -263,8 +168,6 @@ namespace FD3D
 
         std::vector<uint32_t> getIndices(const aiMesh *mesh);
     }
-
-    bool load(const aiMesh *in, Scene &scene, AbstractMesh &out);
 }
 
 generateTypeCode(FD3D::AbstractMesh);
